@@ -10,7 +10,9 @@
   "private": true,
   "dependencies": {
     "express": "4.17.1",
-    "tslib": "^2.0.0"
+    "pg": "^8.7.1",
+    "tslib": "^2.0.0",
+    "typeorm": "^0.2.37"
   },
   "devDependencies": {
     "@nrwl/cli": "12.8.0",
