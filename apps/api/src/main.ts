@@ -2,9 +2,12 @@ import * as express from 'express';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 
-import { User } from './entity/User';
+import { ApolloServer } from 'apollo-server-express';
+import { UserResolver } from './resolvers/UserResolver';
+import { buildSchema } from 'type-graphql';
 
-const app = express();
+import { User } from './entity/User';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 
 const main = async () => {
   await createConnection({
@@ -18,7 +21,19 @@ const main = async () => {
     entities: [User],
   });
 
-  app.get('/api', async (req, res) => {
+  const app = express();
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+      validate: false,
+    }),
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  });
+
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+
+  app.get('/api', async (_, res) => {
     const user = new User();
     user.firstName = 'Timber';
     user.lastName = 'Saw';
@@ -29,10 +44,10 @@ const main = async () => {
   });
 
   const port = process.env.port || 3333;
-  const server = app.listen(port, () => {
+
+  app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/api`);
   });
-  server.on('error', console.error);
 };
 
 main().catch((error) => console.log(error));
