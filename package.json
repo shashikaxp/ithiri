@@ -16,6 +16,7 @@
     "core-js": "^3.6.5",
     "express": "4.17.1",
     "express-session": "^1.17.2",
+    "formik": "^2.2.9",
     "graphql": "^15.5.1",
     "next": "11.1.0",
     "pg": "^8.7.1",
@@ -26,7 +27,8 @@
     "regenerator-runtime": "0.13.7",
     "tslib": "^2.0.0",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.37"
+    "typeorm": "^0.2.37",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@nrwl/cli": "12.8.0",
