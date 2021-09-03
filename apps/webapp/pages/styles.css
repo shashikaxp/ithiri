@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('/fonts/source-sans-pro/source-sans-pro-v14-latin-regular.woff2')
+      format('woff2'),
+    url('/fonts/source-sans-pro/source-sans-pro-v14-latin-regular.woff')
+      format('woff'),
+    url('/fonts/source-sans-pro/source-sans-pro-v14-latin-regular.ttf')
+      format('truetype');
+}
+
+body {
+  @apply font-primary;
+}

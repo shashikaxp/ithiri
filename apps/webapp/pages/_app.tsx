@@ -1,20 +1,20 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import 'tailwindcss/tailwind.css';
+import './styles.css';
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
     <Head>
-      <title>Welcome to webapp2!</title>
+  
     </Head>
     <div className="app">
-      <header className="flex">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/nx-logo-white.svg" alt="Nx logo" width="75" height="50" />
-        <h1>Welcome to webapp2!</h1>
+      <header className="flex">            
       </header>
       <main>
+        <div className="text-center text-6xl">
+        Almost before we knew it, we had left the ground.
+        </div>
         <Component {...pageProps} />
       </main>
     </div>
