@@ -1,11 +1,8 @@
-
-
+import 'tailwindcss/tailwind.css';
 
 function App() {
   return (
-    <>
-      test app
-    </>
+    <div></div>
   );
 }
 
