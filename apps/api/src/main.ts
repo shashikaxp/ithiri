@@ -1,6 +1,8 @@
+import { MyContext } from './types';
 import * as express from 'express';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
+import { getManager } from 'typeorm';
 
 import { ApolloServer } from 'apollo-server-express';
 import { UserResolver } from './resolvers/UserResolver';
@@ -8,6 +10,10 @@ import { buildSchema } from 'type-graphql';
 
 import { User } from './entity/User';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+
+import redis = require('redis');
+import session = require('express-session');
+import * as connectRedis from 'connect-redis';
 
 const main = async () => {
   await createConnection({
@@ -21,6 +27,8 @@ const main = async () => {
     entities: [User],
   });
 
+  const em = getManager();
+
   const app = express();
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -28,18 +36,36 @@ const main = async () => {
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    context: ({ req, res }): MyContext => ({ em, req, res }),
   });
+
+  const RedisStore = connectRedis(session);
+  const redisClient = redis.createClient();
+
+  // TODO  use envirunment
+  app.use(
+    session({
+      name: 'iid',
+      store: new RedisStore({
+        client: redisClient,
+        disableTouch: true,
+      }),
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: false, // use only in https,
+      },
+      saveUninitialized: false,
+      secret: 'asd2323sad',
+      resave: false,
+    })
+  );
 
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
 
   app.get('/api', async (_, res) => {
-    const user = new User();
-    user.firstName = 'Timber';
-    user.lastName = 'Saw';
-    user.isActive = true;
-    const data = await user.save();
-    console.log(data);
     res.send({ message: 'Welcome to api!' });
   });
 
