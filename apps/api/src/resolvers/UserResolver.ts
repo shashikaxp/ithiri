@@ -1,5 +1,4 @@
-import { MyContext } from './../types';
-import { User } from './../entity/User';
+import { RegisterSchema } from './../validations/register.schema';
 import {
   Resolver,
   Query,
@@ -10,8 +9,10 @@ import {
   Ctx,
   ObjectType,
 } from 'type-graphql';
-
 import * as argon from 'argon2';
+
+import { User } from './../entity/User';
+import { MyContext } from './../types';
 
 @ObjectType()
 class FieldError {
@@ -58,11 +59,13 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async register(
-    @Arg('options') options: EmailAndPasswordInput,
     @Arg('name') name: string,
+    @Arg('email') email: string,
+    @Arg('password') password: string,
+    @Arg('confirmPassword') confirmPassword: string,
     @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne({ email: options.email });
+    const user = await User.findOne({ email });
     if (user) {
       return {
         errors: [
@@ -73,17 +76,35 @@ export class UserResolver {
         ],
       };
     } else {
-      const hashedPassword = await argon.hash(options.password);
-      const user = await em.create(User, {
-        name,
-        password: hashedPassword,
-        email: options.email,
-      });
-      await user.save();
-      req.session.userId = user.id;
-      return {
-        user,
-      };
+      try {
+        await RegisterSchema.validate(
+          {
+            name,
+            email,
+            password,
+            confirmPassword,
+          },
+          { abortEarly: false }
+        );
+        const hashedPassword = await argon.hash(password);
+        const user = await em.create(User, {
+          name,
+          password: hashedPassword,
+          email,
+        });
+        await user.save();
+        req.session.userId = user.id;
+        return { user };
+      } catch (error) {
+        return {
+          errors: error.inner.map((e) => {
+            return {
+              field: e.path,
+              message: e.errors[0],
+            };
+          }),
+        };
+      }
     }
   }
 
