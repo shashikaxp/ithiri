@@ -15,6 +15,11 @@ import redis = require('redis');
 import session = require('express-session');
 import * as connectRedis from 'connect-redis';
 
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  credentials: true,
+};
+
 const main = async () => {
   await createConnection({
     type: 'postgres',
@@ -30,6 +35,7 @@ const main = async () => {
   const em = getManager();
 
   const app = express();
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver],
@@ -63,7 +69,7 @@ const main = async () => {
   );
 
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: corsOptions });
 
   app.get('/api', async (_, res) => {
     res.send({ message: 'Welcome to api!' });
