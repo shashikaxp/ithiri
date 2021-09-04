@@ -32,16 +32,23 @@ const Register: React.FC = () => {
         >
           <Form className="flex flex-col gap-2 w-80">
             <InputField name="name" type="text" placeholder="Name" />
-            <InputField name="email" type="email" placeholder="Email" />
+            <InputField
+              name="email"
+              type="email"
+              placeholder="Email"
+              autoComplete="username"
+            />
             <InputField
               name="password"
               type="password"
               placeholder="Password"
+              autoComplete="new-password"
             />
             <InputField
               name="confirmPassword"
               type="password"
               placeholder="Confirm password"
+              autoComplete="new-password"
             />
             <button
               className="bg-blue-700 rounded-lg text-gray-300 px-4 py-2"
