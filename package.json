@@ -11,10 +11,12 @@
   "dependencies": {
     "@apollo/client": "^3.4.10",
     "@nrwl/next": "^12.8.0",
+    "@types/cors": "^2.8.12",
     "apollo-server-express": "^3.3.0",
     "argon2": "^0.28.2",
     "connect-redis": "^6.0.0",
-    "core-js": "^3.6.5",    
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "express": "4.17.1",
     "express-session": "^1.17.2",
     "formik": "^2.2.9",

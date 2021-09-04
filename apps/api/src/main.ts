@@ -14,11 +14,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-co
 import redis = require('redis');
 import session = require('express-session');
 import * as connectRedis from 'connect-redis';
-
-const corsOptions = {
-  origin: 'http://localhost:4200',
-  credentials: true,
-};
+import * as cors from 'cors';
 
 const main = async () => {
   await createConnection({
@@ -35,6 +31,13 @@ const main = async () => {
   const em = getManager();
 
   const app = express();
+
+  app.use(
+    cors({
+      origin: 'http://localhost:4200',
+      credentials: true,
+    })
+  );
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -69,7 +72,7 @@ const main = async () => {
   );
 
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app, cors: corsOptions });
+  apolloServer.applyMiddleware({ app, cors: false });
 
   app.get('/api', async (_, res) => {
     res.send({ message: 'Welcome to api!' });
