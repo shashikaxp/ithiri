@@ -110,23 +110,24 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async login(
-    @Arg('options') options: EmailAndPasswordInput,
+    @Arg('email') email: string,
+    @Arg('password') password: string,
     @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
-    const user = await em.findOne(User, { email: options.email });
+    const user = await em.findOne(User, { email: email });
 
     if (!user) {
       return {
         errors: [
           {
             field: 'email',
-            message: `No user is registered using ${options.email}`,
+            message: `No user is registered using ${email}`,
           },
         ],
       };
     }
 
-    const validPassword = await argon.verify(user.password, options.password);
+    const validPassword = await argon.verify(user.password, password);
     if (!validPassword) {
       return {
         errors: [
