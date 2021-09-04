@@ -8,7 +8,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 export const InputField: React.FC<InputFieldProps> = (props) => {
   return (
     <>
-      <Field name={props.name} type={props.type}></Field>
+      <Field {...props} name={props.name}></Field>
       <ErrorMessage name={props.name} />
     </>
   );
