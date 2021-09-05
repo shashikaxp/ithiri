@@ -6,6 +6,7 @@ import { InputField } from '../components/InputField';
 import { useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../util/toErrorMap';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const Login: React.FC = () => {
 
   return (
     <Container>
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen">
         <Formik
           initialValues={{
             email: '',
@@ -44,6 +45,7 @@ const Login: React.FC = () => {
             </button>
           </Form>
         </Formik>
+        <NextLink href="/forgot-password">Forgot password ?</NextLink>
       </div>
     </Container>
   );

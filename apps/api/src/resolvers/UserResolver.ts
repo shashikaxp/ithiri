@@ -1,19 +1,20 @@
-import { COOKIE_NAME } from './../constants';
+import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from './../constants';
 import { RegisterSchema } from './../validations/register.schema';
 import {
   Resolver,
   Query,
   Mutation,
-  InputType,
   Field,
   Arg,
   Ctx,
   ObjectType,
 } from 'type-graphql';
 import * as argon from 'argon2';
+import { v4 } from 'uuid';
 
 import { User } from './../entity/User';
 import { MyContext } from './../types';
+import { sendEmail } from '../utils/sendEmail';
 
 @ObjectType()
 class FieldError {
@@ -35,6 +36,64 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Ctx() { em, req, redis }: MyContext,
+    @Arg('token') token: string,
+    @Arg('password') password: string
+  ): Promise<UserResponse> {
+    // TODO user validation
+    const key = FORGET_PASSWORD_PREFIX + token;
+    const userId = await redis.get(key);
+
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: 'token',
+            message: 'invalid token',
+          },
+        ],
+      };
+    }
+
+    const user = await em.findOne(User, { id: parseInt(userId) });
+    const hashedPassword = await argon.hash(password);
+    user.password = hashedPassword;
+    await user.save();
+    redis.del(key);
+
+    req.session.userId = user.id;
+
+    return {
+      user,
+    };
+  }
+
+  @Mutation(() => Boolean)
+  async forgotPassword(
+    @Ctx() { em, redis }: MyContext,
+    @Arg('email') email: string
+  ) {
+    const user = await em.findOne(User, { email });
+    if (!user) {
+      return true;
+    }
+
+    const token = v4();
+    await redis.set(
+      FORGET_PASSWORD_PREFIX + token,
+      user.id,
+      'ex',
+      1000 * 60 * 60
+    ); // 1 hour
+
+    const link = `<a href="http://localhost:4200/change-password/${token}">Reset password</a>`;
+
+    await sendEmail(email, link);
+    return true;
+  }
+
   @Query(() => [User])
   async users() {
     return await User.find();
