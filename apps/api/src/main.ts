@@ -1,3 +1,4 @@
+import { COOKIE_NAME } from './constants';
 import { MyContext } from './types';
 import * as express from 'express';
 import 'reflect-metadata';
@@ -54,7 +55,7 @@ const main = async () => {
   // TODO  use envirunment
   app.use(
     session({
-      name: 'iid',
+      name: COOKIE_NAME,
       store: new RedisStore({
         client: redisClient,
         disableTouch: true,

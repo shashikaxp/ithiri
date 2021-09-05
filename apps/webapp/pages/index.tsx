@@ -1,7 +1,11 @@
+import { SideNav } from '../components/SideNav';
+
 export function Index() {
   return (
-    <div>
-    </div>
+    <>
+      <SideNav />
+      <div></div>
+    </>
   );
 }
 

@@ -1,3 +1,4 @@
+import { COOKIE_NAME } from './../constants';
 import { RegisterSchema } from './../validations/register.schema';
 import {
   Resolver,
@@ -30,15 +31,6 @@ class UserResponse {
 
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
-}
-
-@InputType()
-class EmailAndPasswordInput {
-  @Field()
-  email: string;
-
-  @Field()
-  password: string;
 }
 
 @Resolver()
@@ -144,5 +136,19 @@ export class UserResolver {
     return {
       user,
     };
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: MyContext) {
+    return new Promise((resolve) => {
+      req.session.destroy((err) => {
+        res.clearCookie(COOKIE_NAME);
+        if (err) {
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      });
+    });
   }
 }
