@@ -14,6 +14,7 @@ import * as Redis from 'ioredis';
 import { orderBy } from 'lodash';
 
 import { ScrapeItem } from './scraper/IScraper';
+import { StorePriceResolver } from './resolvers/StoreItemResolver';
 import { ColesScraper } from './scraper/colesScraper';
 import { WoolworthsScraper } from './scraper/woolworthsScraper';
 import { UserResolver } from './resolvers/UserResolver';
@@ -51,7 +52,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, StorePriceResolver],
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
