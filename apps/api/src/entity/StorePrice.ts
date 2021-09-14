@@ -25,11 +25,11 @@ export class StorePrice extends BaseEntity {
   storeId: number;
 
   @Field()
-  @Column({ type: 'money', nullable: true })
+  @Column({ type: 'decimal', nullable: true })
   cwPrice: number;
 
   @Field()
-  @Column({ type: 'money', nullable: true })
+  @Column({ type: 'decimal', nullable: true })
   cwSavings: number;
 
   @Field()
@@ -37,11 +37,11 @@ export class StorePrice extends BaseEntity {
   cwDiscount: number;
 
   @Field()
-  @Column({ type: 'money' })
+  @Column({ type: 'decimal' })
   nwPrice: number;
 
   @Field()
-  @Column({ type: 'money' })
+  @Column({ type: 'decimal' })
   nwSavings: number;
 
   @Field()

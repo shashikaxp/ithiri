@@ -30,7 +30,7 @@ export class Item extends BaseEntity {
   category: string;
 
   @Field()
-  @Column({ type: 'money' })
+  @Column({ type: 'decimal' })
   price: number;
 
   @OneToMany(() => StorePrice, (sp) => sp.item)
