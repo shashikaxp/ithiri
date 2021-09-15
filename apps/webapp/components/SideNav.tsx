@@ -40,5 +40,5 @@ export const SideNav: React.FC = () => {
     );
   }
 
-  return <div className="bg-blue-400 w-1/4 h-screen">{body}</div>;
+  return <div className="bg-primary w-72 h-screen">{body}</div>;
 };

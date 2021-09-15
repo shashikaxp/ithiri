@@ -58,8 +58,34 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getStoreItems: Array<StorePriceResponse>;
   users: Array<User>;
   me?: Maybe<User>;
+};
+
+
+export type QueryGetStoreItemsArgs = {
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+};
+
+export type StorePriceDetails = {
+  __typename?: 'StorePriceDetails';
+  storeId: Scalars['Float'];
+  storeName: Scalars['String'];
+  price: Scalars['Float'];
+  saving: Scalars['Float'];
+  discount: Scalars['Float'];
+};
+
+export type StorePriceResponse = {
+  __typename?: 'StorePriceResponse';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  category: Scalars['String'];
+  originalPrice: Scalars['Float'];
+  img: Scalars['String'];
+  storePrices: Array<StorePriceDetails>;
 };
 
 export type User = {
@@ -114,6 +140,14 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', name: string, email: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+
+export type GetStoreItemsQueryVariables = Exact<{
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+}>;
+
+
+export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -312,6 +346,51 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const GetStoreItemsDocument = gql`
+    query GetStoreItems($limit: Float!, $offset: Float!) {
+  getStoreItems(limit: $limit, offset: $offset) {
+    id
+    name
+    img
+    storePrices {
+      storeName
+      price
+      saving
+      discount
+      storeId
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetStoreItemsQuery__
+ *
+ * To run a query within a React component, call `useGetStoreItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStoreItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStoreItemsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetStoreItemsQuery(baseOptions: Apollo.QueryHookOptions<GetStoreItemsQuery, GetStoreItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStoreItemsQuery, GetStoreItemsQueryVariables>(GetStoreItemsDocument, options);
+      }
+export function useGetStoreItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStoreItemsQuery, GetStoreItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStoreItemsQuery, GetStoreItemsQueryVariables>(GetStoreItemsDocument, options);
+        }
+export type GetStoreItemsQueryHookResult = ReturnType<typeof useGetStoreItemsQuery>;
+export type GetStoreItemsLazyQueryHookResult = ReturnType<typeof useGetStoreItemsLazyQuery>;
+export type GetStoreItemsQueryResult = Apollo.QueryResult<GetStoreItemsQuery, GetStoreItemsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
