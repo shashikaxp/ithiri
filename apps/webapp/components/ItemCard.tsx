@@ -17,7 +17,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ storePriceResponse }) => {
         />
       </div>
       <div className="p-4">
-        <div className="h-24 text-xl">{storePriceResponse.name}</div>
+        <div className="h-32 text-lg">{storePriceResponse.name}</div>
         {storePriceResponse.storePrices.map((sp) => {
           return (
             <PriceTag
