@@ -17,8 +17,8 @@ module.exports = {
         text: {
           light: '#4E4E4E',
           DEFAULT: '#4E4E4E'
-        },
-        gray: {
+        },      
+        background: {
           DEFAULT: '#E5E5E5'
         },
         green: {

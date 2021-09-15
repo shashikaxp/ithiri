@@ -3,8 +3,8 @@ import { getConnection } from 'typeorm';
 import { StorePrice } from '../../entity/StorePrice';
 import { mapToStorePrices, StorePriceResponse } from './mapToStorePrices';
 
-export async function getStoreItemDetails(
-  offset: number,
+export async function getSearchResults(
+  searchQuery: string,
   limit: number
 ): Promise<StorePriceResponse[]> {
   const realLimit = Math.min(15, limit);
@@ -15,8 +15,8 @@ export async function getStoreItemDetails(
     .orderBy('storePrice.id', 'ASC')
     .leftJoinAndSelect('storePrice.store', 'store')
     .leftJoinAndSelect('storePrice.item', 'item')
-    .skip(offset)
-    .take(realLimit)
+    .where('item.name ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+    .limit(realLimit)
     .getMany();
 
   return mapToStorePrices(storePrices);
