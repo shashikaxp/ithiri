@@ -1,5 +1,5 @@
 import { ObjectType, Field } from 'type-graphql';
-import { EntityManager } from 'typeorm';
+import { EntityManager, getConnection } from 'typeorm';
 
 import { find } from 'lodash';
 
@@ -26,6 +26,9 @@ class StorePriceDetails {
 @ObjectType()
 export class StorePriceResponse {
   @Field()
+  id: number;
+
+  @Field()
   name: string;
 
   @Field()
@@ -42,13 +45,22 @@ export class StorePriceResponse {
 }
 
 export async function getStoreItemDetails(
-  em: EntityManager
+  offset: number,
+  limit: number
 ): Promise<StorePriceResponse[]> {
   const tmpStorePrices: StorePriceResponse[] = [];
 
-  const storePrices = await em.find(StorePrice, {
-    relations: ['item', 'store'],
-  });
+  const realLimit = Math.min(15, limit);
+
+  const storePrices = await getConnection()
+    .getRepository(StorePrice)
+    .createQueryBuilder('storePrice')
+    .orderBy('storePrice.id', 'ASC')
+    .leftJoinAndSelect('storePrice.store', 'store')
+    .leftJoinAndSelect('storePrice.item', 'item')
+    .skip(offset)
+    .take(realLimit)
+    .getMany();
 
   storePrices.forEach((sp) => {
     const storePrice = find(tmpStorePrices, { id: sp.id });
@@ -62,6 +74,7 @@ export async function getStoreItemDetails(
       });
     } else {
       tmpStorePrices.push({
+        id: sp.id,
         name: sp.item.name,
         category: sp.item.category,
         originalPrice: sp.item.price,

@@ -1,6 +1,5 @@
-import { Ctx, Query, Resolver } from 'type-graphql';
+import { Arg, Query, Resolver } from 'type-graphql';
 
-import { MyContext } from './../types';
 import {
   getStoreItemDetails,
   StorePriceResponse,
@@ -9,8 +8,11 @@ import {
 @Resolver()
 export class StorePriceResolver {
   @Query(() => [StorePriceResponse])
-  async getStoreItems(@Ctx() { em }: MyContext) {
-    const data = await getStoreItemDetails(em);
+  async getStoreItems(
+    @Arg('offset') offset: number,
+    @Arg('limit') limit: number
+  ) {
+    const data = await getStoreItemDetails(offset, limit);
     return data;
   }
 }
