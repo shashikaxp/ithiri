@@ -15,6 +15,20 @@
       format('truetype');
 }
 
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: semibold;
+  font-weight: 600;
+  src: local(''),
+    url('/fonts/source-sans-pro/source-sans-pro-v14-latin-600.woff2')
+      format('woff2'),
+    url('/fonts/source-sans-pro/source-sans-pro-v14-latin-600.woff')
+      format('woff'),
+    url('/fonts/source-sans-pro/source-sans-pro-v14-latin-600.ttf')
+      format('truetype');
+}
+
 body {
   @apply font-primary;
+  @apply text-text;
 }
