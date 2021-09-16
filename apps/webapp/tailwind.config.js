@@ -29,6 +29,9 @@ module.exports = {
           light: "rgba(246, 53, 53, 0.37)",
           DEFAULT: "rgba(246, 53, 53, 0.63)"
         }
+      }, 
+      gridTemplateColumns: {
+        'auto': ' repeat(auto-fit, minmax(250px, 1fr));',
       }
     },
   },
