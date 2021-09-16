@@ -2,13 +2,20 @@ import { useState } from 'react';
 
 import { debounce } from 'lodash';
 
-import { useGetStoreItemsQuery } from '../generated/graphql';
+import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { Screen } from '../components/Screen';
 import { ItemCard } from '../components/ItemCard';
 import { SearchContent } from '../components/Home/SearchContent';
 
 export function Index() {
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { data: meData } = useMeQuery({
+    fetchPolicy: 'no-cache',
+  });
+
+  const isUserLoggedIn = meData?.me?.name ? true : false;
+
   const debouncedFn = debounce(setSearchQuery, 250);
 
   const { data, fetchMore } = useGetStoreItemsQuery({
@@ -28,12 +35,21 @@ export function Index() {
         </div>
 
         {searchQuery !== '' ? (
-          <SearchContent searchQuery={searchQuery} />
+          <SearchContent
+            isUserLoggedIn={isUserLoggedIn}
+            searchQuery={searchQuery}
+          />
         ) : (
           <>
             <div className="p-6 grid gap-3 grid-cols-auto">
               {data?.getStoreItems.map((item) => {
-                return <ItemCard key={item.id} storePriceResponse={item} />;
+                return (
+                  <ItemCard
+                    key={item.id}
+                    isUserLoggedIn={isUserLoggedIn}
+                    storePriceResponse={item}
+                  />
+                );
               })}
             </div>
             <button

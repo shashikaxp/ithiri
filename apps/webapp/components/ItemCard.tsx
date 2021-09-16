@@ -11,9 +11,13 @@ import { AiFillHeart } from 'react-icons/ai';
 
 interface ItemCardProps {
   storePriceResponse: Omit<StorePriceResponse, 'category' | 'originalPrice'>;
+  isUserLoggedIn: boolean;
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({ storePriceResponse }) => {
+export const ItemCard: React.FC<ItemCardProps> = ({
+  storePriceResponse,
+  isUserLoggedIn,
+}) => {
   const [favourite] = useFavouriteMutation({
     refetchQueries: [
       namedOperations.Query.GetStoreItems,
@@ -31,19 +35,21 @@ export const ItemCard: React.FC<ItemCardProps> = ({ storePriceResponse }) => {
 
   return (
     <div className="bg-white flex flex-col rounded-xl">
-      <div className="p-2 flex justify-end">
-        {storePriceResponse.isFavourite ? (
-          <AiFillHeart
-            onClick={() => toggleFavourite(storePriceResponse.itemId)}
-            className="text-xl text-red-500 cursor-pointer"
-          />
-        ) : (
-          <AiOutlineHeart
-            onClick={() => toggleFavourite(storePriceResponse.itemId)}
-            className="text-xl text-red-500 cursor-pointer"
-          />
-        )}
-      </div>
+      {isUserLoggedIn && (
+        <div className="p-2 flex justify-end">
+          {storePriceResponse.isFavourite ? (
+            <AiFillHeart
+              onClick={() => toggleFavourite(storePriceResponse.itemId)}
+              className="text-xl text-red-500 cursor-pointer"
+            />
+          ) : (
+            <AiOutlineHeart
+              onClick={() => toggleFavourite(storePriceResponse.itemId)}
+              className="text-xl text-red-500 cursor-pointer"
+            />
+          )}
+        </div>
+      )}
       <div className="h-40 p-4 flex justify-center ">
         <img
           className="h-full w-auto "

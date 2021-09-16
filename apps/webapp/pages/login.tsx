@@ -3,14 +3,17 @@ import { Form, Formik } from 'formik';
 import { Container } from '../components/Container';
 import { InputField } from '../components/InputField';
 
-import { useLoginMutation } from '../generated/graphql';
+import { namedOperations, useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../util/toErrorMap';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 
 const Login: React.FC = () => {
   const router = useRouter();
-  const [login] = useLoginMutation();
+  const [login] = useLoginMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [namedOperations.Query.GetStoreItems],
+  });
 
   return (
     <Container>
