@@ -5,11 +5,11 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { Store } from './entity/Store';
-import * as express from 'express';
-import * as session from 'express-session';
-import * as connectRedis from 'connect-redis';
-import * as cors from 'cors';
-import * as Redis from 'ioredis';
+import express from 'express';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import cors from 'cors';
+import Redis from 'ioredis';
 
 import { orderBy } from 'lodash';
 
@@ -97,25 +97,31 @@ const main = async () => {
       const woolworths = new WoolworthsScraper();
       storeId = 2;
       data = await woolworths.getItems();
-    } else if (storeName === 'coles') {
+    } else {
       storeId = 1;
       const coles = new ColesScraper();
       data = await coles.getItems();
     }
 
     const em = getManager();
-
+    const store = await em.findOne(Store, { id: storeId });
     const itemsInDb = await em.find(Item, {});
 
     data.forEach(async (i) => {
       const itemId = getMatchingItemId(itemsInDb, i.name);
-      const store = await em.findOne(Store, { id: storeId });
-      let item: Item;
-      let storePrice: StorePrice;
+
+      let item: Item | undefined = undefined;
+      let storePrice: StorePrice | undefined;
 
       if (itemId) {
-        item = await em.findOne(Item, { id: itemId });
-        storePrice = await em.findOne(StorePrice, { item: item, store: store });
+        const itemData = await em.findOne(Item, { id: itemId });
+        if (itemData) {
+          item = itemData;
+          storePrice = await em.findOne(StorePrice, {
+            item: item,
+            store: store,
+          });
+        }
       } else {
         const itemData = {
           name: i.name,
@@ -136,9 +142,9 @@ const main = async () => {
         const storePriceData = {
           item: item,
           store: store,
-          cwPrice: null,
-          cwSavings: null,
-          cwDiscount: null,
+          cwPrice: undefined,
+          cwSavings: undefined,
+          cwDiscount: undefined,
           nwPrice: i.currentPrice,
           nwSavings: i.savings,
           nwDiscount: i.discount,
@@ -157,7 +163,7 @@ const main = async () => {
   });
 };
 
-const getMatchingItemId = (itemsInDb: Item[], itemName) => {
+const getMatchingItemId = (itemsInDb: Item[], itemName: string) => {
   const stringMatchingResults = itemsInDb.map((i) => {
     return {
       ...i,
@@ -178,7 +184,7 @@ const getMatchingItemId = (itemsInDb: Item[], itemName) => {
   if (sortedItems.length > 0) {
     return sortedItems[0].id;
   } else {
-    null;
+    return null;
   }
 };
 

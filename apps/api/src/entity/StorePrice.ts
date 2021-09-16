@@ -16,37 +16,37 @@ import { Item } from './Item';
 export class StorePrice extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Field()
-  itemId: number;
+  itemId!: number;
 
   @Field()
-  storeId: number;
-
-  @Field()
-  @Column({ type: 'decimal', nullable: true })
-  cwPrice: number;
+  storeId!: number;
 
   @Field()
   @Column({ type: 'decimal', nullable: true })
-  cwSavings: number;
+  cwPrice!: number;
 
   @Field()
   @Column({ type: 'decimal', nullable: true })
-  cwDiscount: number;
+  cwSavings!: number;
+
+  @Field()
+  @Column({ type: 'decimal', nullable: true })
+  cwDiscount!: number;
 
   @Field()
   @Column({ type: 'decimal' })
-  nwPrice: number;
+  nwPrice!: number;
 
   @Field()
   @Column({ type: 'decimal' })
-  nwSavings: number;
+  nwSavings!: number;
 
   @Field()
   @Column({ type: 'decimal' })
-  nwDiscount: number;
+  nwDiscount!: number;
 
   @ManyToOne(() => Item, (item) => item.storePrices)
   public item!: Item;
@@ -56,9 +56,9 @@ export class StorePrice extends BaseEntity {
 
   @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

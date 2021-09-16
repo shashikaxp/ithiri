@@ -1,5 +1,5 @@
 import { StorePrice } from './StorePrice';
-import { Field, Float, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,32 +15,32 @@ import {
 export class Item extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Field()
   @Column()
-  name: string;
+  name!: string;
 
   @Field()
   @Column()
-  image: string;
+  image!: string;
 
   @Field()
   @Column({ nullable: true })
-  category: string;
+  category?: string;
 
   @Field()
   @Column({ type: 'decimal' })
-  price: number;
+  price!: number;
 
   @OneToMany(() => StorePrice, (sp) => sp.item)
   storePrices!: StorePrice[];
 
   @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

@@ -53,7 +53,7 @@ export class ColesScraper implements IScraper {
             );
 
             const productData = {
-              image: element.querySelector('img').getAttribute('src'),
+              image: element.querySelector('img')?.getAttribute('src'),
               name: (element.querySelector('a.sf-item-heading') as HTMLElement)
                 .innerText,
               category: null,
@@ -72,7 +72,8 @@ export class ColesScraper implements IScraper {
       await browser.close();
       return items;
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) throw Error(error.message);
+      throw Error('Error ocurred while scraping');
     }
   }
 }

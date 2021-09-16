@@ -1,3 +1,4 @@
+import { StorePrice } from './../../entity/StorePrice';
 import { ObjectType, Field } from 'type-graphql';
 
 import { find } from 'lodash';
@@ -5,43 +6,43 @@ import { find } from 'lodash';
 @ObjectType()
 class StorePriceDetails {
   @Field()
-  storeId: number;
+  storeId!: number;
 
   @Field()
-  storeName: string;
+  storeName!: string;
 
   @Field()
-  price: number;
+  price!: number;
 
   @Field()
-  saving: number;
+  saving!: number;
 
   @Field()
-  discount: number;
+  discount!: number;
 }
 
 @ObjectType()
 export class StorePriceResponse {
   @Field()
-  id: number;
+  id!: number;
 
   @Field()
-  name: string;
+  name!: string;
 
   @Field()
-  category: string;
+  category?: string;
 
   @Field()
-  originalPrice: number;
+  originalPrice!: number;
 
   @Field()
-  img: string;
+  img!: string;
 
   @Field(() => [StorePriceDetails])
-  storePrices: StorePriceDetails[];
+  storePrices!: StorePriceDetails[];
 }
 
-export function mapToStorePrices(storePrices) {
+export function mapToStorePrices(storePrices: StorePrice[]) {
   const tmpStorePrices: StorePriceResponse[] = [];
 
   storePrices.forEach((sp) => {

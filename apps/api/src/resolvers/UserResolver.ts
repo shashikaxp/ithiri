@@ -15,14 +15,15 @@ import { v4 } from 'uuid';
 import { User } from './../entity/User';
 import { MyContext } from './../types';
 import { sendEmail } from '../utils/sendEmail';
+import { ValidationError } from 'yup';
 
 @ObjectType()
 class FieldError {
   @Field()
-  field: string;
+  field!: string;
 
   @Field()
-  message: string;
+  message!: string;
 }
 
 @ObjectType()
@@ -58,12 +59,13 @@ export class UserResolver {
     }
 
     const user = await em.findOne(User, { id: parseInt(userId) });
-    const hashedPassword = await argon.hash(password);
-    user.password = hashedPassword;
-    await user.save();
-    redis.del(key);
-
-    req.session.userId = user.id;
+    if (user) {
+      const hashedPassword = await argon.hash(password);
+      user.password = hashedPassword;
+      await user.save();
+      redis.del(key);
+      req.session.userId = user.id;
+    }
 
     return {
       user,
@@ -147,14 +149,25 @@ export class UserResolver {
         req.session.userId = user.id;
         return { user };
       } catch (error) {
-        return {
-          errors: error.inner.map((e) => {
-            return {
-              field: e.path,
-              message: e.errors[0],
-            };
-          }),
-        };
+        if (error instanceof ValidationError) {
+          return {
+            errors: error.inner.map((e) => {
+              return {
+                field: e.path ? e.path : 'Cannot find filed',
+                message: e.errors[0],
+              };
+            }),
+          };
+        } else {
+          return {
+            errors: [
+              {
+                field: 'Cannot find filed',
+                message: 'Register error',
+              },
+            ],
+          };
+        }
       }
     }
   }
