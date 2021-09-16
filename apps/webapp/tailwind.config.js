@@ -19,7 +19,7 @@ module.exports = {
           DEFAULT: '#4E4E4E'
         },      
         background: {
-          DEFAULT: '#E5E5E5'
+          DEFAULT: '#efefef'
         },
         green: {
           light: "rgba(53, 188, 83, 0.37)",
@@ -31,7 +31,7 @@ module.exports = {
         }
       }, 
       gridTemplateColumns: {
-        'auto': ' repeat(auto-fit, minmax(250px, 1fr));',
+        'auto': ' repeat(auto-fit, 250px);',
       }
     },
   },

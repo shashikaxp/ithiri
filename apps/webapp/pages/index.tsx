@@ -25,9 +25,9 @@ export function Index() {
   return (
     <Screen>
       <div className="flex flex-col bg-background min-h-screen">
-        <div className="m-4 p-2">
+        <div className="p-4  bg-primary sticky top-0">
           <input
-            className="w-full p-4 focus:outline-none focus:ring focus:border-blue-300 text-text"
+            className="w-full rounded-md p-4 focus:outline-none  text-text"
             type="text"
             placeholder="Search items..."
             onChange={(e) => debouncedFn(e.target.value)}

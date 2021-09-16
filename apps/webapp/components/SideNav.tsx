@@ -38,7 +38,12 @@ export const SideNav: React.FC = () => {
         <div className="mt-4 p-4 flex gap-4 flex-col">
           {data?.me ? (
             <>
-              <div className="text-lg">My collection</div>
+              <div className="text-lg">
+                <NextLink href="/">Home</NextLink>
+              </div>
+              <div className="text-lg">
+                <NextLink href="/my-collection">My collection</NextLink>
+              </div>
               <div className="text-lg">Weekly list</div>
               <div className="text-lg">Shopping list</div>
               <div
