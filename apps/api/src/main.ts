@@ -20,9 +20,11 @@ import { WoolworthsScraper } from './scraper/woolworthsScraper';
 import { UserResolver } from './resolvers/UserResolver';
 import { User } from './entity/User';
 import { Item } from './entity/Item';
+import { Favourite } from './entity/Favourite';
 import { StorePrice } from './entity/StorePrice';
 import { COOKIE_NAME } from './constants';
 import { MyContext } from './types';
+import { FavouriteResolver } from './resolvers/FavouriteResolver';
 
 import * as stringSimilarity from 'string-similarity';
 
@@ -35,7 +37,7 @@ const main = async () => {
     synchronize: true,
     username: 'postgres',
     password: 'postgres',
-    entities: [User, Store, Item, StorePrice],
+    entities: [User, Store, Item, StorePrice, Favourite],
   });
 
   const em = getManager();
@@ -52,7 +54,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, StorePriceResolver],
+      resolvers: [UserResolver, StorePriceResolver, FavouriteResolver],
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],

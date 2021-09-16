@@ -3,6 +3,8 @@ query GetStoreItems($limit: Float!, $offset: Float!) {
     id
     name
     img
+    isFavourite
+    itemId
     storePrices {
       storeName
       price

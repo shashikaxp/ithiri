@@ -3,6 +3,8 @@ query GetSearchItems($limit: Float!, $searchQuery: String!) {
     id
     name
     img
+    isFavourite
+    itemId
     storePrices {
       storeName
       price

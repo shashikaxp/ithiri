@@ -1,9 +1,10 @@
 overwrite: true
-schema: "http://localhost:3333/graphql"
-documents: "apps/webapp/**/*.graphql"
+schema: 'http://localhost:3333/graphql'
+documents: 'apps/webapp/**/*.graphql'
 generates:
   apps/webapp/generated/graphql.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+      - 'named-operations-object'

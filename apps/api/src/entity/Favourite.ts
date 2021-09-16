@@ -1,35 +1,34 @@
-import { Favourite } from './Favourite';
+import { User } from './User';
+
 import { Field, ObjectType } from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column,
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  ManyToOne,
 } from 'typeorm';
+import { Item } from './Item';
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Favourite extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
-  @Column()
-  name!: string;
+  itemId!: number;
 
   @Field()
-  @Column({ unique: true })
-  email!: string;
+  userId!: number;
 
-  @Column()
-  password!: string;
+  @ManyToOne(() => Item, (item) => item.favourites)
+  public item!: Item;
 
-  @OneToMany(() => Favourite, (f) => f.user)
-  favourites!: Favourite[];
+  @ManyToOne(() => User, (user) => user.favourites)
+  public user!: User;
 
   @Field()
   @CreateDateColumn()

@@ -1,3 +1,4 @@
+import { Favourite } from './Favourite';
 import { StorePrice } from './StorePrice';
 import { Field, ObjectType } from 'type-graphql';
 import {
@@ -35,6 +36,9 @@ export class Item extends BaseEntity {
 
   @OneToMany(() => StorePrice, (sp) => sp.item)
   storePrices!: StorePrice[];
+
+  @OneToMany(() => Favourite, (f) => f.item)
+  favourites!: Favourite[];
 
   @Field()
   @CreateDateColumn()

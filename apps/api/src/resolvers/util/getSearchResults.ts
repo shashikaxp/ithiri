@@ -2,10 +2,12 @@ import { getConnection } from 'typeorm';
 
 import { StorePrice } from '../../entity/StorePrice';
 import { mapToStorePrices, StorePriceResponse } from './mapToStorePrices';
+import { getUserFavouriteItemIds } from './getUserFavouriteItemIds';
 
 export async function getSearchResults(
   searchQuery: string,
-  limit: number
+  limit: number,
+  userId: number
 ): Promise<StorePriceResponse[]> {
   const realLimit = Math.min(15, limit);
 
@@ -19,5 +21,6 @@ export async function getSearchResults(
     .limit(realLimit)
     .getMany();
 
-  return mapToStorePrices(storePrices);
+  const favouriteItemIds = await getUserFavouriteItemIds(userId);
+  return mapToStorePrices(storePrices, favouriteItemIds);
 }

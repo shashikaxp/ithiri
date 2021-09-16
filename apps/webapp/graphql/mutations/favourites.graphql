@@ -1,0 +1,3 @@
+mutation Favourite($itemId: Float!) {
+  favourite(itemId: $itemId)
+}

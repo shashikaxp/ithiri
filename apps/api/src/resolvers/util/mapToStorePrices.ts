@@ -1,7 +1,7 @@
 import { StorePrice } from './../../entity/StorePrice';
 import { ObjectType, Field } from 'type-graphql';
 
-import { find } from 'lodash';
+import { find, includes } from 'lodash';
 
 @ObjectType()
 class StorePriceDetails {
@@ -27,6 +27,9 @@ export class StorePriceResponse {
   id!: number;
 
   @Field()
+  itemId!: number;
+
+  @Field()
   name!: string;
 
   @Field()
@@ -38,14 +41,22 @@ export class StorePriceResponse {
   @Field()
   img!: string;
 
+  @Field()
+  isFavourite!: boolean;
+
   @Field(() => [StorePriceDetails])
   storePrices!: StorePriceDetails[];
 }
 
-export function mapToStorePrices(storePrices: StorePrice[]) {
+export function mapToStorePrices(
+  storePrices: StorePrice[],
+  userFavouriteItemIds: number[]
+) {
   const tmpStorePrices: StorePriceResponse[] = [];
 
   storePrices.forEach((sp) => {
+    const isFavourite = includes(userFavouriteItemIds, sp.item.id);
+
     const storePrice = find(tmpStorePrices, { id: sp.id });
     if (storePrice instanceof StorePriceResponse) {
       storePrice.storePrices.push({
@@ -58,10 +69,12 @@ export function mapToStorePrices(storePrices: StorePrice[]) {
     } else {
       tmpStorePrices.push({
         id: sp.id,
+        itemId: sp.item.id,
         name: sp.item.name,
         category: sp.item.category,
         originalPrice: sp.item.price,
         img: sp.item.image,
+        isFavourite: isFavourite,
         storePrices: [
           {
             storeId: sp.store.id,

@@ -29,6 +29,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  favourite: Scalars['Boolean'];
 };
 
 
@@ -54,6 +55,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   email: Scalars['String'];
+};
+
+
+export type MutationFavouriteArgs = {
+  itemId: Scalars['Float'];
 };
 
 export type Query = {
@@ -88,10 +94,12 @@ export type StorePriceDetails = {
 export type StorePriceResponse = {
   __typename?: 'StorePriceResponse';
   id: Scalars['Float'];
+  itemId: Scalars['Float'];
   name: Scalars['String'];
   category: Scalars['String'];
   originalPrice: Scalars['Float'];
   img: Scalars['String'];
+  isFavourite: Scalars['Boolean'];
   storePrices: Array<StorePriceDetails>;
 };
 
@@ -117,6 +125,13 @@ export type ChangePasswordMutationVariables = Exact<{
 
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, name: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+
+export type FavouriteMutationVariables = Exact<{
+  itemId: Scalars['Float'];
+}>;
+
+
+export type FavouriteMutation = { __typename?: 'Mutation', favourite: boolean };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -154,7 +169,7 @@ export type GetSearchItemsQueryVariables = Exact<{
 }>;
 
 
-export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
+export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
 
 export type GetStoreItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -162,7 +177,7 @@ export type GetStoreItemsQueryVariables = Exact<{
 }>;
 
 
-export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
+export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -211,6 +226,37 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const FavouriteDocument = gql`
+    mutation Favourite($itemId: Float!) {
+  favourite(itemId: $itemId)
+}
+    `;
+export type FavouriteMutationFn = Apollo.MutationFunction<FavouriteMutation, FavouriteMutationVariables>;
+
+/**
+ * __useFavouriteMutation__
+ *
+ * To run a mutation, you first call `useFavouriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavouriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favouriteMutation, { data, loading, error }] = useFavouriteMutation({
+ *   variables: {
+ *      itemId: // value for 'itemId'
+ *   },
+ * });
+ */
+export function useFavouriteMutation(baseOptions?: Apollo.MutationHookOptions<FavouriteMutation, FavouriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavouriteMutation, FavouriteMutationVariables>(FavouriteDocument, options);
+      }
+export type FavouriteMutationHookResult = ReturnType<typeof useFavouriteMutation>;
+export type FavouriteMutationResult = Apollo.MutationResult<FavouriteMutation>;
+export type FavouriteMutationOptions = Apollo.BaseMutationOptions<FavouriteMutation, FavouriteMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -367,6 +413,8 @@ export const GetSearchItemsDocument = gql`
     id
     name
     img
+    isFavourite
+    itemId
     storePrices {
       storeName
       price
@@ -412,6 +460,8 @@ export const GetStoreItemsDocument = gql`
     id
     name
     img
+    isFavourite
+    itemId
     storePrices {
       storeName
       price
@@ -486,3 +536,18 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const namedOperations = {
+  Query: {
+    GetSearchItems: 'GetSearchItems',
+    GetStoreItems: 'GetStoreItems',
+    Me: 'Me'
+  },
+  Mutation: {
+    ChangePassword: 'ChangePassword',
+    Favourite: 'Favourite',
+    ForgotPassword: 'ForgotPassword',
+    Login: 'Login',
+    Logout: 'Logout',
+    Register: 'Register'
+  }
+}
