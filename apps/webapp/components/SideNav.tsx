@@ -13,7 +13,11 @@ export const SideNav: React.FC = () => {
 
   const router = useRouter();
 
-  const [logout] = useLogoutMutation();
+  const [logout] = useLogoutMutation({
+    onCompleted: () => {
+      apolloClient.clearStore();
+    },
+  });
   const apolloClient = useApolloClient();
 
   const getActiveRouteClass = (route: string) => {
@@ -74,9 +78,8 @@ export const SideNav: React.FC = () => {
 
               <div
                 className={getActiveRouteClass('') + ' cursor-pointer'}
-                onClick={async () => {
-                  await logout();
-                  await apolloClient.resetStore();
+                onClick={() => {
+                  logout();
                 }}
               >
                 Logout
