@@ -1,5 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 
@@ -10,8 +11,19 @@ export const SideNav: React.FC = () => {
     fetchPolicy: 'no-cache',
   });
 
+  const router = useRouter();
+
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+
+  const getActiveRouteClass = (route: string) => {
+    const commonClasses = 'text-lg p-3 cursor-pointer font-bold';
+    if (router.pathname == route) {
+      return `${commonClasses} text-primary`;
+    } else {
+      return `${commonClasses}`;
+    }
+  };
 
   let body = null;
 
@@ -35,19 +47,33 @@ export const SideNav: React.FC = () => {
             Hey {userName}
           </div>
         </div>
-        <div className="mt-4 p-4 flex gap-4 flex-col">
+        <div className="mt-8 flex  flex-col">
           {data?.me ? (
             <>
-              <div className="text-lg">
-                <NextLink href="/">Home</NextLink>
-              </div>
-              <div className="text-lg">
-                <NextLink href="/my-collection">My collection</NextLink>
-              </div>
-              <div className="text-lg">Weekly list</div>
-              <div className="text-lg">Shopping list</div>
+              <NextLink href="/">
+                <div className={getActiveRouteClass('/')}>Home</div>
+              </NextLink>
+
+              <NextLink href="/my-collection">
+                <div className={getActiveRouteClass('/my-collection')}>
+                  My collection
+                </div>
+              </NextLink>
+
+              <NextLink href="/weekly-list">
+                <div className={getActiveRouteClass('/weekly-list')}>
+                  Weekly list
+                </div>
+              </NextLink>
+
+              <NextLink href="/shopping-list">
+                <div className={getActiveRouteClass('/shopping-list')}>
+                  Shopping list
+                </div>
+              </NextLink>
+
               <div
-                className="text-lg"
+                className={getActiveRouteClass('') + ' cursor-pointer'}
                 onClick={async () => {
                   await logout();
                   await apolloClient.resetStore();
@@ -58,12 +84,12 @@ export const SideNav: React.FC = () => {
             </>
           ) : (
             <>
-              <div className="text-lg">
-                <NextLink href="/register">Register</NextLink>
-              </div>
-              <div className="text-lg">
-                <NextLink href="/login">Login</NextLink>
-              </div>
+              <NextLink href="/register">
+                <div className={getActiveRouteClass('')}>Register</div>
+              </NextLink>
+              <NextLink href="/login">
+                <div className={getActiveRouteClass('')}>Login</div>
+              </NextLink>
             </>
           )}
         </div>
