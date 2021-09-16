@@ -7,9 +7,12 @@ import { namedOperations, useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../util/toErrorMap';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { useApolloClient } from '@apollo/client';
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const apolloClient = useApolloClient();
+
   const [login] = useLoginMutation({
     awaitRefetchQueries: true,
     refetchQueries: [namedOperations.Query.GetStoreItems],
@@ -28,6 +31,7 @@ const Login: React.FC = () => {
             if (data?.login.errors) {
               setErrors(toErrorMap(data?.login.errors));
             } else {
+              await apolloClient.clearStore();
               router.push('/');
             }
           }}

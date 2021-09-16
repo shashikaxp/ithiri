@@ -2,23 +2,29 @@ import { useApolloClient } from '@apollo/client';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+import {
+  namedOperations,
+  useLogoutMutation,
+  useMeQuery,
+} from '../generated/graphql';
 
 // interface SideNavProps {}
 
 export const SideNav: React.FC = () => {
   const { loading, data } = useMeQuery({
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
   });
 
   const router = useRouter();
+  const apolloClient = useApolloClient();
 
   const [logout] = useLogoutMutation({
-    onCompleted: () => {
-      apolloClient.clearStore();
+    onCompleted: async () => {
+      await apolloClient.resetStore();
     },
+
+    refetchQueries: [namedOperations.Query.Me],
   });
-  const apolloClient = useApolloClient();
 
   const getActiveRouteClass = (route: string) => {
     const commonClasses = 'text-lg p-3 cursor-pointer font-bold';

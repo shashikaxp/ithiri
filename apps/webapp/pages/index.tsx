@@ -10,9 +10,7 @@ import { SearchContent } from '../components/Home/SearchContent';
 export function Index() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { data: meData } = useMeQuery({
-    fetchPolicy: 'no-cache',
-  });
+  const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
 
   const isUserLoggedIn = meData?.me?.name ? true : false;
 

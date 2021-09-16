@@ -11,9 +11,7 @@ const MyCollection: React.FC = () => {
     },
   });
 
-  const { data: meData } = useMeQuery({
-    fetchPolicy: 'no-cache',
-  });
+  const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
 
   const isUserLoggedIn = meData?.me?.name ? true : false;
 
