@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   namedOperations,
   StorePriceResponse,
@@ -8,6 +8,7 @@ import { PriceTag } from './PriceTag';
 
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
+import { useThisWeekItems } from '../hooks/useThisWeekItems';
 
 interface ItemCardProps {
   storePriceResponse: Omit<StorePriceResponse, 'category' | 'originalPrice'>;
@@ -25,12 +26,27 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     ],
   });
 
+  const { items, setItems } = useThisWeekItems();
+
   const toggleFavourite = (itemId: number) => {
     favourite({
       variables: {
         itemId: itemId,
       },
     });
+  };
+
+  const isAlreadyInThisWeekItems = (itemId: number) => {
+    return items.includes(itemId);
+  };
+
+  const getActionButtonClasses = (itemId: number) => {
+    const commonClasses = 'w-full p-1 rounded-br-xl rounded-bl-xl';
+    if (isAlreadyInThisWeekItems(itemId)) {
+      return `${commonClasses} bg-primary-light text-red-600`;
+    } else {
+      return `${commonClasses} bg-primary text-white`;
+    }
   };
 
   return (
@@ -68,6 +84,20 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           );
         })}
       </div>
+      {isUserLoggedIn && (
+        <div>
+          <button
+            className={`${getActionButtonClasses(storePriceResponse.id)}`}
+            onClick={() => {
+              setItems(storePriceResponse.id);
+            }}
+          >
+            {isAlreadyInThisWeekItems(storePriceResponse.id)
+              ? 'Remove from list'
+              : 'Add to list'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

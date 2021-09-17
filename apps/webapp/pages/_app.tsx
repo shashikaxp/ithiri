@@ -3,6 +3,7 @@ import { AppProps } from 'next/app';
 import './styles.css';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { offsetLimitPagination } from '@apollo/client/utilities';
+import { CookiesProvider } from 'react-cookie';
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -49,9 +50,11 @@ const client = new ApolloClient({
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ApolloProvider client={client}>
-        <Component {...pageProps} />
-      </ApolloProvider>
+      <CookiesProvider>
+        <ApolloProvider client={client}>
+          <Component {...pageProps} />
+        </ApolloProvider>
+      </CookiesProvider>
     </>
   );
 }

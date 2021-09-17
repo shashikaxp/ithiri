@@ -2,11 +2,13 @@ import { useApolloClient } from '@apollo/client';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+
 import {
   namedOperations,
   useLogoutMutation,
   useMeQuery,
 } from '../generated/graphql';
+import { useThisWeekItems } from '../hooks/useThisWeekItems';
 
 // interface SideNavProps {}
 
@@ -14,9 +16,10 @@ export const SideNav: React.FC = () => {
   const { loading, data } = useMeQuery({
     fetchPolicy: 'network-only',
   });
-
   const router = useRouter();
   const apolloClient = useApolloClient();
+
+  const { items } = useThisWeekItems();
 
   const [logout] = useLogoutMutation({
     onCompleted: async () => {
@@ -71,8 +74,15 @@ export const SideNav: React.FC = () => {
               </NextLink>
 
               <NextLink href="/weekly-list">
-                <div className={getActiveRouteClass('/weekly-list')}>
-                  Weekly list
+                <div
+                  className={
+                    getActiveRouteClass('/weekly-list') + ' flex align-center'
+                  }
+                >
+                  <div>Weekly list</div>
+                  <div className="flex align-middle w-7 rounded-full justify-center ml-4 bg-primary">
+                    <div className="text-white">{items.length}</div>
+                  </div>
                 </div>
               </NextLink>
 
