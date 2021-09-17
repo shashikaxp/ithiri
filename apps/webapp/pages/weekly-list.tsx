@@ -6,6 +6,7 @@ import { ItemsGridContainer } from '../components/ItemsGridContainer';
 import { Screen } from '../components/Screen';
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { useThisWeekItems } from '../hooks/useThisWeekItems';
+import { WeekSelector } from '../components/WeekSelectorProps';
 
 const WeeklyList: React.FC = () => {
   const { data } = useGetStoreItemsQuery({
@@ -21,13 +22,13 @@ const WeeklyList: React.FC = () => {
   const isUserLoggedIn = meData?.me?.name ? true : false;
 
   const weeklyItems = data?.getStoreItems.filter((item) => {
-    console.log(includes(items, item.itemId));
     return includes(items, item.itemId);
   });
 
   return (
     <Screen>
       <div className="flex flex-col bg-background min-h-screen">
+        <WeekSelector />
         {weeklyItems && (
           <ItemsGridContainer
             storeItems={weeklyItems}

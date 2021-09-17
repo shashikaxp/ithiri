@@ -6,6 +6,7 @@ import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { Screen } from '../components/Screen';
 import { SearchContent } from '../components/Home/SearchContent';
 import { ItemsGridContainer } from '../components/ItemsGridContainer';
+import { WeekSelector } from '../components/WeekSelectorProps';
 
 export function Index() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +32,8 @@ export function Index() {
             onChange={(e) => debouncedFn(e.target.value)}
           />
         </div>
+
+        <WeekSelector />
 
         {searchQuery !== '' ? (
           <SearchContent
