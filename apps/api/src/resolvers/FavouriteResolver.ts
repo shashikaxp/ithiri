@@ -34,31 +34,45 @@ export class FavouriteResolver {
     return mapToStorePrices(storePrices, favouriteItemIds);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => StorePriceResponse)
   async favourite(
     @Arg('itemId') itemId: number,
     @Ctx() { em, req }: MyContext
-  ) {
+  ): Promise<StorePriceResponse> {
     const item = await em.findOne(Item, { id: itemId });
+    const userId = req.session.userId;
 
-    if (!item) {
-      return false;
-    }
+    if (!item) throw Error('Invalid item');
+    if (!userId) throw Error('User not found');
+
     const favouriteItem = await em.findOne(Favourite, { item: item });
+    const storePrice = await getConnection()
+      .getRepository(StorePrice)
+      .createQueryBuilder('storePrice')
+      .leftJoinAndSelect('storePrice.item', 'item')
+      .leftJoinAndSelect('storePrice.store', 'store')
+      .where('storePrice.itemId = :id', { id: itemId })
+      .getOne();
 
-    if (favouriteItem) {
-      await em.delete(Favourite, { id: favouriteItem.id });
-      return true;
+    let storeResponsePrice: StorePriceResponse;
+    if (storePrice) {
+      storeResponsePrice = mapToStorePrices([storePrice], [])[0];
+      if (favouriteItem) {
+        await em.delete(Favourite, { id: favouriteItem.id });
+        storeResponsePrice.isFavourite = false;
+        return storeResponsePrice;
+      } else {
+        const user = await em.findOne(User, { id: userId });
+        const newFavouriteItem = await em.create(Favourite, {
+          user: user,
+          item: item,
+        });
+        await newFavouriteItem.save();
+        storeResponsePrice.isFavourite = true;
+        return storeResponsePrice;
+      }
     } else {
-      const userId = req.session.userId;
-      if (!userId) return false;
-      const user = await em.findOne(User, { id: userId });
-      const newFavouriteItem = await em.create(Favourite, {
-        user: user,
-        item: item,
-      });
-      await newFavouriteItem.save();
-      return true;
+      throw Error('Cannot find store price');
     }
   }
 }
