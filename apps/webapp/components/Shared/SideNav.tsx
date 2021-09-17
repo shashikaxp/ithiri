@@ -24,6 +24,7 @@ export const SideNav: React.FC = () => {
   const [logout] = useLogoutMutation({
     onCompleted: async () => {
       await apolloClient.resetStore();
+      router.push('/');
     },
 
     refetchQueries: [namedOperations.Query.Me],
