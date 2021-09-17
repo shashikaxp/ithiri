@@ -1,9 +1,18 @@
-import { AppProps } from 'next/app';
-
 import './styles.css';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { offsetLimitPagination } from '@apollo/client/utilities';
 import { CookiesProvider } from 'react-cookie';
+import { NextPage } from 'next';
+import { ReactElement, ReactNode } from 'react';
+import { AppProps } from 'next/dist/shared/lib/router/router';
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -47,12 +56,14 @@ const client = new ApolloClient({
   credentials: 'include',
 });
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <>
       <CookiesProvider>
         <ApolloProvider client={client}>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </ApolloProvider>
       </CookiesProvider>
     </>

@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 
 import { debounce } from 'lodash';
 
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
-import { Screen } from '../components/Screen';
 import { SearchContent } from '../components/Home/SearchContent';
-import { ItemsGridContainer } from '../components/ItemsGridContainer';
-import { WeekSelector } from '../components/WeekSelectorProps';
+import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
+import { WeekSelector } from '../components/Shared/WeekSelectorProps';
+import { Screen } from '../components/Shared/Screen';
 
-export function Index() {
+export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
@@ -22,46 +22,48 @@ export function Index() {
   });
 
   return (
-    <Screen>
-      <div className="flex flex-col bg-background min-h-screen">
-        <div className="p-4  bg-primary sticky top-0">
-          <input
-            className="w-full rounded-md p-4 focus:outline-none  text-text"
-            type="text"
-            placeholder="Search items..."
-            onChange={(e) => debouncedFn(e.target.value)}
-          />
-        </div>
-
-        <WeekSelector />
-
-        {searchQuery !== '' ? (
-          <SearchContent
-            isUserLoggedIn={isUserLoggedIn}
-            searchQuery={searchQuery}
-          />
-        ) : (
-          data?.getStoreItems && (
-            <>
-              <ItemsGridContainer
-                storeItems={data.getStoreItems}
-                isUserLoggedIn={isUserLoggedIn}
-              />
-              <button
-                onClick={() =>
-                  fetchMore({
-                    variables: { offset: data?.getStoreItems.length },
-                  })
-                }
-              >
-                More
-              </button>
-            </>
-          )
-        )}
+    <div className="flex flex-col bg-background min-h-screen">
+      <div className="p-4  bg-primary sticky top-0">
+        <input
+          className="w-full rounded-md p-4 focus:outline-none  text-text"
+          type="text"
+          placeholder="Search items..."
+          onChange={(e) => debouncedFn(e.target.value)}
+        />
       </div>
-    </Screen>
+
+      <WeekSelector />
+
+      {searchQuery !== '' ? (
+        <SearchContent
+          isUserLoggedIn={isUserLoggedIn}
+          searchQuery={searchQuery}
+        />
+      ) : (
+        data?.getStoreItems && (
+          <>
+            <ItemsGridContainer
+              storeItems={data.getStoreItems}
+              isUserLoggedIn={isUserLoggedIn}
+            />
+            <button
+              onClick={() =>
+                fetchMore({
+                  variables: { offset: data?.getStoreItems.length },
+                })
+              }
+            >
+              More
+            </button>
+          </>
+        )
+      )}
+    </div>
   );
-}
+};
+
+Index.getLayout = function getLayout(page: ReactElement) {
+  return <Screen>{page}</Screen>;
+};
 
 export default Index;

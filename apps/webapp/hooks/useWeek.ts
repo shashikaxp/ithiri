@@ -4,7 +4,6 @@ import {
   isWednesday,
   nextTuesday,
   previousWednesday,
-  differenceInDays,
   format,
   addDays,
   isWithinInterval,

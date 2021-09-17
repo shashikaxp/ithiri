@@ -1,10 +1,13 @@
 import React from 'react';
-import { StorePriceResponse, useFavouriteMutation } from '../generated/graphql';
+import {
+  StorePriceResponse,
+  useFavouriteMutation,
+} from '../../../generated/graphql';
 import { PriceTag } from './PriceTag';
 
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
-import { useThisWeekItems } from '../hooks/useThisWeekItems';
+import { useThisWeekItems } from '../../../hooks/useThisWeekItems';
 
 interface ItemCardProps {
   storePriceResponse: Omit<StorePriceResponse, 'category' | 'originalPrice'>;

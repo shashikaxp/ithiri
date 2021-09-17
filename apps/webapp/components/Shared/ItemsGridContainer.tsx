@@ -1,6 +1,6 @@
 import React from 'react';
-import { StorePriceResponse } from '../generated/graphql';
-import { ItemCard } from './ItemCard';
+import { StorePriceResponse } from '../../generated/graphql';
+import { ItemCard } from './itemCard/ItemCard';
 
 interface ItemsGridContainerProps {
   storeItems: Omit<StorePriceResponse, 'category' | 'originalPrice'>[];

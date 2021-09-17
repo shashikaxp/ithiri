@@ -1,6 +1,6 @@
 import React from 'react';
-import { useWeek } from '../hooks/useWeek';
-import { Week } from '../types';
+import { useWeek } from '../../hooks/useWeek';
+import { Week } from '../../types';
 
 export const WeekSelector: React.FC = () => {
   const { selectedWeek, setSelectedWeek, thisWeekMeta, nextWeekMeta } =

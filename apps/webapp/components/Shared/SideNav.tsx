@@ -7,8 +7,8 @@ import {
   namedOperations,
   useLogoutMutation,
   useMeQuery,
-} from '../generated/graphql';
-import { useThisWeekItems } from '../hooks/useThisWeekItems';
+} from '../../generated/graphql';
+import { useThisWeekItems } from '../../hooks/useThisWeekItems';
 
 // interface SideNavProps {}
 

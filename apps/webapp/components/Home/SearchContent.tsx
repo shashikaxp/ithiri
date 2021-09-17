@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useGetSearchItemsQuery } from '../../generated/graphql';
-import { ItemsGridContainer } from '../ItemsGridContainer';
+import { ItemsGridContainer } from '../Shared/ItemsGridContainer';
 
 interface SearchContentProps {
   searchQuery: string;

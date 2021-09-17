@@ -1,5 +1,5 @@
 import React from 'react';
-import { StorePriceResponse } from '../generated/graphql';
+import { StorePriceResponse } from '../../../generated/graphql';
 
 interface PriceTagProps {
   storePrices: StorePriceResponse['storePrices'][0];
