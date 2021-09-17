@@ -1,0 +1,16 @@
+query GetFavourites {
+  getFavourites {
+    id
+    name
+    img
+    isFavourite
+    itemId
+    storePrices {
+      storeName
+      price
+      saving
+      discount
+      storeId
+    }
+  }
+}

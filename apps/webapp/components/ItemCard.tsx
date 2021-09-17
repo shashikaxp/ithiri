@@ -23,6 +23,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     refetchQueries: [
       namedOperations.Query.GetStoreItems,
       namedOperations.Query.GetSearchItems,
+      namedOperations.Query.GetFavourites,
     ],
   });
 
@@ -87,12 +88,12 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       {isUserLoggedIn && (
         <div>
           <button
-            className={`${getActionButtonClasses(storePriceResponse.id)}`}
+            className={`${getActionButtonClasses(storePriceResponse.itemId)}`}
             onClick={() => {
-              setItems(storePriceResponse.id);
+              setItems(storePriceResponse.itemId);
             }}
           >
-            {isAlreadyInThisWeekItems(storePriceResponse.id)
+            {isAlreadyInThisWeekItems(storePriceResponse.itemId)
               ? 'Remove from list'
               : 'Add to list'}
           </button>

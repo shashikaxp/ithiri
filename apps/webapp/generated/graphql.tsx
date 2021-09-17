@@ -68,6 +68,7 @@ export type Query = {
   searchItems: Array<StorePriceResponse>;
   users: Array<User>;
   me?: Maybe<User>;
+  getFavourites: Array<StorePriceResponse>;
 };
 
 
@@ -162,6 +163,11 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', name: string, email: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+
+export type GetFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFavouritesQuery = { __typename?: 'Query', getFavourites: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
 
 export type GetSearchItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -407,6 +413,51 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const GetFavouritesDocument = gql`
+    query GetFavourites {
+  getFavourites {
+    id
+    name
+    img
+    isFavourite
+    itemId
+    storePrices {
+      storeName
+      price
+      saving
+      discount
+      storeId
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetFavouritesQuery__
+ *
+ * To run a query within a React component, call `useGetFavouritesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFavouritesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFavouritesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFavouritesQuery(baseOptions?: Apollo.QueryHookOptions<GetFavouritesQuery, GetFavouritesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFavouritesQuery, GetFavouritesQueryVariables>(GetFavouritesDocument, options);
+      }
+export function useGetFavouritesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFavouritesQuery, GetFavouritesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFavouritesQuery, GetFavouritesQueryVariables>(GetFavouritesDocument, options);
+        }
+export type GetFavouritesQueryHookResult = ReturnType<typeof useGetFavouritesQuery>;
+export type GetFavouritesLazyQueryHookResult = ReturnType<typeof useGetFavouritesLazyQuery>;
+export type GetFavouritesQueryResult = Apollo.QueryResult<GetFavouritesQuery, GetFavouritesQueryVariables>;
 export const GetSearchItemsDocument = gql`
     query GetSearchItems($limit: Float!, $searchQuery: String!) {
   searchItems(limit: $limit, searchQuery: $searchQuery) {
@@ -538,6 +589,7 @@ export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const namedOperations = {
   Query: {
+    GetFavourites: 'GetFavourites',
     GetSearchItems: 'GetSearchItems',
     GetStoreItems: 'GetStoreItems',
     Me: 'Me'

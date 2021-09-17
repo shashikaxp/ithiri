@@ -1,11 +1,39 @@
+import { getConnection } from 'typeorm';
+import { StorePrice } from './../entity/StorePrice';
+
 import { User } from './../entity/User';
 import { Item } from './../entity/Item';
 import { MyContext } from './../types';
 import { Favourite } from './../entity/Favourite';
-import { Resolver, Arg, Ctx, Mutation } from 'type-graphql';
+import { Resolver, Arg, Ctx, Mutation, Query } from 'type-graphql';
+import { mapToStorePrices, StorePriceResponse } from './util/mapToStorePrices';
+import { getUserFavouriteItemIds } from './util/getUserFavouriteItemIds';
 
 @Resolver()
 export class FavouriteResolver {
+  @Query(() => [StorePriceResponse])
+  async getFavourites(@Ctx() { req }: MyContext) {
+    const userId = req.session.userId;
+
+    const favouriteItemIds = await getUserFavouriteItemIds(userId);
+
+    if (favouriteItemIds.length === 0) {
+      return [];
+    }
+
+    const storePrices = await getConnection()
+      .getRepository(StorePrice)
+      .createQueryBuilder('storePrice')
+      .leftJoinAndSelect('storePrice.item', 'item')
+      .leftJoinAndSelect('storePrice.store', 'store')
+      .where('storePrice.itemId IN (:...itemIds)', {
+        itemIds: favouriteItemIds,
+      })
+      .getMany();
+
+    return mapToStorePrices(storePrices, favouriteItemIds);
+  }
+
   @Mutation(() => Boolean)
   async favourite(
     @Arg('itemId') itemId: number,
