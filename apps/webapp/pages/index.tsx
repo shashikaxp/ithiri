@@ -4,8 +4,8 @@ import { debounce } from 'lodash';
 
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { Screen } from '../components/Screen';
-import { ItemCard } from '../components/ItemCard';
 import { SearchContent } from '../components/Home/SearchContent';
+import { ItemsGridContainer } from '../components/ItemsGridContainer';
 
 export function Index() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,26 +38,23 @@ export function Index() {
             searchQuery={searchQuery}
           />
         ) : (
-          <>
-            <div className="p-6 grid gap-3 grid-cols-auto">
-              {data?.getStoreItems.map((item) => {
-                return (
-                  <ItemCard
-                    key={item.id}
-                    isUserLoggedIn={isUserLoggedIn}
-                    storePriceResponse={item}
-                  />
-                );
-              })}
-            </div>
-            <button
-              onClick={() =>
-                fetchMore({ variables: { offset: data?.getStoreItems.length } })
-              }
-            >
-              More
-            </button>
-          </>
+          data?.getStoreItems && (
+            <>
+              <ItemsGridContainer
+                storeItems={data.getStoreItems}
+                isUserLoggedIn={isUserLoggedIn}
+              />
+              <button
+                onClick={() =>
+                  fetchMore({
+                    variables: { offset: data?.getStoreItems.length },
+                  })
+                }
+              >
+                More
+              </button>
+            </>
+          )
         )}
       </div>
     </Screen>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ItemCard } from '../components/ItemCard';
+import { ItemsGridContainer } from '../components/ItemsGridContainer';
 import { Screen } from '../components/Screen';
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 
@@ -20,17 +20,12 @@ const MyCollection: React.FC = () => {
   return (
     <Screen>
       <div className="flex flex-col bg-background min-h-screen">
-        <div className="p-6 grid gap-3 grid-cols-auto">
-          {favorites?.map((fv) => {
-            return (
-              <ItemCard
-                key={fv.id}
-                storePriceResponse={fv}
-                isUserLoggedIn={isUserLoggedIn}
-              ></ItemCard>
-            );
-          })}
-        </div>
+        {favorites && (
+          <ItemsGridContainer
+            storeItems={favorites}
+            isUserLoggedIn={isUserLoggedIn}
+          />
+        )}
       </div>
     </Screen>
   );

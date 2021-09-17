@@ -1,7 +1,7 @@
 import React from 'react';
-import { ItemCard } from '../ItemCard';
 
 import { useGetSearchItemsQuery } from '../../generated/graphql';
+import { ItemsGridContainer } from '../ItemsGridContainer';
 
 interface SearchContentProps {
   searchQuery: string;
@@ -17,17 +17,16 @@ export const SearchContent: React.FC<SearchContentProps> = ({
   });
 
   return (
-    <div className="p-6 grid gap-3 grid-cols-2 md:grid-cols-2 xl:grid-cols-4">
-      {data?.searchItems.map((item) => {
-        return (
-          <ItemCard
-            key={item.id}
-            isUserLoggedIn={isUserLoggedIn}
-            storePriceResponse={item}
-          />
-        );
-      })}
-      {data?.searchItems.length === 0 && <div>No items were found</div>}
-    </div>
+    <>
+      {data?.searchItems && data.searchItems.length > 0 && (
+        <ItemsGridContainer
+          storeItems={data.searchItems}
+          isUserLoggedIn={isUserLoggedIn}
+        />
+      )}
+      <div className="p-4">
+        {data?.searchItems.length === 0 && <div>No items were found</div>}
+      </div>
+    </>
   );
 };
