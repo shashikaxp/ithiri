@@ -29,7 +29,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
-  favourite: Scalars['Boolean'];
+  favourite: StorePriceResponse;
 };
 
 
@@ -132,7 +132,7 @@ export type FavouriteMutationVariables = Exact<{
 }>;
 
 
-export type FavouriteMutation = { __typename?: 'Mutation', favourite: boolean };
+export type FavouriteMutation = { __typename?: 'Mutation', favourite: { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -234,7 +234,20 @@ export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordM
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
 export const FavouriteDocument = gql`
     mutation Favourite($itemId: Float!) {
-  favourite(itemId: $itemId)
+  favourite(itemId: $itemId) {
+    id
+    name
+    img
+    isFavourite
+    itemId
+    storePrices {
+      storeName
+      price
+      saving
+      discount
+      storeId
+    }
+  }
 }
     `;
 export type FavouriteMutationFn = Apollo.MutationFunction<FavouriteMutation, FavouriteMutationVariables>;

@@ -1,9 +1,5 @@
-import React, { useState } from 'react';
-import {
-  namedOperations,
-  StorePriceResponse,
-  useFavouriteMutation,
-} from '../generated/graphql';
+import React from 'react';
+import { StorePriceResponse, useFavouriteMutation } from '../generated/graphql';
 import { PriceTag } from './PriceTag';
 
 import { AiOutlineHeart } from 'react-icons/ai';
@@ -19,13 +15,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   storePriceResponse,
   isUserLoggedIn,
 }) => {
-  const [favourite] = useFavouriteMutation({
-    refetchQueries: [
-      namedOperations.Query.GetStoreItems,
-      namedOperations.Query.GetSearchItems,
-      namedOperations.Query.GetFavourites,
-    ],
-  });
+  const [favourite] = useFavouriteMutation();
 
   const { items, setItems } = useThisWeekItems();
 

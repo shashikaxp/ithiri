@@ -4,7 +4,7 @@ import { Screen } from '../components/Screen';
 import { useGetFavouritesQuery, useMeQuery } from '../generated/graphql';
 
 const MyCollection: React.FC = () => {
-  const { data } = useGetFavouritesQuery();
+  const { data } = useGetFavouritesQuery({ fetchPolicy: 'network-only' });
 
   const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
 
