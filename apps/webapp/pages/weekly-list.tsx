@@ -20,9 +20,10 @@ const WeeklyList = () => {
   const { items } = useThisWeekItems();
 
   const isUserLoggedIn = meData?.me?.name ? true : false;
+  const weeklyItemIds = items.map((wi) => wi.itemId);
 
   const weeklyItems = data?.getStoreItems.filter((item) => {
-    return includes(items, item.itemId);
+    return includes(weeklyItemIds, item.itemId);
   });
 
   return (

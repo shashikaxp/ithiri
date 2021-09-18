@@ -5,9 +5,13 @@ import {
 } from '../../../generated/graphql';
 import { PriceTag } from './PriceTag';
 
+import { find } from 'lodash';
+
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 import { useThisWeekItems } from '../../../hooks/useThisWeekItems';
+import { AddToListButton } from './AddToListButton';
+import { ItemCounter } from './ItemCounter';
 
 interface ItemCardProps {
   storePriceResponse: Omit<StorePriceResponse, 'category' | 'originalPrice'>;
@@ -19,8 +23,8 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   isUserLoggedIn,
 }) => {
   const [favourite] = useFavouriteMutation();
-
-  const { items, setItems } = useThisWeekItems();
+  const { items } = useThisWeekItems();
+  const item = find(items, { itemId: storePriceResponse.itemId });
 
   const toggleFavourite = (itemId: number) => {
     favourite({
@@ -28,19 +32,6 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         itemId: itemId,
       },
     });
-  };
-
-  const isAlreadyInThisWeekItems = (itemId: number) => {
-    return items.includes(itemId);
-  };
-
-  const getActionButtonClasses = (itemId: number) => {
-    const commonClasses = 'w-full p-1 rounded-br-xl rounded-bl-xl';
-    if (isAlreadyInThisWeekItems(itemId)) {
-      return `${commonClasses} bg-primary-light text-red-600`;
-    } else {
-      return `${commonClasses} bg-primary text-white`;
-    }
   };
 
   return (
@@ -80,16 +71,11 @@ export const ItemCard: React.FC<ItemCardProps> = ({
       </div>
       {isUserLoggedIn && (
         <div>
-          <button
-            className={`${getActionButtonClasses(storePriceResponse.itemId)}`}
-            onClick={() => {
-              setItems(storePriceResponse.itemId);
-            }}
-          >
-            {isAlreadyInThisWeekItems(storePriceResponse.itemId)
-              ? 'Remove from list'
-              : 'Add to list'}
-          </button>
+          {item ? (
+            <ItemCounter weeklyItem={item} />
+          ) : (
+            <AddToListButton itemId={storePriceResponse.itemId} />
+          )}
         </div>
       )}
     </div>
