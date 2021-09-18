@@ -30,6 +30,9 @@
     "api": {
       "tags": []
     },
+    "shared-types": {
+      "tags": []
+    },
     "webapp": {
       "tags": []
     },

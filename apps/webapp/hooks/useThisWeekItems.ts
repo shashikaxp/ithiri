@@ -1,4 +1,4 @@
-import { WeeklyItem } from './../types/index';
+import type { WeeklyItem } from '@ithiri/shared-types';
 import { THIS_WEEK_ITEM_COOKIE_NAME } from './../constants/index';
 import { useCookies } from 'react-cookie';
 

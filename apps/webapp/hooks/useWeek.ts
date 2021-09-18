@@ -9,7 +9,7 @@ import {
   isWithinInterval,
 } from 'date-fns';
 
-import { Week } from '../types/index';
+import { Week } from '@ithiri/shared-types';
 
 interface WeekMeta {
   label: string;

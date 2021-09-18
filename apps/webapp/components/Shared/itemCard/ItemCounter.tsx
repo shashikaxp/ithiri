@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeeklyItem } from './../../../types';
+import type { WeeklyItem } from '@ithiri/shared-types';
 
 import { useThisWeekItems } from './../../../hooks/useThisWeekItems';
 
