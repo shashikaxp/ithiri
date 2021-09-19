@@ -1,16 +1,8 @@
 mutation Favourite($itemId: Float!) {
   favourite(itemId: $itemId) {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }

@@ -1,16 +1,8 @@
 query GetSearchItems($limit: Float!, $searchQuery: String!) {
   searchItems(limit: $limit, searchQuery: $searchQuery) {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }

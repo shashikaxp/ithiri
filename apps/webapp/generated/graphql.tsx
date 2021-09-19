@@ -87,9 +87,12 @@ export type StorePriceDetails = {
   __typename?: 'StorePriceDetails';
   storeId: Scalars['Float'];
   storeName: Scalars['String'];
-  price: Scalars['Float'];
-  saving: Scalars['Float'];
-  discount: Scalars['Float'];
+  cwPrice: Scalars['Float'];
+  cwSavings: Scalars['Float'];
+  cwDiscount: Scalars['Float'];
+  nwPrice: Scalars['Float'];
+  nwSavings: Scalars['Float'];
+  nwDiscount: Scalars['Float'];
 };
 
 export type StorePriceResponse = {
@@ -119,6 +122,10 @@ export type UserResponse = {
   errors?: Maybe<Array<FieldError>>;
 };
 
+export type StorePricePropertiesFragment = { __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number };
+
+export type StoreItemPropertiesFragment = { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number };
+
 export type ChangePasswordMutationVariables = Exact<{
   password: Scalars['String'];
   token: Scalars['String'];
@@ -132,7 +139,7 @@ export type FavouriteMutationVariables = Exact<{
 }>;
 
 
-export type FavouriteMutation = { __typename?: 'Mutation', favourite: { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> } };
+export type FavouriteMutation = { __typename?: 'Mutation', favourite: { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -167,7 +174,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 export type GetFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFavouritesQuery = { __typename?: 'Query', getFavourites: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
+export type GetFavouritesQuery = { __typename?: 'Query', getFavourites: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> }> };
 
 export type GetSearchItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -175,7 +182,7 @@ export type GetSearchItemsQueryVariables = Exact<{
 }>;
 
 
-export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
+export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> }> };
 
 export type GetStoreItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -183,14 +190,34 @@ export type GetStoreItemsQueryVariables = Exact<{
 }>;
 
 
-export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, price: number, saving: number, discount: number, storeId: number }> }> };
+export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, name: string }> };
 
-
+export const StorePricePropertiesFragmentDoc = gql`
+    fragment StorePriceProperties on StorePriceDetails {
+  storeName
+  cwPrice
+  cwSavings
+  cwDiscount
+  nwPrice
+  nwSavings
+  nwDiscount
+  storeId
+}
+    `;
+export const StoreItemPropertiesFragmentDoc = gql`
+    fragment StoreItemProperties on StorePriceResponse {
+  id
+  name
+  img
+  isFavourite
+  itemId
+}
+    `;
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($password: String!, $token: String!) {
   changePassword(password: $password, token: $token) {
@@ -235,21 +262,14 @@ export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePas
 export const FavouriteDocument = gql`
     mutation Favourite($itemId: Float!) {
   favourite(itemId: $itemId) {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }
-    `;
+    ${StoreItemPropertiesFragmentDoc}
+${StorePricePropertiesFragmentDoc}`;
 export type FavouriteMutationFn = Apollo.MutationFunction<FavouriteMutation, FavouriteMutationVariables>;
 
 /**
@@ -429,21 +449,14 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const GetFavouritesDocument = gql`
     query GetFavourites {
   getFavourites {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }
-    `;
+    ${StoreItemPropertiesFragmentDoc}
+${StorePricePropertiesFragmentDoc}`;
 
 /**
  * __useGetFavouritesQuery__
@@ -474,21 +487,14 @@ export type GetFavouritesQueryResult = Apollo.QueryResult<GetFavouritesQuery, Ge
 export const GetSearchItemsDocument = gql`
     query GetSearchItems($limit: Float!, $searchQuery: String!) {
   searchItems(limit: $limit, searchQuery: $searchQuery) {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }
-    `;
+    ${StoreItemPropertiesFragmentDoc}
+${StorePricePropertiesFragmentDoc}`;
 
 /**
  * __useGetSearchItemsQuery__
@@ -521,21 +527,14 @@ export type GetSearchItemsQueryResult = Apollo.QueryResult<GetSearchItemsQuery, 
 export const GetStoreItemsDocument = gql`
     query GetStoreItems($limit: Float!, $offset: Float!) {
   getStoreItems(limit: $limit, offset: $offset) {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }
-    `;
+    ${StoreItemPropertiesFragmentDoc}
+${StorePricePropertiesFragmentDoc}`;
 
 /**
  * __useGetStoreItemsQuery__
@@ -614,5 +613,9 @@ export const namedOperations = {
     Login: 'Login',
     Logout: 'Logout',
     Register: 'Register'
+  },
+  Fragment: {
+    StorePriceProperties: 'StorePriceProperties',
+    StoreItemProperties: 'StoreItemProperties'
   }
 }

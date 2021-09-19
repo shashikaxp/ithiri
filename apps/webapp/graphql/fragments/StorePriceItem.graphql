@@ -1,0 +1,7 @@
+fragment StoreItemProperties on StorePriceResponse {
+  id
+  name
+  img
+  isFavourite
+  itemId
+}

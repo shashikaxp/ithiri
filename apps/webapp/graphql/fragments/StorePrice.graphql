@@ -1,0 +1,10 @@
+fragment StorePriceProperties on StorePriceDetails {
+  storeName
+  cwPrice
+  cwSavings
+  cwDiscount
+  nwPrice
+  nwSavings
+  nwDiscount
+  storeId
+}

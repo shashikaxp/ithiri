@@ -1,16 +1,8 @@
 query GetStoreItems($limit: Float!, $offset: Float!) {
   getStoreItems(limit: $limit, offset: $offset) {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }

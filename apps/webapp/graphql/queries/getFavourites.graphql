@@ -1,16 +1,8 @@
 query GetFavourites {
   getFavourites {
-    id
-    name
-    img
-    isFavourite
-    itemId
+    ...StoreItemProperties
     storePrices {
-      storeName
-      price
-      saving
-      discount
-      storeId
+      ...StorePriceProperties
     }
   }
 }
