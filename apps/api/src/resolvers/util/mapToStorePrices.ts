@@ -12,13 +12,22 @@ class StorePriceDetails {
   storeName!: string;
 
   @Field()
-  price!: number;
+  cwPrice!: number;
 
   @Field()
-  saving!: number;
+  cwSavings!: number;
 
   @Field()
-  discount!: number;
+  cwDiscount!: number;
+
+  @Field()
+  nwPrice!: number;
+
+  @Field()
+  nwSavings!: number;
+
+  @Field()
+  nwDiscount!: number;
 }
 
 @ObjectType()
@@ -62,9 +71,12 @@ export function mapToStorePrices(
       storePrice.storePrices.push({
         storeId: sp.store.id,
         storeName: sp.store.name,
-        price: sp.cwPrice,
-        saving: sp.cwSavings,
-        discount: sp.cwDiscount,
+        cwPrice: sp.cwPrice,
+        cwSavings: sp.cwSavings,
+        cwDiscount: sp.cwDiscount,
+        nwPrice: sp.nwPrice,
+        nwSavings: sp.nwSavings,
+        nwDiscount: sp.nwDiscount,
       });
     } else {
       tmpStorePrices.push({
@@ -79,9 +91,12 @@ export function mapToStorePrices(
           {
             storeId: sp.store.id,
             storeName: sp.store.name,
-            price: sp.cwPrice,
-            saving: sp.cwSavings,
-            discount: sp.cwDiscount,
+            cwPrice: sp.cwPrice,
+            cwSavings: sp.cwSavings,
+            cwDiscount: sp.cwDiscount,
+            nwPrice: sp.nwPrice,
+            nwSavings: sp.nwSavings,
+            nwDiscount: sp.nwDiscount,
           },
         ],
       });
