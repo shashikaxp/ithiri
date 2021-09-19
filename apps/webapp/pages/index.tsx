@@ -7,6 +7,7 @@ import { SearchContent } from '../components/Home/SearchContent';
 import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { Screen } from '../components/Shared/Screen';
+import { ITEM_PER_PAGE } from '../constants';
 
 export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,7 +19,7 @@ export const Index = () => {
   const debouncedFn = debounce(setSearchQuery, 250);
 
   const { data, fetchMore } = useGetStoreItemsQuery({
-    variables: { limit: 3, offset: 0 },
+    variables: { limit: ITEM_PER_PAGE, offset: 0 },
   });
 
   return (

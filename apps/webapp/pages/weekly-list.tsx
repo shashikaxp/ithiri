@@ -7,11 +7,12 @@ import { Screen } from '../components/Shared/Screen';
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { useWeekItems } from '../hooks/useWeekItems';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
+import { ITEM_PER_PAGE } from '../constants';
 
 const WeeklyList = () => {
   const { data } = useGetStoreItemsQuery({
     variables: {
-      limit: 100,
+      limit: ITEM_PER_PAGE,
       offset: 0,
     },
   });
