@@ -30,17 +30,36 @@ const client = new ApolloClient({
       },
       StorePriceDetails: {
         fields: {
-          price: {
+          cwPrice: {
             read(price) {
               return formatter.format(price);
             },
           },
-          saving: {
+          nwPrice: {
+            read(price) {
+              return formatter.format(price);
+            },
+          },
+          cwSavings: {
             read(saving) {
               return formatter.format(saving);
             },
           },
-          discount: {
+          nwSavings: {
+            read(saving) {
+              return formatter.format(saving);
+            },
+          },
+          cwDiscount: {
+            read(discount) {
+              if (discount % 1 === 0.0) {
+                return `${Math.floor(discount).toString()}%`;
+              } else {
+                return `*${Math.floor(discount).toString()}%`;
+              }
+            },
+          },
+          nwDiscount: {
             read(discount) {
               if (discount % 1 === 0.0) {
                 return `${Math.floor(discount).toString()}%`;
