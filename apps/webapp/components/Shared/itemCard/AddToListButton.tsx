@@ -15,7 +15,7 @@ export const AddToListButton: React.FC<AddToListButtonProps> = ({ itemId }) => {
         addQuantity(itemId);
       }}
     >
-      Add to list test
+      Add to list
     </button>
   );
 };

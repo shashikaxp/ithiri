@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   isWednesday,
   nextTuesday,
@@ -9,27 +7,20 @@ import {
   isWithinInterval,
 } from 'date-fns';
 
-import { Week } from '@ithiri/shared-types';
-
 interface WeekMeta {
   label: string;
   isAvailable: boolean;
 }
 
 interface HookResponse {
-  selectedWeek: Week;
-  setSelectedWeek: (week: Week) => void;
   thisWeekMeta: WeekMeta;
   nextWeekMeta: WeekMeta;
 }
 
 export const useWeek = (): HookResponse => {
-  const [selectedWeek, setSelectedWeek] = useState<Week>('thisWeek');
   const { thisWeekMeta, nextWeekMeta } = getWeekLabels();
 
   return {
-    selectedWeek,
-    setSelectedWeek,
     thisWeekMeta,
     nextWeekMeta,
   };
@@ -67,6 +58,6 @@ const formatWeeklyLabel = (date: Date) => {
 
   return {
     label,
-    isAvailable,
+    isAvailable: true,
   };
 };

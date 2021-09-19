@@ -18,7 +18,7 @@ export const Index = () => {
   const debouncedFn = debounce(setSearchQuery, 250);
 
   const { data, fetchMore } = useGetStoreItemsQuery({
-    variables: { limit: 15, offset: 0 },
+    variables: { limit: 3, offset: 0 },
   });
 
   return (

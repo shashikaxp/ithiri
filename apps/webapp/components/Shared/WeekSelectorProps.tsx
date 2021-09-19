@@ -1,10 +1,12 @@
 import React from 'react';
 import { useWeek } from '../../hooks/useWeek';
 import { Week } from '@ithiri/shared-types';
+import { useStore } from './../../store';
 
 export const WeekSelector: React.FC = () => {
-  const { selectedWeek, setSelectedWeek, thisWeekMeta, nextWeekMeta } =
-    useWeek();
+  const { thisWeekMeta, nextWeekMeta } = useWeek();
+  const selectedWeek = useStore().selectedWeek;
+  const setSelectedWeek = useStore().setSelectedWeek;
 
   const getSelectedClass = (weekType: Week) => {
     const commonClasses =

@@ -45,7 +45,6 @@ export const useThisWeekItems = (): HookResponse => {
           clonedItems,
           (wi) => wi.itemId !== itemId
         );
-        console.log('asd', updatedWeeklyItems);
         setCookie(THIS_WEEK_ITEM_COOKIE_NAME, updatedWeeklyItems, {
           path: '/',
         });
