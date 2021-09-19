@@ -35,10 +35,4 @@ export const useItemDetails = (priceDetails: Parameter): Details => {
   }, [selectedWeek, priceDetails]);
 
   return itemDetails;
-
-  return {
-    price: 21,
-    saving: 3,
-    discount: 4,
-  };
 };

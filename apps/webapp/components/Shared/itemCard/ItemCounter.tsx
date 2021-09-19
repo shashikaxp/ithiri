@@ -1,14 +1,14 @@
 import React from 'react';
 import type { WeeklyItem } from '@ithiri/shared-types';
 
-import { useThisWeekItems } from './../../../hooks/useThisWeekItems';
+import { useWeekItems } from '../../../hooks/useWeekItems';
 
 interface ItemCounterProps {
   weeklyItem: WeeklyItem;
 }
 
 export const ItemCounter: React.FC<ItemCounterProps> = ({ weeklyItem }) => {
-  const { addQuantity, removeQuantity } = useThisWeekItems();
+  const { addQuantity, removeQuantity } = useWeekItems();
   return (
     <div className="w-full select-none rounded-br-xl rounded-bl-xl bg-primary-light text-white flex justify-between align-middle">
       <div

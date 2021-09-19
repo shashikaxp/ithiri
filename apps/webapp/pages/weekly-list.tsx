@@ -5,7 +5,7 @@ import { includes } from 'lodash';
 import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { Screen } from '../components/Shared/Screen';
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
-import { useThisWeekItems } from '../hooks/useThisWeekItems';
+import { useWeekItems } from '../hooks/useWeekItems';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 
 const WeeklyList = () => {
@@ -17,7 +17,7 @@ const WeeklyList = () => {
   });
 
   const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
-  const { items } = useThisWeekItems();
+  const { items } = useWeekItems();
 
   const isUserLoggedIn = meData?.me?.name ? true : false;
   const weeklyItemIds = items.map((wi) => wi.itemId);

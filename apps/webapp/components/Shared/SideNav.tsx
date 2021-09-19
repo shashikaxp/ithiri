@@ -8,9 +8,6 @@ import {
   useLogoutMutation,
   useMeQuery,
 } from '../../generated/graphql';
-import { useThisWeekItems } from '../../hooks/useThisWeekItems';
-
-// interface SideNavProps {}
 
 export const SideNav: React.FC = () => {
   const { loading, data } = useMeQuery({
@@ -18,8 +15,6 @@ export const SideNav: React.FC = () => {
   });
   const router = useRouter();
   const apolloClient = useApolloClient();
-
-  const { items } = useThisWeekItems();
 
   const [logout] = useLogoutMutation({
     onCompleted: async () => {
@@ -75,15 +70,8 @@ export const SideNav: React.FC = () => {
               </NextLink>
 
               <NextLink href="/weekly-list">
-                <div
-                  className={
-                    getActiveRouteClass('/weekly-list') + ' flex align-center'
-                  }
-                >
-                  <div>Weekly list</div>
-                  <div className="flex align-middle w-7 rounded-full justify-center ml-4 bg-primary">
-                    <div className="text-white">{items.length}</div>
-                  </div>
+                <div className={getActiveRouteClass('/weekly-list')}>
+                  Weekly list
                 </div>
               </NextLink>
 

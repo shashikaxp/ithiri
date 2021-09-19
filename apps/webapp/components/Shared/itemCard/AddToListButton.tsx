@@ -1,12 +1,12 @@
 import React from 'react';
-import { useThisWeekItems } from './../../../hooks/useThisWeekItems';
+import { useWeekItems } from '../../../hooks/useWeekItems';
 
 interface AddToListButtonProps {
   itemId: number;
 }
 
 export const AddToListButton: React.FC<AddToListButtonProps> = ({ itemId }) => {
-  const { addQuantity } = useThisWeekItems();
+  const { addQuantity } = useWeekItems();
 
   return (
     <button

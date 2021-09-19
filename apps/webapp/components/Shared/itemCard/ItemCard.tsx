@@ -9,7 +9,7 @@ import { find } from 'lodash';
 
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
-import { useThisWeekItems } from '../../../hooks/useThisWeekItems';
+import { useWeekItems } from '../../../hooks/useWeekItems';
 import { AddToListButton } from './AddToListButton';
 import { ItemCounter } from './ItemCounter';
 
@@ -23,7 +23,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   isUserLoggedIn,
 }) => {
   const [favourite] = useFavouriteMutation();
-  const { items } = useThisWeekItems();
+  const { items } = useWeekItems();
   const item = find(items, { itemId: storePriceResponse.itemId });
 
   const toggleFavourite = (itemId: number) => {
