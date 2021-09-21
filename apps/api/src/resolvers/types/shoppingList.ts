@@ -20,7 +20,7 @@ class ShoppingListResponse {
 
 @ObjectType()
 class ShoppingList {
-  @Field()
+  @Field(() => String)
   type!: ShoppingListType;
 
   @Field()
@@ -41,8 +41,8 @@ class ShoppingItem {
   @Field()
   image!: string;
 
-  @Field()
-  originalPrice!: number;
+  @Field(() => Number, { nullable: true })
+  originalPrice!: number | null;
 
   @Field(() => Number, { nullable: true })
   price!: number | null;

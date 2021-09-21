@@ -1,0 +1,20 @@
+query GenerateShoppingList($weeklyItemInput: WeeklyItemInput!) {
+  generateShoppingList(weeklyItemInput: $weeklyItemInput) {
+    shoppingLists {
+      type
+      totalSavings
+      storeItems {
+        image
+        storeId
+        name
+        originalPrice
+        quantity
+        price
+        saving
+        discount
+        total
+        image
+      }
+    }
+  }
+}

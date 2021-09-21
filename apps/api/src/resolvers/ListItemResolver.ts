@@ -1,5 +1,5 @@
 import { ShoppingListType, Week, WeeklyItem } from '@ithiri/shared-types';
-import { Mutation, Resolver, Arg } from 'type-graphql';
+import { Resolver, Arg, Query } from 'type-graphql';
 
 import { mapToStorePrices } from './util/mapToStorePrices';
 import { min, find } from 'lodash';
@@ -14,7 +14,7 @@ import { StorePriceResponse } from './types/listItem';
 
 @Resolver()
 export class ListItemResolver {
-  @Mutation(() => ShoppingListResponse)
+  @Query(() => ShoppingListResponse)
   async generateShoppingList(
     @Arg('weeklyItemInput') { weeklyItems, week }: WeeklyItemInput
   ): Promise<ShoppingListResponse> {
@@ -100,11 +100,11 @@ const generateBestValueShoppingList = (
       storeId: itemDetailsForMinPrice ? itemDetailsForMinPrice.storeId : null,
       image: sp.img,
       name: sp.name,
-      originalPrice: sp.originalPrice,
+      originalPrice: itemDetailsForMinPrice ? sp.originalPrice : null,
       price: itemDetailsForMinPrice ? itemDetailsForMinPrice.price : null,
       discount: itemDetailsForMinPrice ? itemDetailsForMinPrice.discount : null,
       saving: itemDetailsForMinPrice ? itemDetailsForMinPrice.saving : null,
-      quantity: quantity,
+      quantity: itemDetailsForMinPrice ? quantity : null,
       total: itemDetailsForMinPrice?.price
         ? quantity * itemDetailsForMinPrice.price
         : null,

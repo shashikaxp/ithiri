@@ -70,6 +70,59 @@ const client = new ApolloClient({
           },
         },
       },
+      ShoppingList: {
+        fields: {
+          totalSavings: {
+            read(price) {
+              return formatter.format(price);
+            },
+          },
+        },
+      },
+      ShoppingItem: {
+        fields: {
+          originalPrice: {
+            read(price) {
+              if (!price) return '-';
+              return formatter.format(price);
+            },
+          },
+          price: {
+            read(price) {
+              if (!price) return '-';
+              return formatter.format(price);
+            },
+          },
+          saving: {
+            read(saving) {
+              if (!saving) return '-';
+              return formatter.format(saving);
+            },
+          },
+          discount: {
+            read(discount) {
+              if (!discount) return '-';
+              if (discount % 1 === 0.0) {
+                return `${Math.floor(discount).toString()}%`;
+              } else {
+                return `*${Math.floor(discount).toString()}%`;
+              }
+            },
+          },
+          total: {
+            read(total) {
+              if (!total) return '-';
+              return formatter.format(total);
+            },
+          },
+          quantity: {
+            read(quantity) {
+              if (!quantity) return '-';
+              return quantity;
+            },
+          },
+        },
+      },
     },
   }),
   credentials: 'include',

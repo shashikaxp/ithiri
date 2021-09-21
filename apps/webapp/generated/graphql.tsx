@@ -14,6 +14,10 @@ export type Scalars = {
   Float: number;
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
+  /** Weekly item details */
+  ItemDetails: any;
+  /** Week type */
+  WeekType: any;
 };
 
 export type FieldError = {
@@ -66,6 +70,7 @@ export type Query = {
   __typename?: 'Query';
   getStoreItems: Array<StorePriceResponse>;
   searchItems: Array<StorePriceResponse>;
+  generateShoppingList: ShoppingListResponse;
   users: Array<User>;
   me?: Maybe<User>;
   getFavourites: Array<StorePriceResponse>;
@@ -81,6 +86,36 @@ export type QueryGetStoreItemsArgs = {
 export type QuerySearchItemsArgs = {
   limit: Scalars['Float'];
   searchQuery: Scalars['String'];
+};
+
+
+export type QueryGenerateShoppingListArgs = {
+  weeklyItemInput: WeeklyItemInput;
+};
+
+export type ShoppingItem = {
+  __typename?: 'ShoppingItem';
+  storeId?: Maybe<Scalars['Float']>;
+  name: Scalars['String'];
+  image: Scalars['String'];
+  originalPrice: Scalars['Float'];
+  price?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  saving?: Maybe<Scalars['Float']>;
+  discount?: Maybe<Scalars['Float']>;
+  total?: Maybe<Scalars['Float']>;
+};
+
+export type ShoppingList = {
+  __typename?: 'ShoppingList';
+  type: Scalars['String'];
+  totalSavings: Scalars['Float'];
+  storeItems: Array<ShoppingItem>;
+};
+
+export type ShoppingListResponse = {
+  __typename?: 'ShoppingListResponse';
+  shoppingLists: Array<ShoppingList>;
 };
 
 export type StorePriceDetails = {
@@ -122,6 +157,11 @@ export type UserResponse = {
   errors?: Maybe<Array<FieldError>>;
 };
 
+export type WeeklyItemInput = {
+  weeklyItems: Scalars['ItemDetails'];
+  week: Scalars['WeekType'];
+};
+
 export type StorePricePropertiesFragment = { __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number };
 
 export type StoreItemPropertiesFragment = { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number };
@@ -147,6 +187,13 @@ export type ForgotPasswordMutationVariables = Exact<{
 
 
 export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
+
+export type GenerateShoppingListQueryVariables = Exact<{
+  weeklyItemInput: WeeklyItemInput;
+}>;
+
+
+export type GenerateShoppingListQuery = { __typename?: 'Query', generateShoppingList: { __typename?: 'ShoppingListResponse', shoppingLists: Array<{ __typename?: 'ShoppingList', type: string, totalSavings: number, storeItems: Array<{ __typename?: 'ShoppingItem', image: string, storeId?: Maybe<number>, name: string, originalPrice: number, quantity?: Maybe<number>, price?: Maybe<number>, saving?: Maybe<number>, discount?: Maybe<number>, total?: Maybe<number> }> }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -327,6 +374,56 @@ export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const GenerateShoppingListDocument = gql`
+    query GenerateShoppingList($weeklyItemInput: WeeklyItemInput!) {
+  generateShoppingList(weeklyItemInput: $weeklyItemInput) {
+    shoppingLists {
+      type
+      totalSavings
+      storeItems {
+        image
+        storeId
+        name
+        originalPrice
+        quantity
+        price
+        saving
+        discount
+        total
+        image
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGenerateShoppingListQuery__
+ *
+ * To run a query within a React component, call `useGenerateShoppingListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenerateShoppingListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGenerateShoppingListQuery({
+ *   variables: {
+ *      weeklyItemInput: // value for 'weeklyItemInput'
+ *   },
+ * });
+ */
+export function useGenerateShoppingListQuery(baseOptions: Apollo.QueryHookOptions<GenerateShoppingListQuery, GenerateShoppingListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GenerateShoppingListQuery, GenerateShoppingListQueryVariables>(GenerateShoppingListDocument, options);
+      }
+export function useGenerateShoppingListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenerateShoppingListQuery, GenerateShoppingListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GenerateShoppingListQuery, GenerateShoppingListQueryVariables>(GenerateShoppingListDocument, options);
+        }
+export type GenerateShoppingListQueryHookResult = ReturnType<typeof useGenerateShoppingListQuery>;
+export type GenerateShoppingListLazyQueryHookResult = ReturnType<typeof useGenerateShoppingListLazyQuery>;
+export type GenerateShoppingListQueryResult = Apollo.QueryResult<GenerateShoppingListQuery, GenerateShoppingListQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -601,6 +698,7 @@ export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const namedOperations = {
   Query: {
+    GenerateShoppingList: 'GenerateShoppingList',
     GetFavourites: 'GetFavourites',
     GetSearchItems: 'GetSearchItems',
     GetStoreItems: 'GetStoreItems',
