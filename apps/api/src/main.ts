@@ -15,6 +15,7 @@ import { orderBy } from 'lodash';
 
 import { ScrapeItem } from './scraper/IScraper';
 import { StorePriceResolver } from './resolvers/StoreItemResolver';
+import { ListItemResolver } from './resolvers/ListItemResolver';
 import { ColesScraper } from './scraper/colesScraper';
 import { WoolworthsScraper } from './scraper/woolworthsScraper';
 import { UserResolver } from './resolvers/UserResolver';
@@ -54,7 +55,12 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, StorePriceResolver, FavouriteResolver],
+      resolvers: [
+        UserResolver,
+        StorePriceResolver,
+        FavouriteResolver,
+        ListItemResolver,
+      ],
       validate: false,
     }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],

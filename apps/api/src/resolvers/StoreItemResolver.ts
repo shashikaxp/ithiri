@@ -1,9 +1,9 @@
 import { MyContext } from './../types';
-import { StorePriceResponse } from './util/mapToStorePrices';
 import { Arg, Ctx, Query, Resolver } from 'type-graphql';
 
 import { getStoreItemDetails } from './util/getStoreItemDetails';
 import { getSearchResults } from './util/getSearchResults';
+import { StorePriceResponse } from './types/listItem';
 
 @Resolver()
 export class StorePriceResolver {
