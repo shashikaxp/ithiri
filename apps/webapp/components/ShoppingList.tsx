@@ -11,7 +11,7 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
   return (
     <div>
       {listItems.length === 0 ? (
-        <div className="p-4 text-gray-400">No items were found</div>
+        <div className="p-4 mx-3 text-gray-400">No items were found</div>
       ) : (
         <div>
           <div className="grid grid-cols-shopping-list p-4">
