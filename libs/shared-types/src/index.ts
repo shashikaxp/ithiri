@@ -6,3 +6,5 @@ export interface WeeklyItem {
   itemId: number;
   quantity: number;
 }
+
+export type ShoppingListType = 'best-value' | 'coles' | 'woolworths';
