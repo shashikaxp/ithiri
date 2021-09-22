@@ -1,6 +1,7 @@
+import { COLES_ID, WOOLWORTHS_ID } from './../../constants';
 import { StorePrice } from './../../entity/StorePrice';
 
-import { find, includes } from 'lodash';
+import { find, includes, orderBy } from 'lodash';
 import { StorePriceResponse } from '../types/listItem';
 
 export function mapToStorePrices(
@@ -49,5 +50,31 @@ export function mapToStorePrices(
     }
   });
 
-  return tmpStorePrices;
+  return mapStorePrices(tmpStorePrices);
 }
+
+const mapStorePrices = (
+  storePrices: StorePriceResponse[]
+): StorePriceResponse[] => {
+  return storePrices.map((sp) => {
+    if (sp.storePrices.length === 2) {
+      sp.storePrices = orderBy(sp.storePrices, ['storeId'], ['asc']);
+      return sp;
+    }
+    const currentStoreId = sp.storePrices[0].storeId;
+    sp.storePrices.push({
+      storeId: currentStoreId === COLES_ID ? WOOLWORTHS_ID : COLES_ID,
+      storeName: currentStoreId === COLES_ID ? 'woolworths' : 'coles',
+      cwPrice: null,
+      cwSavings: null,
+      cwDiscount: null,
+      nwPrice: null,
+      nwSavings: null,
+      nwDiscount: null,
+    });
+
+    sp.storePrices = orderBy(sp.storePrices, ['storeId'], ['asc']);
+
+    return sp;
+  });
+};

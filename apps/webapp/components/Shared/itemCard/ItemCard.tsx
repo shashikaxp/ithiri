@@ -63,6 +63,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         {storePriceResponse.storePrices.map((sp) => {
           return (
             <PriceTag
+              className="last:mt-3"
               key={sp.storeId + storePriceResponse.id}
               storePrices={sp}
             />

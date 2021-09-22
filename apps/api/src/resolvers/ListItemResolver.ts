@@ -11,6 +11,7 @@ import {
   WeeklyItemInput,
 } from './types/shoppingList';
 import { StorePriceResponse } from './types/listItem';
+import { COLES_ID, WOOLWORTHS_ID } from '../constants';
 
 @Resolver()
 export class ListItemResolver {
@@ -76,16 +77,17 @@ const generateBestValueShoppingList = (
         minPrice = min(itemPrices.map((ip) => ip.price)) || sp.originalPrice;
         break;
       case 'coles':
-        minPrice = find(itemPrices, { storeId: 1 })?.price || sp.originalPrice;
+        minPrice =
+          find(itemPrices, { storeId: COLES_ID })?.price || sp.originalPrice;
         break;
       case 'woolworths':
-        minPrice = find(itemPrices, { storeId: 2 })?.price || sp.originalPrice;
+        minPrice =
+          find(itemPrices, { storeId: WOOLWORTHS_ID })?.price ||
+          sp.originalPrice;
         break;
       default:
         break;
     }
-
-    console.log(minPrice);
 
     const totalSavingsForItem = getTotalSavingsForItem(
       sp.originalPrice,

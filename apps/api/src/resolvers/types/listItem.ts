@@ -8,23 +8,23 @@ class StorePriceDetails {
   @Field()
   storeName!: string;
 
-  @Field()
-  cwPrice!: number;
+  @Field(() => Number, { nullable: true })
+  cwPrice!: number | null;
 
-  @Field()
-  cwSavings!: number;
+  @Field(() => Number, { nullable: true })
+  cwSavings!: number | null;
 
-  @Field()
-  cwDiscount!: number;
+  @Field(() => Number, { nullable: true })
+  cwDiscount!: number | null;
 
-  @Field()
-  nwPrice!: number;
+  @Field(() => Number, { nullable: true })
+  nwPrice!: number | null;
 
-  @Field()
-  nwSavings!: number;
+  @Field(() => Number, { nullable: true })
+  nwSavings!: number | null;
 
-  @Field()
-  nwDiscount!: number;
+  @Field(() => Number, { nullable: true })
+  nwDiscount!: number | null;
 }
 
 @ObjectType()

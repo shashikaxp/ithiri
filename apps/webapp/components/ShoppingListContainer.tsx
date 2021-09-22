@@ -43,11 +43,9 @@ export const ShoppingListContainer: React.FC<ShoppingListContainerProps> = ({
 
   return (
     <div className="p-4 bg-white m-4">
-      <div className="flex justify-between px-4 text-xl">
+      <div className="flex justify-between px-4 text-xl font-bold">
         <div>{title}</div>
-        <div className="font-bold ">
-          Save {shoppingListDetails?.totalSavings}
-        </div>
+        <div>Save {shoppingListDetails?.totalSavings}</div>
       </div>
 
       {shoppingListDetails?.type === 'best-value'
