@@ -58,6 +58,6 @@ const formatWeeklyLabel = (date: Date) => {
 
   return {
     label,
-    isAvailable: true,
+    isAvailable: isAvailable,
   };
 };
