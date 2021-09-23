@@ -9,6 +9,7 @@ import Logo from './../assets/img/logo.png';
 import { useRegisterMutation } from '../generated/graphql';
 import { toErrorMap } from '../util/toErrorMap';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
+import { GuestModeButton } from '../components/Shared/GuestModeButton';
 
 const Register = () => {
   const router = useRouter();
@@ -70,6 +71,7 @@ const Register = () => {
           <NextLink href="/login">Login</NextLink>
         </span>
       </div>
+      <GuestModeButton />
     </div>
   );
 };

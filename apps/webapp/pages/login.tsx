@@ -10,6 +10,7 @@ import { toErrorMap } from '../util/toErrorMap';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
+import { GuestModeButton } from '../components/Shared/GuestModeButton';
 
 const Login = () => {
   const router = useRouter();
@@ -66,6 +67,7 @@ const Login = () => {
       <div className="mt-4 text-primary">
         <NextLink href="/forgot-password">Forgot password</NextLink>
       </div>
+      <GuestModeButton />
     </div>
   );
 };
