@@ -11,13 +11,8 @@ import connectRedis from 'connect-redis';
 import cors from 'cors';
 import Redis from 'ioredis';
 
-import { orderBy } from 'lodash';
-
-import { ScrapeItem } from './scraper/IScraper';
 import { StorePriceResolver } from './resolvers/StoreItemResolver';
 import { ListItemResolver } from './resolvers/ListItemResolver';
-import { ColesScraper } from './scraper/colesScraper';
-import { WoolworthsScraper } from './scraper/woolworthsScraper';
 import { UserResolver } from './resolvers/UserResolver';
 import { User } from './entity/User';
 import { Item } from './entity/Item';
@@ -26,8 +21,8 @@ import { StorePrice } from './entity/StorePrice';
 import { COOKIE_NAME } from './constants';
 import { MyContext } from './types';
 import { FavouriteResolver } from './resolvers/FavouriteResolver';
-
-import * as stringSimilarity from 'string-similarity';
+import { scrapeNextWeekItems } from './scraper/scrapeNextWeekItems';
+import { setThisWeekItems } from './scraper/setThisWeekItems';
 
 const main = async () => {
   await createConnection({
@@ -46,6 +41,7 @@ const main = async () => {
   const RedisStore = connectRedis(session);
   const redis = new Redis();
 
+  app.use(express.json());
   app.use(
     cors({
       origin: 'http://localhost:4200',
@@ -90,78 +86,40 @@ const main = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, cors: false });
 
-  app.get('/api', async (_, res) => {
-    const em = getManager();
-    const item = await em.findOne(Item, { id: 48 });
-    res.send({ message: item });
+  app.post('/scrapeNextWeekItems/:store', async (req, res) => {
+    try {
+      const storeName = req.params.store;
+      const url = req.body.url;
+      const start = req.body.start;
+      const end = req.body.end;
+      await scrapeNextWeekItems(storeName, url, start, end);
+      res.status(200).json({
+        status: true,
+        message: 'Successfully add weekly items',
+      });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(500).json({
+          status: false,
+          message: error.message,
+        });
+    }
   });
 
-  app.get('/scrape/:store', async (req, res) => {
-    const storeName = req.params.store;
-    let storeId: number;
-    let data: ScrapeItem[] = [];
-
-    if (storeName === 'woolworths') {
-      const woolworths = new WoolworthsScraper();
-      storeId = 2;
-      data = await woolworths.getItems();
-    } else {
-      storeId = 1;
-      const coles = new ColesScraper();
-      data = await coles.getItems();
+  app.post('/setThisWeekItems', async (_, res) => {
+    try {
+      await setThisWeekItems();
+      res.status(200).json({
+        status: true,
+        message: 'Successfully updated this week prices',
+      });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(500).json({
+          status: false,
+          message: error.message,
+        });
     }
-
-    const em = getManager();
-    const store = await em.findOne(Store, { id: storeId });
-    const itemsInDb = await em.find(Item, {});
-
-    data.forEach(async (i) => {
-      const itemId = getMatchingItemId(itemsInDb, i.name);
-
-      let item: Item | undefined = undefined;
-      let storePrice: StorePrice | undefined;
-
-      if (itemId) {
-        const itemData = await em.findOne(Item, { id: itemId });
-        if (itemData) {
-          item = itemData;
-          storePrice = await em.findOne(StorePrice, {
-            item: item,
-            store: store,
-          });
-        }
-      } else {
-        const itemData = {
-          name: i.name,
-          description: null,
-          image: i.image,
-          category: i.category,
-          price: i.price,
-        };
-        item = em.create(Item, itemData);
-        await item.save();
-      }
-
-      if (storePrice) {
-        storePrice.nwPrice = i.currentPrice;
-        storePrice.nwSavings = i.savings;
-        storePrice.nwDiscount = i.discount;
-      } else {
-        const storePriceData = {
-          item: item,
-          store: store,
-          cwPrice: undefined,
-          cwSavings: undefined,
-          cwDiscount: undefined,
-          nwPrice: i.currentPrice,
-          nwSavings: i.savings,
-          nwDiscount: i.discount,
-        };
-        storePrice = em.create(StorePrice, storePriceData);
-      }
-      await storePrice.save();
-    });
-    res.send({ data: true });
   });
 
   const port = process.env.port || 3333;
@@ -169,31 +127,6 @@ const main = async () => {
   app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/api`);
   });
-};
-
-const getMatchingItemId = (itemsInDb: Item[], itemName: string) => {
-  const stringMatchingResults = itemsInDb.map((i) => {
-    return {
-      ...i,
-      compatibility: stringSimilarity.compareTwoStrings(i.name, itemName),
-    };
-  });
-
-  const highestCOmpatibilityItems = stringMatchingResults.filter((i) => {
-    return i.compatibility > 0.9;
-  });
-
-  const sortedItems = orderBy(
-    highestCOmpatibilityItems,
-    ['compatibility'],
-    ['desc']
-  );
-
-  if (sortedItems.length > 0) {
-    return sortedItems[0].id;
-  } else {
-    return null;
-  }
 };
 
 main().catch((error) => console.log(error));

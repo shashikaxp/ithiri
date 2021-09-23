@@ -10,5 +10,9 @@ export interface ScrapeItem {
 }
 
 export interface IScraper {
-  getItems: (page: HTMLElement) => Promise<ScrapeItem[]>;
+  getItems: (
+    baseUrl: string,
+    startPage: number,
+    endPage: number
+  ) => Promise<ScrapeItem[]>;
 }

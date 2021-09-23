@@ -24,29 +24,29 @@ export class StorePrice extends BaseEntity {
   @Field()
   storeId!: number;
 
-  @Field()
+  @Field(() => Number, { nullable: true })
   @Column({ type: 'decimal', nullable: true })
-  cwPrice!: number;
+  cwPrice!: number | null;
 
-  @Field()
+  @Field(() => Number, { nullable: true })
   @Column({ type: 'decimal', nullable: true })
-  cwSavings!: number;
+  cwSavings!: number | null;
 
-  @Field()
+  @Field(() => Number, { nullable: true })
   @Column({ type: 'decimal', nullable: true })
-  cwDiscount!: number;
+  cwDiscount!: number | null;
 
-  @Field()
-  @Column({ type: 'decimal' })
-  nwPrice!: number;
+  @Field(() => Number, { nullable: true })
+  @Column({ type: 'decimal', nullable: true })
+  nwPrice!: number | null;
 
-  @Field()
-  @Column({ type: 'decimal' })
-  nwSavings!: number;
+  @Field(() => Number, { nullable: true })
+  @Column({ type: 'decimal', nullable: true })
+  nwSavings!: number | null;
 
-  @Field()
-  @Column({ type: 'decimal' })
-  nwDiscount!: number;
+  @Field(() => Number, { nullable: true })
+  @Column({ type: 'decimal', nullable: true })
+  nwDiscount!: number | null;
 
   @ManyToOne(() => Item, (item) => item.storePrices)
   public item!: Item;
