@@ -1,6 +1,8 @@
 import { ErrorMessage, Field } from 'formik';
 import React, { InputHTMLAttributes } from 'react';
 
+import { CustomErrorMessage } from './CustomErrorMessage';
+
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
 };
@@ -13,7 +15,7 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
         {...props}
         name={props.name}
       ></Field>
-      <ErrorMessage name={props.name} />
+      <ErrorMessage component={CustomErrorMessage} name={props.name} />
     </div>
   );
 };

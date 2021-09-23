@@ -3,7 +3,7 @@ import React, { ReactElement, useState } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 
-import { InputField } from '../components/InputField';
+import { InputField } from '../components/Shared/forms/InputField';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
 import { useForgotPasswordMutation } from '../generated/graphql';
 import Logo from './../assets/img/logo.png';

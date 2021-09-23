@@ -4,7 +4,7 @@ import Image from 'next/image';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
-import { InputField } from '../components/InputField';
+import { InputField } from '../components/Shared/forms/InputField';
 import Logo from './../assets/img/logo.png';
 import { useRegisterMutation } from '../generated/graphql';
 import { toErrorMap } from '../util/toErrorMap';

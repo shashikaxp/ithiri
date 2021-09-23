@@ -4,7 +4,7 @@ import NextLink from 'next/link';
 import { Formik, Form } from 'formik';
 import router from 'next/router';
 import { Container } from '../../components/Container';
-import { InputField } from '../../components/InputField';
+import { InputField } from '../../components/Shared/forms/InputField';
 import { useChangePasswordMutation } from './../../generated/graphql';
 import { toErrorMap } from './../../../webapp/util/toErrorMap';
 

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Form, Formik } from 'formik';
-import { InputField } from '../components/InputField';
+import { InputField } from '../components/Shared/forms/InputField';
 import Image from 'next/image';
 import Logo from './../assets/img/logo.png';
 import NextLink from 'next/link';
