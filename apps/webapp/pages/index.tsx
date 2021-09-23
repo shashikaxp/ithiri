@@ -47,7 +47,7 @@ export const Index = () => {
               storeItems={data.getStoreItems}
               isUserLoggedIn={isUserLoggedIn}
             />
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-4 mb-8 text-primary">
               <button
                 className="px-10 py-2 bg-white rounded-full text-lg font-bold"
                 onClick={() =>

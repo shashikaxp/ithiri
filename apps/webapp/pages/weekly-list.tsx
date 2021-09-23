@@ -20,7 +20,6 @@ const WeeklyList = () => {
 
   const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
   const { items } = useWeekItems();
-  console.log(items);
 
   const isUserLoggedIn = meData?.me?.name ? true : false;
   const weeklyItemIds = items.map((wi) => wi.itemId);

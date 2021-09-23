@@ -18,19 +18,13 @@ export const colesScraper = () => {
       )[0] as HTMLElement
     ).innerText;
 
-    const discountedPriceEl = element.querySelector(
-      'span.sf-regprice'
-    ) as HTMLElement;
+    const discountedPrice = (
+      element.querySelector('span.sf-regprice') as HTMLElement
+    )?.innerText;
 
-    const descriptionEl = element.querySelector(
-      'span.sf-regoptiondesc'
-    ) as HTMLElement;
-
-    const discountedPrice = discountedPriceEl
-      ? discountedPriceEl.innerText
-      : null;
-
-    const description = descriptionEl ? descriptionEl.innerText : null;
+    const description = (
+      element.querySelector('span.sf-regoptiondesc') as HTMLElement
+    )?.innerText;
 
     const name = (element.querySelector('a.sf-item-heading') as HTMLElement)
       .innerText;

@@ -1,8 +1,8 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-// puppeteer.use(StealthPlugin());
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+puppeteer.use(StealthPlugin());
 
 import { SCRAPE_DELAY_PER_PAGE } from './../constants';
 import { sleeper } from './util/sleeper';
@@ -31,6 +31,8 @@ export const scrapeNextWeekItems = async (
       scapingFn = colesScraper;
     }
 
+    // Woolworths only works in headless:false browser :S
+    // @ts-ignore
     const browser = await puppeteer.launch({ headless: false });
 
     for (let i = startPage; i < endPage; i++) {
@@ -41,9 +43,10 @@ export const scrapeNextWeekItems = async (
       if (storeId === 2) {
         await page.setCookie({
           name: 'sf-locationId',
-          value: '20731',
+          value: '4922',
         });
-        await page.reload();
+        // reload only in starting page
+        if (i == startPage) await page.reload();
       }
 
       console.log(`Fetching items page: ${i}`);
