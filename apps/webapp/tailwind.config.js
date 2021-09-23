@@ -8,11 +8,14 @@ module.exports = {
       fontFamily: {
         primary: "'Source Sans Pro'",        
       },
+      backgroundImage: {
+        'store': "url('../assets/img/store.jpg')",        
+      },
       colors: {
         primary: {
-          light: '#F0F2FF',
-          DEFAULT:'#6C63FF',
-          dark: '#6C63FF',
+          light: '#E1F5FE',
+          DEFAULT:'#0277BD',
+          dark: '#01579B',
         },
         text: {
           light: '#4E4E4E',

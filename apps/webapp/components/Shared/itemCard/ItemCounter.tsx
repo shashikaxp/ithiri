@@ -12,7 +12,7 @@ export const ItemCounter: React.FC<ItemCounterProps> = ({ weeklyItem }) => {
   return (
     <div className="w-full select-none rounded-br-xl rounded-bl-xl bg-primary-light text-white flex justify-between align-middle">
       <div
-        className="  rounded-bl-xl py-1 px-4 bg-primary cursor-pointer"
+        className="  rounded-bl-xl py-1 px-4 bg-primary-dark cursor-pointer"
         onClick={() => removeQuantity(weeklyItem.itemId)}
       >
         -
@@ -21,7 +21,7 @@ export const ItemCounter: React.FC<ItemCounterProps> = ({ weeklyItem }) => {
         <div> {weeklyItem.quantity}</div>
       </div>
       <div
-        className=" rounded-br-xl py-1 px-4 bg-primary cursor-pointer"
+        className=" rounded-br-xl py-1 px-4 bg-primary-dark cursor-pointer"
         onClick={() => addQuantity(weeklyItem.itemId)}
       >
         +

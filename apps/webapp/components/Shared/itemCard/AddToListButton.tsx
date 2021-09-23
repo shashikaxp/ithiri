@@ -10,7 +10,9 @@ export const AddToListButton: React.FC<AddToListButtonProps> = ({ itemId }) => {
 
   return (
     <button
-      className={'w-full p-1 rounded-br-xl rounded-bl-xl bg-primary text-white'}
+      className={
+        'w-full p-1 rounded-br-xl rounded-bl-xl bg-primary-dark text-white'
+      }
       onClick={() => {
         addQuantity(itemId);
       }}

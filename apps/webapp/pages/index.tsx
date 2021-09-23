@@ -24,7 +24,7 @@ export const Index = () => {
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
-      <div className="p-4  bg-primary sticky top-0">
+      <div className="p-4  bg-primary-dark sticky top-0">
         <input
           className="w-full rounded-md p-4 focus:outline-none  text-text"
           type="text"

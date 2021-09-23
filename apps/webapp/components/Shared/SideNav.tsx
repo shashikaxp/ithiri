@@ -32,7 +32,7 @@ export const SideNav: React.FC = () => {
   const getActiveRouteClass = (route: string) => {
     const commonClasses = 'text-lg p-3 cursor-pointer font-bold';
     if (router.pathname == route) {
-      return `${commonClasses} text-primary`;
+      return `${commonClasses} text-primary-dark`;
     } else {
       return `${commonClasses}`;
     }
@@ -46,7 +46,7 @@ export const SideNav: React.FC = () => {
     const userName = data?.me ? data.me.name : 'Stranger';
     body = (
       <div>
-        <div className="flex flex-col justify-center align-middle bg-primary p-4">
+        <div className="flex flex-col justify-center align-middle bg-primary-dark p-4">
           <div className="flex justify-center  ">
             <div className="bg-primary-light rounded-full w-24 h-24 flex align-middle justify-center">
               <img
