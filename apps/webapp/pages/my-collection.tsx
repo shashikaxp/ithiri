@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { NoResults } from '../components/Shared/NoResults';
-import { Screen } from '../components/Shared/Screen';
+import { Screen } from '../components/Shared/layouts/Screen';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { useGetFavouritesQuery, useMeQuery } from '../generated/graphql';
 

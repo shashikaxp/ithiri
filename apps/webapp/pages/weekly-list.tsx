@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import { includes } from 'lodash';
 
 import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
-import { Screen } from '../components/Shared/Screen';
+import { Screen } from '../components/Shared/layouts/Screen';
 import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { useWeekItems } from '../hooks/useWeekItems';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';

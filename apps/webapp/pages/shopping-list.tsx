@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { find } from 'lodash';
 
-import { Screen } from '../components/Shared/Screen';
+import { Screen } from '../components/Shared/layouts/Screen';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import {
   ShoppingList as ShoppingListType,

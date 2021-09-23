@@ -6,7 +6,7 @@ import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { SearchContent } from '../components/Home/SearchContent';
 import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
-import { Screen } from '../components/Shared/Screen';
+import { Screen } from '../components/Shared/layouts/Screen';
 import { ITEM_PER_PAGE } from '../constants';
 
 export const Index = () => {
