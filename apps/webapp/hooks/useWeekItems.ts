@@ -12,13 +12,14 @@ interface HookResponse {
   items: WeeklyItem[];
   addQuantity: (itemId: number) => void;
   removeQuantity: (itemId: number) => void;
+  removeCookies: () => void;
 }
 
 export const useWeekItems = (): HookResponse => {
-  const [thisWeekCookies, setThisWeekCookie] = useCookies([
+  const [thisWeekCookies, setThisWeekCookie, removeTWCookie] = useCookies([
     THIS_WEEK_ITEM_COOKIE_NAME,
   ]);
-  const [nextWeekCookies, setNextWeekCookie] = useCookies([
+  const [nextWeekCookies, setNextWeekCookie, removeNWCookie] = useCookies([
     NEXT_WEEK_ITEM_COOKIE_NAME,
   ]);
   const selectedWeek = useStore().selectedWeek;
@@ -82,9 +83,15 @@ export const useWeekItems = (): HookResponse => {
     }
   };
 
+  const removeCookies = () => {
+    removeTWCookie(THIS_WEEK_ITEM_COOKIE_NAME);
+    removeNWCookie(NEXT_WEEK_ITEM_COOKIE_NAME);
+  };
+
   return {
     items,
     addQuantity,
     removeQuantity,
+    removeCookies,
   };
 };

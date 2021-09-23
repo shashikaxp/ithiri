@@ -3,6 +3,8 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useWeekItems } from './../../hooks/useWeekItems';
+
 import {
   namedOperations,
   useLogoutMutation,
@@ -15,10 +17,12 @@ export const SideNav: React.FC = () => {
   });
   const router = useRouter();
   const apolloClient = useApolloClient();
+  const { removeCookies } = useWeekItems();
 
   const [logout] = useLogoutMutation({
     onCompleted: async () => {
       await apolloClient.resetStore();
+      removeCookies();
       router.push('/');
     },
 

@@ -15,7 +15,6 @@ export const ShoppingListContainer: React.FC<ShoppingListContainerProps> = ({
   shoppingListDetails,
 }) => {
   let title = '';
-
   let colesWeeklyList: ShoppingItem[] = [];
   let wooliesWeeklyList: ShoppingItem[] = [];
 
@@ -42,28 +41,32 @@ export const ShoppingListContainer: React.FC<ShoppingListContainerProps> = ({
   }
 
   return (
-    <div className="p-4 bg-white m-4">
-      <div className="flex justify-between px-4 text-xl font-bold">
-        <div>{title}</div>
-        <div>Save {shoppingListDetails?.totalSavings}</div>
-      </div>
+    <>
+      {shoppingListDetails?.storeItems && (
+        <div className="p-4 bg-white m-4">
+          <div className="flex justify-between px-4 text-xl font-bold">
+            <div>{title}</div>
+            <div>Save {shoppingListDetails?.totalSavings}</div>
+          </div>
 
-      {shoppingListDetails?.type === 'best-value'
-        ? shoppingListDetails && (
-            <div>
-              <div className="px-4 mt-4 text-base font-bold">
-                Coles Shopping List
-              </div>
-              <ShoppingList listItems={colesWeeklyList} />
-              <div className="px-4 mt-4 text-base font-bold">
-                Woolworths Shopping List
-              </div>
-              <ShoppingList listItems={wooliesWeeklyList} />
-            </div>
-          )
-        : shoppingListDetails && (
-            <ShoppingList listItems={shoppingListDetails.storeItems} />
-          )}
-    </div>
+          {shoppingListDetails?.type === 'best-value'
+            ? shoppingListDetails && (
+                <div>
+                  <div className="px-4 mt-4 text-base font-bold">
+                    Coles Shopping List
+                  </div>
+                  <ShoppingList listItems={colesWeeklyList} />
+                  <div className="px-4 mt-4 text-base font-bold">
+                    Woolworths Shopping List
+                  </div>
+                  <ShoppingList listItems={wooliesWeeklyList} />
+                </div>
+              )
+            : shoppingListDetails && (
+                <ShoppingList listItems={shoppingListDetails.storeItems} />
+              )}
+        </div>
+      )}
+    </>
   );
 };

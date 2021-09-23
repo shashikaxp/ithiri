@@ -8,6 +8,7 @@ import { useGetStoreItemsQuery, useMeQuery } from '../generated/graphql';
 import { useWeekItems } from '../hooks/useWeekItems';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { ITEM_PER_PAGE } from '../constants';
+import { NoResults } from '../components/Shared/NoResults';
 
 const WeeklyList = () => {
   const { data } = useGetStoreItemsQuery({
@@ -19,6 +20,7 @@ const WeeklyList = () => {
 
   const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
   const { items } = useWeekItems();
+  console.log(items);
 
   const isUserLoggedIn = meData?.me?.name ? true : false;
   const weeklyItemIds = items.map((wi) => wi.itemId);
@@ -30,11 +32,16 @@ const WeeklyList = () => {
   return (
     <div className="flex flex-col bg-background min-h-screen">
       <WeekSelector />
-      {weeklyItems && (
+      {weeklyItems && weeklyItems.length > 0 && (
         <ItemsGridContainer
           storeItems={weeklyItems}
           isUserLoggedIn={isUserLoggedIn}
         />
+      )}
+      {weeklyItems && weeklyItems.length === 0 && (
+        <div>
+          <NoResults />
+        </div>
       )}
     </div>
   );
