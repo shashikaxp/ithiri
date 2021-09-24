@@ -5,9 +5,12 @@
   "scripts": {
     "start": "node dist/apps/api/main",
     "build": "nx build --prod api",
-    "build-webapp": "nx build --prod webapp",
+    "build:webapp": "nx build --prod webapp",
     "test": "nx test",
     "gen": "graphql-codegen --config codegen.yml"
+  },
+  "engines": {
+    "node": "14.x"
   },
   "private": true,
   "dependencies": {

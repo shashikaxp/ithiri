@@ -20,7 +20,7 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3333/graphql',
+  uri: process.env.NEXT_PUBLIC_API_URL,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
