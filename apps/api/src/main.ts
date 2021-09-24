@@ -18,7 +18,7 @@ import { User } from './entity/User';
 import { Item } from './entity/Item';
 import { Favourite } from './entity/Favourite';
 import { StorePrice } from './entity/StorePrice';
-import { COOKIE_NAME } from './constants';
+import { COOKIE_NAME, __PROD__ } from './constants';
 import { MyContext } from './types';
 import { FavouriteResolver } from './resolvers/FavouriteResolver';
 import { scrapeNextWeekItems } from './scraper/scrapeNextWeekItems';
@@ -35,6 +35,7 @@ const main = async () => {
     port: Number(process.env.DB_PORT),
     database: process.env.DB_NAME,
     synchronize: true,
+    ssl: __PROD__,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASS,
     entities: [User, Store, Item, StorePrice, Favourite],
@@ -79,7 +80,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: 'lax',
-        secure: false, // use only in https,
+        secure: __PROD__, // use only in https,
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET || 'asd2323sad',
