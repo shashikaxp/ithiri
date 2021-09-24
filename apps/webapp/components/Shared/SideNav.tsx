@@ -45,22 +45,20 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   if (loading) {
     body = null;
   } else {
-    const userName = data?.me ? data.me.name : 'Stranger';
+    const greeting = data?.me ? 'Hey ' + data.me.name : 'Guest';
     body = (
       <>
         <div className="flex flex-col justify-center align-middle bg-primary-dark p-4">
           <div className="flex justify-center  ">
             <div className="bg-primary-light rounded-full w-24 h-24 flex align-middle justify-center">
               <img
-                className="h-24 w-auto rounded-full"
-                src={`https://avatars.dicebear.com/api/miniavs/${userName}.svg`}
+                className="h-24 p-4 w-auto rounded-full"
+                src={`https://avatars.dicebear.com/api/gridy/${greeting}.svg`}
                 alt="profile picture"
               />
             </div>
           </div>
-          <div className="text-center text-xl mt-2 text-white">
-            Hey {userName}
-          </div>
+          <div className="text-center text-xl mt-2 text-white">{greeting}</div>
         </div>
         <div className="mt-8 flex  flex-col">
           {data?.me ? (
