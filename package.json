@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node dist/apps/api/main",
     "build": "nx build --prod api",
+    "build-webapp": "nx build --prod webapp",
     "test": "nx test",
     "gen": "graphql-codegen --config codegen.yml"
   },
@@ -99,6 +100,6 @@
     "prettier": "^2.3.1",
     "tailwindcss": "^2.2.9",
     "ts-jest": "27.0.3",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.3"
   }
 }

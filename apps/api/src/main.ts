@@ -35,9 +35,11 @@ const main = async () => {
     port: Number(process.env.DB_PORT),
     database: process.env.DB_NAME,
     synchronize: true,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    ssl: __PROD__
+      ? {
+          rejectUnauthorized: false,
+        }
+      : false,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASS,
     entities: [User, Store, Item, StorePrice, Favourite],
