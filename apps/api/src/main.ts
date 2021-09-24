@@ -36,7 +36,7 @@ const main = async () => {
     database: process.env.DB_NAME,
     synchronize: true,
     ssl: {
-      ca: process.env.SSL_CERT,
+      rejectUnauthorized: false,
     },
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASS,
