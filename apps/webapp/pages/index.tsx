@@ -24,9 +24,9 @@ export const Index = () => {
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
-      <div className="p-4  bg-primary-dark sticky top-0">
+      <div className="px-4 pb-4 pt-2 md:pt-4  bg-primary-dark sticky top-0">
         <input
-          className="w-full rounded-md p-4 focus:outline-none  text-text"
+          className="w-full rounded-3xl  p-4 focus:outline-none  text-text"
           type="text"
           placeholder="Search items..."
           onChange={(e) => debouncedFn(e.target.value)}

@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        primary: "'Source Sans Pro'",        
+        primary: "'Source Sans Pro'",    
+        secondary: "'Grand Hotel'"    
       },
       backgroundImage: {  
         'store': "url('../assets/img/store.jpg')",        

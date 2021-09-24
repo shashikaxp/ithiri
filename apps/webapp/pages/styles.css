@@ -28,7 +28,18 @@
       format('truetype');
 }
 
+@font-face {
+  font-family: 'Grand Hotel';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('/fonts/grand-hotel/grand-hotel-v8-latin-regular.woff2') format('woff2'),
+    url('/fonts/grand-hotel/grand-hotel-v8-latin-regular.woff') format('woff'),
+    url('/fonts/grand-hotel/grand-hotel-v8-latin-regular.ttf')
+      format('truetype');
+}
+
 body {
   @apply font-primary;
-  @apply text-text;
+  @apply text-text select-none;
 }

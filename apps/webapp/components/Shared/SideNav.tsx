@@ -11,7 +11,9 @@ import {
   useMeQuery,
 } from '../../generated/graphql';
 
-export const SideNav: React.FC = () => {
+export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+}) => {
   const { loading, data } = useMeQuery({
     fetchPolicy: 'network-only',
   });
@@ -45,7 +47,7 @@ export const SideNav: React.FC = () => {
   } else {
     const userName = data?.me ? data.me.name : 'Stranger';
     body = (
-      <div>
+      <>
         <div className="flex flex-col justify-center align-middle bg-primary-dark p-4">
           <div className="flex justify-center  ">
             <div className="bg-primary-light rounded-full w-24 h-24 flex align-middle justify-center">
@@ -105,9 +107,9 @@ export const SideNav: React.FC = () => {
             </>
           )}
         </div>
-      </div>
+      </>
     );
   }
 
-  return <div className="bg-primary-light w-64 h-screen">{body}</div>;
+  return <div className={className}>{body}</div>;
 };
