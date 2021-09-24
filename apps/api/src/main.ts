@@ -48,7 +48,12 @@ const main = async () => {
   const em = getManager();
   const app = express();
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
+
+  const redis = new Redis({
+    port: Number(process.env.REDIS_PORT),
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PASS,
+  });
 
   app.use(express.json());
   app.use(
