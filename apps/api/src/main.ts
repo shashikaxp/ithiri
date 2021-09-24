@@ -49,11 +49,7 @@ const main = async () => {
   const app = express();
   const RedisStore = connectRedis(session);
 
-  const redis = new Redis({
-    port: Number(process.env.REDIS_PORT),
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASS,
-  });
+  const redis = new Redis(process.env.REDIS_URL);
 
   app.use(express.json());
   app.use(
