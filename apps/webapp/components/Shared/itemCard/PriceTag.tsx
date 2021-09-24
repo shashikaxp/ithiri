@@ -19,7 +19,7 @@ export const PriceTag: React.FC<
   }
 
   return (
-    <div className={`bg-${storeColor}-light flex rounded-md ${className}`}>
+    <div className={`bg-${storeColor}-light  flex rounded-md ${className}`}>
       <div
         className={`w-24 bg-${storeColor} text-white rounded-tl-md rounded-bl-md p-2 text-center`}
       >
