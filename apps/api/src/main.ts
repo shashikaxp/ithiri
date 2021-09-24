@@ -85,7 +85,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: 'none',
-        secure: __PROD__, // use only in https,
+        secure: false, // use only in https,
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET || 'asd2323sad',
