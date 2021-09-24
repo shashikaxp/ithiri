@@ -7,10 +7,11 @@ import { InputField } from '../components/Shared/forms/InputField';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
 import { useForgotPasswordMutation } from '../generated/graphql';
 import Logo from './../assets/img/logo.png';
+import { Button } from '../components/Shared/ui/Button';
 
 const ForgotPassword = () => {
   const [complete, setComplete] = useState(false);
-  const [forgotPassword] = useForgotPasswordMutation();
+  const [forgotPassword, { loading }] = useForgotPasswordMutation();
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -29,7 +30,9 @@ const ForgotPassword = () => {
         }}
       >
         {complete ? (
-          <div>We sent you and email for rest the password</div>
+          <div className="my-6">
+            We sent you and email for rest the password
+          </div>
         ) : (
           <Form className="flex flex-col gap-2 w-full p-12">
             <InputField
@@ -38,12 +41,9 @@ const ForgotPassword = () => {
               placeholder="Email"
               required
             />
-            <button
-              className="bg-primary  rounded-lg text-white px-4 py-2"
-              type="submit"
-            >
+            <Button role="submit" loading={loading}>
               Forgot password
-            </button>
+            </Button>
           </Form>
         )}
       </Formik>

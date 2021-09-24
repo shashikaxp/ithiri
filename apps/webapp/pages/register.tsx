@@ -10,10 +10,11 @@ import { useRegisterMutation } from '../generated/graphql';
 import { toErrorMap } from '../util/toErrorMap';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
 import { GuestModeButton } from '../components/Shared/GuestModeButton';
+import { Button } from '../components/Shared/ui/Button';
 
 const Register = () => {
   const router = useRouter();
-  const [register] = useRegisterMutation();
+  const [register, { loading }] = useRegisterMutation();
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -38,31 +39,31 @@ const Register = () => {
         }}
       >
         <Form className="flex flex-col gap-2 w-full p-12">
-          <InputField name="name" type="text" placeholder="Name" />
+          <InputField name="name" type="text" placeholder="Name" required />
           <InputField
             name="email"
             type="email"
             placeholder="Email"
             autoComplete="username"
+            required
           />
           <InputField
             name="password"
             type="password"
             placeholder="Password"
             autoComplete="new-password"
+            required
           />
           <InputField
             name="confirmPassword"
             type="password"
             placeholder="Confirm password"
             autoComplete="new-password"
+            required
           />
-          <button
-            className="bg-primary rounded-lg text-white px-4 py-2 mt-4"
-            type="submit"
-          >
-            Submit
-          </button>
+          <Button role="submit" loading={loading}>
+            Register
+          </Button>
         </Form>
       </Formik>
       <div className="mt-2">

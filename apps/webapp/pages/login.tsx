@@ -11,12 +11,13 @@ import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
 import { GuestModeButton } from '../components/Shared/GuestModeButton';
+import { Button } from '../components/Shared/ui/Button';
 
 const Login = () => {
   const router = useRouter();
   const apolloClient = useApolloClient();
 
-  const [login] = useLoginMutation({
+  const [login, { loading }] = useLoginMutation({
     awaitRefetchQueries: true,
     refetchQueries: [namedOperations.Query.GetStoreItems],
   });
@@ -43,19 +44,17 @@ const Login = () => {
         }}
       >
         <Form className="flex flex-col gap-2 w-full p-12">
-          <InputField name="email" type="email" placeholder="Email" />
+          <InputField name="email" type="email" placeholder="Email" required />
           <InputField
             name="password"
             type="password"
             placeholder="Password"
             autoComplete="new-password"
+            required
           />
-          <button
-            className="bg-primary rounded-lg text-white px-4 py-2 mt-4"
-            type="submit"
-          >
-            Submit
-          </button>
+          <Button role="submit" loading={loading}>
+            Login
+          </Button>
         </Form>
       </Formik>
       <div className="mt-2">
