@@ -24,15 +24,19 @@ import { FavouriteResolver } from './resolvers/FavouriteResolver';
 import { scrapeNextWeekItems } from './scraper/scrapeNextWeekItems';
 import { setThisWeekItems } from './scraper/setThisWeekItems';
 
+// set up env
+import dotenv from 'dotenv';
+dotenv.config();
+
 const main = async () => {
   await createConnection({
     type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    database: 'ithiri',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    database: process.env.DB_NAME,
     synchronize: true,
-    username: 'postgres',
-    password: 'postgres',
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASS,
     entities: [User, Store, Item, StorePrice, Favourite],
   });
 
@@ -44,7 +48,7 @@ const main = async () => {
   app.use(express.json());
   app.use(
     cors({
-      origin: 'http://localhost:4200',
+      origin: true,
       credentials: true,
     })
   );
@@ -78,7 +82,7 @@ const main = async () => {
         secure: false, // use only in https,
       },
       saveUninitialized: false,
-      secret: 'asd2323sad',
+      secret: process.env.SESSION_SECRET || 'asd2323sad',
       resave: false,
     })
   );
@@ -122,7 +126,7 @@ const main = async () => {
     }
   });
 
-  const port = process.env.port || 3333;
+  const port = process.env.PORT || 3333;
 
   app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/api`);
