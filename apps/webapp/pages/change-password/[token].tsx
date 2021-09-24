@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import NextLink from 'next/link';
 import { Formik, Form } from 'formik';
 import router from 'next/router';
-import { Container } from '../../components/Container';
+
 import { InputField } from '../../components/Shared/forms/InputField';
 import { useChangePasswordMutation } from './../../generated/graphql';
 import { toErrorMap } from './../../../webapp/util/toErrorMap';
@@ -13,7 +13,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
   const [tokenError, setTokenError] = useState('');
 
   return (
-    <Container>
+    <div>
       <div className="flex flex-col items-center justify-center h-screen">
         <Formik
           initialValues={{
@@ -61,7 +61,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
           ) : null}
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
