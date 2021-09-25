@@ -1,17 +1,17 @@
-import { saveScrapedItems } from './scraper/saveScrapedItems';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { getManager } from 'typeorm';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { Store } from './entity/Store';
 import express from 'express';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
 import Redis from 'ioredis';
 
+import { saveScrapedItems } from './scraper/saveScrapedItems';
+import { Store } from './entity/Store';
 import { StorePriceResolver } from './resolvers/StoreItemResolver';
 import { ListItemResolver } from './resolvers/ListItemResolver';
 import { UserResolver } from './resolvers/UserResolver';
@@ -76,7 +76,6 @@ const main = async () => {
     context: ({ req, res }): MyContext => ({ em, req, res, redis }),
   });
 
-  // TODO  use env
   app.use(
     session({
       name: COOKIE_NAME,
@@ -88,8 +87,8 @@ const main = async () => {
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
-        sameSite: __PROD__ ? 'none' : 'lax',
-        secure: __PROD__, // use only in https,,
+        sameSite: __PROD__ ? 'none' : 'lax', // lax wont work with heroku
+        secure: __PROD__,
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET || 'asd2323sad',
@@ -102,6 +101,10 @@ const main = async () => {
 
   // REST ENDPOINTS
 
+  //TODO scarping is done in local environment and send scraped data to the prod
+  // this saves spaces in heroku because puppeteer need debian environment to run
+  // once other libraries are installed, it will exceed the heroku free plan ;)
+  // because of that currently scraping part is done in local machine
   app.post('/scrapeNextWeekItemsLocal/:store', async (req, res) => {
     try {
       const storeName = req.params.store;

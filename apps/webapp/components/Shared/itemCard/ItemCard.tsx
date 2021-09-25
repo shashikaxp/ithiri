@@ -51,7 +51,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           )}
         </div>
       )}
-      <div className="h-40 flex justify-center ">
+      <div className="h-40 flex justify-center p-4">
         <img
           className="h-full w-auto "
           src={storePriceResponse.img}

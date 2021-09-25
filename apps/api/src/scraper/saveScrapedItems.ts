@@ -78,7 +78,7 @@ const getMatchingItemId = (itemsInDb: Item[], itemName: string) => {
   });
 
   const highestCOmpatibilityItems = stringMatchingResults.filter((i) => {
-    return i.compatibility > 0.9;
+    return i.compatibility > Number(process.env.COMPATIBILITY_MARGIN);
   });
 
   const sortedItems = orderBy(
