@@ -31,7 +31,9 @@ const ForgotPassword = () => {
       >
         {complete ? (
           <div className="my-6">
-            We sent you and email for rest the password
+            If we found an account associated with that username, we have sent
+            password reset instructions to the primary email address on the
+            account.
           </div>
         ) : (
           <Form className="flex flex-col gap-2 w-full p-12">
