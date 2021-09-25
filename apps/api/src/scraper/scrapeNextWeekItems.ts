@@ -33,8 +33,7 @@ export const scrapeNextWeekItems = async (
 
     // Woolworths only works in headless:false browser :S
     const browser = await puppeteer.launch({
-      headless: false,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ['--no-sandbox'],
     });
 
     for (let i = startPage; i < endPage; i++) {
