@@ -1,8 +1,8 @@
-import puppeteer from 'puppeteer-extra';
+import puppeteer from 'puppeteer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-puppeteer.use(StealthPlugin());
+// const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+// puppeteer.use(StealthPlugin());
 
 import { SCRAPE_DELAY_PER_PAGE } from './../constants';
 import { sleeper } from './util/sleeper';
@@ -32,8 +32,9 @@ export const scrapeNextWeekItems = async (
     }
 
     // Woolworths only works in headless:false browser :S
-    // @ts-ignore
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
 
     for (let i = startPage; i < endPage; i++) {
       const page = await browser.newPage();
