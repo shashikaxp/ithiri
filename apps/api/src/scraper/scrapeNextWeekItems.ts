@@ -6,7 +6,6 @@ import puppeteer from 'puppeteer';
 
 import { SCRAPE_DELAY_PER_PAGE } from './../constants';
 import { sleeper } from './util/sleeper';
-import { saveScrapedItems } from './saveScrapedItems';
 import { ScrapeItem } from './types/IScraper';
 import { colesScraper } from './util/colesScraper';
 import { woolworthsScraper } from './util/woolworthsScraper';
@@ -16,7 +15,10 @@ export const scrapeNextWeekItems = async (
   url: string,
   startPage: number,
   endPage: number
-) => {
+): Promise<{
+  data: ScrapeItem[];
+  storeId: number;
+}> => {
   try {
     let storeId: number;
     const data: ScrapeItem[] = [];
@@ -65,10 +67,13 @@ export const scrapeNextWeekItems = async (
     }
 
     await browser.close();
-
-    await saveScrapedItems(data, storeId);
+    return {
+      data,
+      storeId,
+    };
   } catch (error) {
     if (error instanceof Error)
       throw Error('Error ocurred while scraping items' + error.message);
+    throw Error('Error ocurred while scraping items');
   }
 };

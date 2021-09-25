@@ -1,3 +1,4 @@
+import { saveScrapedItems } from './scraper/saveScrapedItems';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { getManager } from 'typeorm';
@@ -23,6 +24,8 @@ import { MyContext } from './types';
 import { FavouriteResolver } from './resolvers/FavouriteResolver';
 import { scrapeNextWeekItems } from './scraper/scrapeNextWeekItems';
 import { setThisWeekItems } from './scraper/setThisWeekItems';
+
+import axios from 'axios';
 
 // set up env
 import dotenv from 'dotenv';
@@ -97,16 +100,53 @@ const main = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, cors: false });
 
-  app.post('/scrapeNextWeekItems/:store', async (req, res) => {
+  // REST ENDPOINTS
+
+  app.post('/scrapeNextWeekItemsLocal/:store', async (req, res) => {
     try {
       const storeName = req.params.store;
       const url = req.body.url;
       const start = req.body.start;
       const end = req.body.end;
-      await scrapeNextWeekItems(storeName, url, start, end);
+      const { data, storeId } = await scrapeNextWeekItems(
+        storeName,
+        url,
+        start,
+        end
+      );
+
+      const endpoint = process.env.HOSTED_API_URL + '/saveScrapedData';
+      await axios.post(endpoint, {
+        data,
+        storeId,
+      });
+
       res.status(200).json({
         status: true,
         message: 'Successfully add weekly items',
+      });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(500).json({
+          status: false,
+          message: error.message,
+        });
+
+      res.status(500).json({
+        status: false,
+        message: error,
+      });
+    }
+  });
+
+  app.post('/saveScrapedData', async (req, res) => {
+    try {
+      const data = req.body.data;
+      const storeId = req.body.storeId;
+      await saveScrapedItems(data, storeId);
+      res.status(200).json({
+        status: true,
+        message: 'Successfully saved scraped items',
       });
     } catch (error) {
       if (error instanceof Error)
