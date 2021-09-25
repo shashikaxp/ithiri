@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useGetSearchItemsQuery } from '../../generated/graphql';
 import { ItemsGridContainer } from '../Shared/ItemsGridContainer';
+import { NoResults } from '../Shared/NoResults';
 
 interface SearchContentProps {
   searchQuery: string;
@@ -25,7 +26,7 @@ export const SearchContent: React.FC<SearchContentProps> = ({
         />
       )}
       <div className="p-4">
-        {data?.searchItems.length === 0 && <div>No items were found</div>}
+        {data?.searchItems.length === 0 && <NoResults />}
       </div>
     </>
   );
