@@ -38,6 +38,7 @@ export const saveScrapedItems = async (
           image: i.image,
           category: i.category,
           price: i.price,
+          storeId: i.storeId
         };
         item = em.create(Item, itemData);
         await item.save();

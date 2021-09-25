@@ -105,7 +105,7 @@ const main = async () => {
   // this saves spaces in heroku because puppeteer need debian environment to run
   // once other libraries are installed, it will exceed the heroku free plan ;)
   // because of that currently scraping part is done in local machine
-  app.post('/scrapeNextWeekItemsLocal/:store', async (req, res) => {
+  app.post('/scrapeNextWeekItems/:store', async (req, res) => {
     try {
       const storeName = req.params.store;
       const url = req.body.url;

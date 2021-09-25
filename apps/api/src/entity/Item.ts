@@ -20,6 +20,10 @@ export class Item extends BaseEntity {
 
   @Field()
   @Column()
+  storeId!: number;
+
+  @Field()
+  @Column()
   name!: string;
 
   @Field()

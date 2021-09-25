@@ -52,6 +52,7 @@ export const woolworthsScraper = () => {
         currentPrice: currentPrice,
         savings: saving,
         discount: discount,
+        storeId: 2
       };
 
       pageProducts.push(productData);

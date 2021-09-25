@@ -7,4 +7,5 @@ export interface ScrapeItem {
   savings: number;
   discount: number;
   currentPrice: number;
+  storeId: number
 }

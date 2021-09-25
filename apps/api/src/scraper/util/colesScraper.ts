@@ -51,6 +51,7 @@ export const colesScraper = () => {
         currentPrice: currentPrice,
         savings: saving,
         discount: discount,
+        storeId: 1
       };
 
       pageProducts.push(productData);
