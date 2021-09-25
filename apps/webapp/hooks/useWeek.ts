@@ -5,6 +5,7 @@ import {
   format,
   addDays,
   isWithinInterval,
+  differenceInDays,
 } from 'date-fns';
 
 interface WeekMeta {
@@ -47,12 +48,18 @@ const formatWeeklyLabel = (date: Date) => {
     isAvailable = isWithinInterval(new Date(), { start: date, end: nextTue });
     label = `${format(date, dateFormat)} - ${format(nextTue, dateFormat)}`;
   } else {
+    const now = new Date();
     const prevWed = previousWednesday(date);
     const nextTue = nextTuesday(date);
-    isAvailable = isWithinInterval(new Date(), {
-      start: prevWed,
-      end: nextTue,
-    });
+
+    // catalogue is release in every monday so it will be available in ithiri on tuesday
+    const oneDayDifferentForWeek = differenceInDays(prevWed, now) === 1;
+
+    isAvailable =
+      isWithinInterval(new Date(), {
+        start: prevWed,
+        end: nextTue,
+      }) || oneDayDifferentForWeek;
     label = `${format(prevWed, dateFormat)} - ${format(nextTue, dateFormat)}`;
   }
 
