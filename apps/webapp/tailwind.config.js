@@ -38,6 +38,7 @@ module.exports = {
       gridTemplateColumns: {
         'auto': ' repeat(auto-fit, 250px);',
         'shopping-list': '3fr repeat(4, 1fr);',
+        'shopping-list-mobile': '4fr repeat(3, 1fr);',
       }
     },
   },

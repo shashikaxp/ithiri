@@ -14,9 +14,9 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
         <div className="p-4 mx-3 text-gray-400">No items were found</div>
       ) : (
         <div>
-          <div className="grid grid-cols-shopping-list p-4">
+          <div className="grid grid-cols-shopping-list-mobile md:grid-cols-shopping-list p-4">
             <div className="p-3 bg-primary-light text-text mb-2">Item Name</div>
-            <div className="p-3 bg-primary-light text-text text-center mb-2">
+            <div className="p-3 bg-primary-light text-text text-center mb-2 hidden md:block">
               Price
             </div>
             <div className="p-3 bg-primary-light text-text text-center mb-2">
@@ -32,7 +32,9 @@ export const ShoppingList: React.FC<ShoppingListProps> = ({
               return (
                 <React.Fragment key={li.name}>
                   <div className="px-3 py-1">{li.name}</div>
-                  <div className="text-center">{li.originalPrice}</div>
+                  <div className="text-center hidden md:block">
+                    {li.originalPrice}
+                  </div>
                   <div className="text-center">{li.price}</div>
                   <div className="text-center">{li.quantity}</div>
                   <div className="text-right px-3">{li.total}</div>

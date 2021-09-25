@@ -8,3 +8,4 @@ export const AuthScreen: React.FC = ({ children }) => {
     </div>
   );
 };
+\

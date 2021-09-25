@@ -51,7 +51,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           )}
         </div>
       )}
-      <div className="h-40 p-4 flex justify-center ">
+      <div className="h-40 flex justify-center ">
         <img
           className="h-full w-auto "
           src={storePriceResponse.img}
@@ -59,7 +59,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         />
       </div>
       <div className="p-4">
-        <div className="h-32 text-lg">{storePriceResponse.name}</div>
+        <div className="h-24 md:h-32 text-lg">{storePriceResponse.name}</div>
         {storePriceResponse.storePrices.map((sp) => {
           return (
             <PriceTag

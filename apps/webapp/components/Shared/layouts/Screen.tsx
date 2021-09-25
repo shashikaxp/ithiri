@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { SideNav } from '../SideNav';
 import { CgMenu } from 'react-icons/cg';
+import Router from 'next/router';
 
 export const Screen: React.FC = ({ children }) => {
   const [showSideBar, setShowSideBar] = useState(false);
+
+  Router.router?.events.on('routeChangeStart', (_) => {
+    setShowSideBar(false);
+  });
 
   const getSideBarClass = () => {
     if (!showSideBar) {
@@ -23,7 +28,7 @@ export const Screen: React.FC = ({ children }) => {
           />
         </div>
       </div>
-      <div className="flex h-screen ">
+      <div className="flex ">
         <SideNav
           className={`absolute inset-y-0 left-0 transform transition duration-200 ease-in-out bg-primary-light w-64 h-screen z-10 md:relative md:translate-x-0 ${getSideBarClass()}`}
         />

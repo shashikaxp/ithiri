@@ -12,7 +12,7 @@ export const ItemsGridContainer: React.FC<ItemsGridContainerProps> = ({
   isUserLoggedIn,
 }) => {
   return (
-    <div className="p-6 grid gap-3 grid-cols-auto">
+    <div className="p-6 grid gap-3 md:grid-cols-auto">
       {storeItems.map((item) => {
         return (
           <ItemCard
