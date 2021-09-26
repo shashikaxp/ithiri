@@ -70,6 +70,7 @@ export type Query = {
   __typename?: 'Query';
   getStoreItems: Array<StorePriceResponse>;
   searchItems: Array<StorePriceResponse>;
+  getStoreItemsByIds: Array<StorePriceResponse>;
   generateShoppingList: ShoppingListResponse;
   users: Array<User>;
   me?: Maybe<User>;
@@ -89,6 +90,11 @@ export type QuerySearchItemsArgs = {
 };
 
 
+export type QueryGetStoreItemsByIdsArgs = {
+  itemIds: Array<Scalars['Float']>;
+};
+
+
 export type QueryGenerateShoppingListArgs = {
   weeklyItemInput: WeeklyItemInput;
 };
@@ -98,7 +104,7 @@ export type ShoppingItem = {
   storeId?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   image: Scalars['String'];
-  originalPrice: Scalars['Float'];
+  originalPrice?: Maybe<Scalars['Float']>;
   price?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   saving?: Maybe<Scalars['Float']>;
@@ -122,12 +128,12 @@ export type StorePriceDetails = {
   __typename?: 'StorePriceDetails';
   storeId: Scalars['Float'];
   storeName: Scalars['String'];
-  cwPrice: Scalars['Float'];
-  cwSavings: Scalars['Float'];
-  cwDiscount: Scalars['Float'];
-  nwPrice: Scalars['Float'];
-  nwSavings: Scalars['Float'];
-  nwDiscount: Scalars['Float'];
+  cwPrice?: Maybe<Scalars['Float']>;
+  cwSavings?: Maybe<Scalars['Float']>;
+  cwDiscount?: Maybe<Scalars['Float']>;
+  nwPrice?: Maybe<Scalars['Float']>;
+  nwSavings?: Maybe<Scalars['Float']>;
+  nwDiscount?: Maybe<Scalars['Float']>;
 };
 
 export type StorePriceResponse = {
@@ -162,7 +168,7 @@ export type WeeklyItemInput = {
   week: Scalars['WeekType'];
 };
 
-export type StorePricePropertiesFragment = { __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number };
+export type StorePricePropertiesFragment = { __typename?: 'StorePriceDetails', storeName: string, cwPrice?: Maybe<number>, cwSavings?: Maybe<number>, cwDiscount?: Maybe<number>, nwPrice?: Maybe<number>, nwSavings?: Maybe<number>, nwDiscount?: Maybe<number>, storeId: number };
 
 export type StoreItemPropertiesFragment = { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number };
 
@@ -179,7 +185,7 @@ export type FavouriteMutationVariables = Exact<{
 }>;
 
 
-export type FavouriteMutation = { __typename?: 'Mutation', favourite: { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> } };
+export type FavouriteMutation = { __typename?: 'Mutation', favourite: { __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice?: Maybe<number>, cwSavings?: Maybe<number>, cwDiscount?: Maybe<number>, nwPrice?: Maybe<number>, nwSavings?: Maybe<number>, nwDiscount?: Maybe<number>, storeId: number }> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -193,7 +199,7 @@ export type GenerateShoppingListQueryVariables = Exact<{
 }>;
 
 
-export type GenerateShoppingListQuery = { __typename?: 'Query', generateShoppingList: { __typename?: 'ShoppingListResponse', shoppingLists: Array<{ __typename?: 'ShoppingList', type: string, totalSavings: number, storeItems: Array<{ __typename?: 'ShoppingItem', image: string, storeId?: Maybe<number>, name: string, originalPrice: number, quantity?: Maybe<number>, price?: Maybe<number>, saving?: Maybe<number>, discount?: Maybe<number>, total?: Maybe<number> }> }> } };
+export type GenerateShoppingListQuery = { __typename?: 'Query', generateShoppingList: { __typename?: 'ShoppingListResponse', shoppingLists: Array<{ __typename?: 'ShoppingList', type: string, totalSavings: number, storeItems: Array<{ __typename?: 'ShoppingItem', image: string, storeId?: Maybe<number>, name: string, originalPrice?: Maybe<number>, quantity?: Maybe<number>, price?: Maybe<number>, saving?: Maybe<number>, discount?: Maybe<number>, total?: Maybe<number> }> }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -221,7 +227,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 export type GetFavouritesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFavouritesQuery = { __typename?: 'Query', getFavourites: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> }> };
+export type GetFavouritesQuery = { __typename?: 'Query', getFavourites: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice?: Maybe<number>, cwSavings?: Maybe<number>, cwDiscount?: Maybe<number>, nwPrice?: Maybe<number>, nwSavings?: Maybe<number>, nwDiscount?: Maybe<number>, storeId: number }> }> };
 
 export type GetSearchItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -229,7 +235,7 @@ export type GetSearchItemsQueryVariables = Exact<{
 }>;
 
 
-export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> }> };
+export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice?: Maybe<number>, cwSavings?: Maybe<number>, cwDiscount?: Maybe<number>, nwPrice?: Maybe<number>, nwSavings?: Maybe<number>, nwDiscount?: Maybe<number>, storeId: number }> }> };
 
 export type GetStoreItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -237,7 +243,14 @@ export type GetStoreItemsQueryVariables = Exact<{
 }>;
 
 
-export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice: number, cwSavings: number, cwDiscount: number, nwPrice: number, nwSavings: number, nwDiscount: number, storeId: number }> }> };
+export type GetStoreItemsQuery = { __typename?: 'Query', getStoreItems: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice?: Maybe<number>, cwSavings?: Maybe<number>, cwDiscount?: Maybe<number>, nwPrice?: Maybe<number>, nwSavings?: Maybe<number>, nwDiscount?: Maybe<number>, storeId: number }> }> };
+
+export type GetWeeklyItemsQueryVariables = Exact<{
+  itemIds: Array<Scalars['Float']> | Scalars['Float'];
+}>;
+
+
+export type GetWeeklyItemsQuery = { __typename?: 'Query', getStoreItemsByIds: Array<{ __typename?: 'StorePriceResponse', id: number, name: string, img: string, isFavourite: boolean, itemId: number, storePrices: Array<{ __typename?: 'StorePriceDetails', storeName: string, cwPrice?: Maybe<number>, cwSavings?: Maybe<number>, cwDiscount?: Maybe<number>, nwPrice?: Maybe<number>, nwSavings?: Maybe<number>, nwDiscount?: Maybe<number>, storeId: number }> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -661,6 +674,45 @@ export function useGetStoreItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetStoreItemsQueryHookResult = ReturnType<typeof useGetStoreItemsQuery>;
 export type GetStoreItemsLazyQueryHookResult = ReturnType<typeof useGetStoreItemsLazyQuery>;
 export type GetStoreItemsQueryResult = Apollo.QueryResult<GetStoreItemsQuery, GetStoreItemsQueryVariables>;
+export const GetWeeklyItemsDocument = gql`
+    query GetWeeklyItems($itemIds: [Float!]!) {
+  getStoreItemsByIds(itemIds: $itemIds) {
+    ...StoreItemProperties
+    storePrices {
+      ...StorePriceProperties
+    }
+  }
+}
+    ${StoreItemPropertiesFragmentDoc}
+${StorePricePropertiesFragmentDoc}`;
+
+/**
+ * __useGetWeeklyItemsQuery__
+ *
+ * To run a query within a React component, call `useGetWeeklyItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWeeklyItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWeeklyItemsQuery({
+ *   variables: {
+ *      itemIds: // value for 'itemIds'
+ *   },
+ * });
+ */
+export function useGetWeeklyItemsQuery(baseOptions: Apollo.QueryHookOptions<GetWeeklyItemsQuery, GetWeeklyItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWeeklyItemsQuery, GetWeeklyItemsQueryVariables>(GetWeeklyItemsDocument, options);
+      }
+export function useGetWeeklyItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWeeklyItemsQuery, GetWeeklyItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWeeklyItemsQuery, GetWeeklyItemsQueryVariables>(GetWeeklyItemsDocument, options);
+        }
+export type GetWeeklyItemsQueryHookResult = ReturnType<typeof useGetWeeklyItemsQuery>;
+export type GetWeeklyItemsLazyQueryHookResult = ReturnType<typeof useGetWeeklyItemsLazyQuery>;
+export type GetWeeklyItemsQueryResult = Apollo.QueryResult<GetWeeklyItemsQuery, GetWeeklyItemsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -702,6 +754,7 @@ export const namedOperations = {
     GetFavourites: 'GetFavourites',
     GetSearchItems: 'GetSearchItems',
     GetStoreItems: 'GetStoreItems',
+    GetWeeklyItems: 'GetWeeklyItems',
     Me: 'Me'
   },
   Mutation: {

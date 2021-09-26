@@ -1,32 +1,28 @@
 import React, { ReactElement } from 'react';
-import Image from "next/image"
+import Image from 'next/image';
 
 import { includes } from 'lodash';
 
 import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { Screen } from '../components/Shared/layouts/Screen';
-import { useGetStoreItemsQuery } from '../generated/graphql';
+import { useGetWeeklyItemsQuery } from '../generated/graphql';
 import { useWeekItems } from '../hooks/useWeekItems';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
-import { ITEM_PER_PAGE } from '../constants';
+
 import { NoResults } from '../components/Shared/NoResults';
 import { useStore } from '../store';
-import Loader from "./../assets/img/loader.svg"
+import Loader from './../assets/img/loader.svg';
 
 const WeeklyList = () => {
-  const { data, loading } = useGetStoreItemsQuery({
-    variables: {
-      limit: ITEM_PER_PAGE,
-      offset: 0,
-    },
-  });
-
-  const store = useStore()
+  const store = useStore();
   const { items } = useWeekItems();
 
   const weeklyItemIds = items.map((wi) => wi.itemId);
+  const { data, loading } = useGetWeeklyItemsQuery({
+    variables: { itemIds: weeklyItemIds },
+  });
 
-  const weeklyItems = data?.getStoreItems.filter((item) => {
+  const weeklyItems = data?.getStoreItemsByIds.filter((item) => {
     return includes(weeklyItemIds, item.itemId);
   });
 
@@ -34,13 +30,11 @@ const WeeklyList = () => {
     <div className="flex flex-col bg-background min-h-screen">
       <WeekSelector />
 
-      {
-        loading && (
-          <div className="flex justify-center mt-8">
-          <Image src={Loader} alt="loading.."/>
+      {loading && (
+        <div className="flex justify-center mt-8">
+          <Image src={Loader} alt="loading.." />
         </div>
-        )           
-      }
+      )}
 
       {weeklyItems && weeklyItems.length > 0 && (
         <ItemsGridContainer

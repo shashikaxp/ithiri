@@ -1,0 +1,8 @@
+query GetWeeklyItems($itemIds: [Float!]!) {
+  getStoreItemsByIds(itemIds: $itemIds) {
+    ...StoreItemProperties
+    storePrices {
+      ...StorePriceProperties
+    }
+  }
+}
