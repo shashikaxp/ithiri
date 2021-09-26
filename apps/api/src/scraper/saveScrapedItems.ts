@@ -1,6 +1,6 @@
 import * as stringSimilarity from 'string-similarity';
 import { getManager } from 'typeorm';
-import { orderBy } from 'lodash';
+import { orderBy, filter } from 'lodash';
 
 import { StorePrice } from '../entity/StorePrice';
 import { Store } from '../entity/Store';
@@ -17,7 +17,7 @@ export const saveScrapedItems = async (
     const itemsInDB = await em.find(Item, {});
 
     items.forEach(async (i) => {
-      const itemId = getMatchingItemId(itemsInDB, i.name);
+      const itemId = getMatchingItemId(itemsInDB, i.name, i.price);
 
       let item: Item | undefined;
       let storePrice: StorePrice | undefined;
@@ -70,7 +70,7 @@ export const saveScrapedItems = async (
 };
 
 // Check similar item is already in the database by comparing the item name
-const getMatchingItemId = (itemsInDb: Item[], itemName: string) => {
+const getMatchingItemId = (itemsInDb: Item[], itemName: string, price: number) => {
   const stringMatchingResults = itemsInDb.map((i) => {
     return {
       ...i,
@@ -78,6 +78,7 @@ const getMatchingItemId = (itemsInDb: Item[], itemName: string) => {
     };
   });
 
+  // check similar item name is exist in the DB
   const highestCOmpatibilityItems = stringMatchingResults.filter((i) => {
     return i.compatibility > Number(process.env.COMPATIBILITY_MARGIN);
   });
@@ -88,7 +89,13 @@ const getMatchingItemId = (itemsInDb: Item[], itemName: string) => {
     ['desc']
   );
 
-  if (sortedItems.length > 0) {
+  // check original prices are the same
+  const filteredItems = filter(sortedItems, si => {
+    return si.price === price
+  })
+
+
+  if (filteredItems.length > 0) {
     return sortedItems[0].id;
   } else {
     return null;
