@@ -10,13 +10,13 @@ export const colesScraper = () => {
 
     const priceString = (
       element.querySelector('span.sf-pricedisplay') as HTMLElement
-    ).innerText;
+    )?.innerText;
 
     const optionSuffix = (
       element.querySelectorAll(
         '.sf-nowprice span.sf-optionsuffix'
       )[0] as HTMLElement
-    ).innerText;
+    )?.innerText;
 
     const discountedPrice = (
       element.querySelector('span.sf-regprice') as HTMLElement
@@ -31,6 +31,7 @@ export const colesScraper = () => {
 
     // only add single products
     if (
+      optionSuffix &&
       optionSuffix === 'each' &&
       discountedPrice &&
       !name.includes('Coles') &&
