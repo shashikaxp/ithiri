@@ -1,4 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
+import Image from "next/image"
 
 import { debounce } from 'lodash';
 
@@ -9,6 +10,7 @@ import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { Screen } from '../components/Shared/layouts/Screen';
 import { ITEM_PER_PAGE } from '../constants';
 import { useStore } from '../store';
+import Loader from "./../assets/img/loader.svg"
 
 export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,7 +30,7 @@ export const Index = () => {
 
   const debouncedFn = debounce(setSearchQuery, 250);
 
-  const { data, fetchMore } = useGetStoreItemsQuery({
+  const { data, fetchMore, loading: itemLoading } = useGetStoreItemsQuery({
     variables: { limit: ITEM_PER_PAGE, offset: 0 },
   });
 
@@ -44,6 +46,14 @@ export const Index = () => {
       </div>
 
       <WeekSelector />
+
+      {
+        itemLoading && (
+          <div className="flex justify-center mt-8">
+            <Image src={Loader} alt="loading.."/>
+          </div>
+          )
+      }
 
       {searchQuery !== '' ? (
         <SearchContent
@@ -70,7 +80,8 @@ export const Index = () => {
               </button>
             </div>
           </>
-        )
+        ) 
+
       )}
     </div>
   );

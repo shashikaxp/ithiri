@@ -13,6 +13,7 @@ import { useWeekItems } from '../hooks/useWeekItems';
 import { useStore } from '../store';
 import { ShoppingListContainer } from '../components/ShoppingListContainer';
 import EmptyCart from './../assets/img/empty_cart.svg';
+import Loader from './../assets/img/loader.svg';
 
 const MyCollection = () => {
   const selectedWeek = useStore().selectedWeek;
@@ -24,7 +25,7 @@ const MyCollection = () => {
   const [wollworthsShoppingList, setWoolworthsShoppingList] =
     useState<ShoppingListType>();
 
-  const { data } = useGenerateShoppingListQuery({
+  const { data, loading } = useGenerateShoppingListQuery({
     variables: {
       weeklyItemInput: { week: selectedWeek, weeklyItems: items },
     },
@@ -50,11 +51,19 @@ const MyCollection = () => {
     <div className="flex flex-col bg-background min-h-screen">
       <WeekSelector />
 
+      {
+        loading && (
+          <div className="flex justify-center mt-8">
+          <Image src={Loader} alt="loading.."/>
+        </div>
+        )           
+      }
+
       <ShoppingListContainer shoppingListDetails={bestValueShoppingList} />
       <ShoppingListContainer shoppingListDetails={colesShoppingList} />
       <ShoppingListContainer shoppingListDetails={wollworthsShoppingList} />
 
-      {items.length === 0 && (
+      {items.length === 0 && !loading &&(
         <div className="flex flex-col justify-center h-auto mt-20">
           <Image src={EmptyCart} height={250} width={250} alt="Empty cart" />
           <div className="text-xl font-semibold text-center mt-12">
