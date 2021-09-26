@@ -9,6 +9,7 @@ import { useWeekItems } from '../hooks/useWeekItems';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { ITEM_PER_PAGE } from '../constants';
 import { NoResults } from '../components/Shared/NoResults';
+import { useStore } from '../store';
 
 const WeeklyList = () => {
   const { data } = useGetStoreItemsQuery({
@@ -18,10 +19,9 @@ const WeeklyList = () => {
     },
   });
 
-  const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
+  const store = useStore()
   const { items } = useWeekItems();
 
-  const isUserLoggedIn = meData?.me?.name ? true : false;
   const weeklyItemIds = items.map((wi) => wi.itemId);
 
   const weeklyItems = data?.getStoreItems.filter((item) => {
@@ -34,7 +34,7 @@ const WeeklyList = () => {
       {weeklyItems && weeklyItems.length > 0 && (
         <ItemsGridContainer
           storeItems={weeklyItems}
-          isUserLoggedIn={isUserLoggedIn}
+          isUserLoggedIn={store.isAuthenticated}
         />
       )}
       {weeklyItems && weeklyItems.length === 0 && (

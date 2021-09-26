@@ -2,29 +2,33 @@ import { useApolloClient } from '@apollo/client';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import Image from "next/image"
 
+import Loading from './../../assets/img/loader.svg'
 import { useWeekItems } from './../../hooks/useWeekItems';
 
 import {
   namedOperations,
-  useLogoutMutation,
-  useMeQuery,
+  useLogoutMutation,  
 } from '../../generated/graphql';
+import { useStore } from './../../store';
 
 export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
 }) => {
-  const { loading, data } = useMeQuery({
-    fetchPolicy: 'network-only',
-  });
+
   const router = useRouter();
+  const store = useStore()
   const apolloClient = useApolloClient();
   const { removeCookies } = useWeekItems();
+
 
   const [logout] = useLogoutMutation({
     onCompleted: async () => {
       await apolloClient.resetStore();
       removeCookies();
+      store.setIsAuthenticated(false);
+      store.setUserName(null);
       router.push('/');
     },
 
@@ -42,10 +46,13 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 
   let body = null;
 
-  if (loading) {
-    body = null;
+  
+  if (!store.userName) {
+    body = <div className="p-4 text-lg bg-primary-light flex justify-center">
+      <Image src={Loading} alt="Please wait white fetching user data"/>
+    </div>  ;
   } else {
-    const greeting = data?.me ? 'Hey ' + data.me.name : 'Guest';
+    const greeting = 'Hey ' + store.userName
     body = (
       <>
         <div className="flex flex-col justify-center align-middle bg-primary-dark p-4">
@@ -61,7 +68,7 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           <div className="text-center text-xl mt-2 text-white">{greeting}</div>
         </div>
         <div className="mt-8 flex  flex-col">
-          {data?.me ? (
+          {store.isAuthenticated ? (
             <>
               <NextLink href="/">
                 <div className={getActiveRouteClass('/')}>Home</div>

@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 
 import { debounce } from 'lodash';
 
@@ -8,12 +8,22 @@ import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { Screen } from '../components/Shared/layouts/Screen';
 import { ITEM_PER_PAGE } from '../constants';
+import { useStore } from '../store';
 
 export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
-
+  const store = useStore();
+  const { data: meData, loading } = useMeQuery();
+  
+  useEffect(() => {    
+    const userName = meData?.me?.name ? meData.me.name : "Guest";
+    const isAuthenticated = userName !== "Guest";
+    if (!loading) {
+      store.setUserName(userName);
+      store.setIsAuthenticated(isAuthenticated);
+    }
+  }, [loading])
+    
   const isUserLoggedIn = meData?.me?.name ? true : false;
 
   const debouncedFn = debounce(setSearchQuery, 250);

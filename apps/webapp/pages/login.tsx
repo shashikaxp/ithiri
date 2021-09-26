@@ -12,10 +12,12 @@ import { useApolloClient } from '@apollo/client';
 import { AuthScreen } from '../components/Shared/layouts/AuthScreen';
 import { GuestModeButton } from '../components/Shared/GuestModeButton';
 import { Button } from '../components/Shared/ui/Button';
+import { useStore } from '../store';
 
 const Login = () => {
   const router = useRouter();
   const apolloClient = useApolloClient();
+  const store = useStore()
 
   const [login, { loading }] = useLoginMutation({
     awaitRefetchQueries: true,
@@ -39,6 +41,8 @@ const Login = () => {
             setErrors(toErrorMap(data?.login.errors));
           } else {
             await apolloClient.clearStore();
+            store.setIsAuthenticated(false);
+            store.setUserName(null);
             router.push('/');
           }
         }}

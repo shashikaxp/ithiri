@@ -3,14 +3,13 @@ import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { NoResults } from '../components/Shared/NoResults';
 import { Screen } from '../components/Shared/layouts/Screen';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
-import { useGetFavouritesQuery, useMeQuery } from '../generated/graphql';
+import { useGetFavouritesQuery } from '../generated/graphql';
+import { useStore } from '../store';
 
 const MyCollection = () => {
   const { data } = useGetFavouritesQuery({ fetchPolicy: 'network-only' });
 
-  const { data: meData } = useMeQuery({ fetchPolicy: 'network-only' });
-
-  const isUserLoggedIn = meData?.me?.name ? true : false;
+  const store = useStore();
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
@@ -18,7 +17,7 @@ const MyCollection = () => {
       {data?.getFavourites && data.getFavourites.length > 0 && (
         <ItemsGridContainer
           storeItems={data.getFavourites}
-          isUserLoggedIn={isUserLoggedIn}
+          isUserLoggedIn={store.isAuthenticated}
         />
       )}
       {data?.getFavourites && data.getFavourites.length === 0 && (
