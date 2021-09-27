@@ -1,6 +1,6 @@
 import * as stringSimilarity from 'string-similarity';
 import { getManager } from 'typeorm';
-import { orderBy, filter } from 'lodash';
+import { orderBy } from 'lodash';
 
 import { StorePrice } from '../entity/StorePrice';
 import { Store } from '../entity/Store';
@@ -38,7 +38,7 @@ export const saveScrapedItems = async (
           image: i.image,
           category: i.category,
           price: i.price,
-          storeId: i.storeId
+          storeId: i.storeId,
         };
         item = em.create(Item, itemData);
         await item.save();
@@ -70,7 +70,11 @@ export const saveScrapedItems = async (
 };
 
 // Check similar item is already in the database by comparing the item name
-const getMatchingItemId = (itemsInDb: Item[], itemName: string, price: number) => {
+const getMatchingItemId = (
+  itemsInDb: Item[],
+  itemName: string,
+  price: number
+) => {
   const stringMatchingResults = itemsInDb.map((i) => {
     return {
       ...i,
@@ -90,13 +94,12 @@ const getMatchingItemId = (itemsInDb: Item[], itemName: string, price: number) =
   );
 
   // check original prices are the same
-  const filteredItems = filter(sortedItems, si => {
-    return si.price === price
-  })
-
+  const filteredItems = sortedItems.filter((si) => {
+    return Number(si.price) === Number(price);
+  });
 
   if (filteredItems.length > 0) {
-    return sortedItems[0].id;
+    return filteredItems[0].id;
   } else {
     return null;
   }
