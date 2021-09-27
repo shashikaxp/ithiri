@@ -1,5 +1,5 @@
 export const shoppingListTemplate = `
-  <table  width="100%" margin-bottom:2rem;">
+  <table  width="100%" style="margin-bottom:2rem">
     <thead>
       <th style="background-color:#E1F5FE; padding:1rem; width:60%"">Name</th>
       <th style="background-color:#E1F5FE; padding:1rem">Price</th>

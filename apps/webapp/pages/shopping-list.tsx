@@ -66,28 +66,30 @@ const MyCollection = () => {
     <div className="flex flex-col bg-background min-h-screen">
       <WeekSelector />
 
-      <div
-        className={`p-4 bg-primary flex items-center justify-center cursor-pointer text-white text-lg`}
-        onClick={() => {
-          if (emailShoppingListLoading || emailComplete) return;
-          emailShoppingList();
-        }}
-      >
-        {emailShoppingListLoading && <div>Please wait...</div>}
+      {items.length > 0 && (
+        <div
+          className={`p-4 bg-primary flex items-center justify-center cursor-pointer text-white text-lg`}
+          onClick={() => {
+            if (emailShoppingListLoading || emailComplete) return;
+            emailShoppingList();
+          }}
+        >
+          {emailShoppingListLoading && <div>Please wait...</div>}
 
-        {emailComplete && !emailShoppingListLoading && (
-          <>
-            Email sent
-            <BsCheck className="h-8 w-8 ml-3" />
-          </>
-        )}
-        {!emailComplete && !emailShoppingListLoading && (
-          <>
-            Email me
-            <AiOutlineMail className="h-8 w-8 ml-3" />
-          </>
-        )}
-      </div>
+          {emailComplete && !emailShoppingListLoading && (
+            <>
+              Email sent
+              <BsCheck className="h-8 w-8 ml-3" />
+            </>
+          )}
+          {!emailComplete && !emailShoppingListLoading && (
+            <>
+              Email me
+              <AiOutlineMail className="h-8 w-8 ml-3" />
+            </>
+          )}
+        </div>
+      )}
 
       {loading && (
         <div className="flex justify-center mt-8">

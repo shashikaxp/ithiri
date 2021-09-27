@@ -88,7 +88,7 @@ function getBestValueShoppingList(total: string, items: ShoppingItem[]) {
         ${
           woolworths.length > 0
             ? woolworthsTable
-            : '<div>No items were found</div>'
+            : '<div style="color:#bdbdbd">No items were found</div>'
         }
       </div>  
     </div>
