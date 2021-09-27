@@ -1,28 +1,60 @@
 import * as nodemailer from 'nodemailer';
 
-// async..await is not allowed in global scope, must use a wrapper
-export async function sendEmail(to: string, html: string) {
-  //   const testAccount = await nodemailer.createTestAccount();
+import { template } from 'lodash';
 
-  //   console.log(testAccount);
+type EmailType = 'reset' | 'shoppingList';
+
+export async function sendEmail(to: string, data: string, type: EmailType) {
+  let subject = '';
 
   const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
     auth: {
-      user: 'k4yswkv3j4wdbzfj@ethereal.email', // generated ethereal user
-      pass: 'SSrD38cmdt2uAMzKun', // generated ethereal password
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
   });
 
+  const html = getTemplate(type, data);
+
+  if (type === 'reset') {
+    subject = 'Reset password';
+  } else {
+    subject = 'Ithiri weekly shopping list';
+  }
+
   // send mail with defined transport object
-  const info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to, // list of receivers
-    subject: 'Hello ✔', // Subject line
+  await transporter.sendMail({
+    from: '"ithiri"<ithiri@no-reply.com> ',
+    to,
+    subject,
     html,
   });
-
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 }
+
+function getTemplate(type: EmailType, data: string) {
+  if (type == 'reset') {
+    const compiled = template(resetLinkTemplate);
+    return compiled({ resetLink: data });
+  } else {
+    return '';
+  }
+}
+
+const resetLinkTemplate = `
+<div>
+  <div style="display: flex; align-items: center; justify-content: center; margin-top: 2rem; margin-bottom: 2rem;">
+    <img
+      src="https://ithiri.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fassets%2Fimg%2Flogo.acfbb1243f6badb0c8277c9771bd0e34.png&w=128&q=75"
+      alt="logo" />
+  </div>
+  </div>
+  <div style="font-size: 1rem; margin-bottom: 1rem; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"">
+     Please use this URL to reset your password
+  </div>
+  <div style="font-size: 1rem; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"">
+      <a href="<%= resetLink %>">Reset url</a>
+  </div>
+`;

@@ -77,23 +77,27 @@ export class UserResolver {
     @Ctx() { em, redis }: MyContext,
     @Arg('email') email: string
   ) {
-    const user = await em.findOne(User, { email });
-    if (!user) {
+    try {
+      const user = await em.findOne(User, { email });
+      if (!user) {
+        return true;
+      }
+
+      const token = v4();
+      await redis.set(
+        FORGET_PASSWORD_PREFIX + token,
+        user.id,
+        'ex',
+        1000 * 60 * 60
+      ); // 1 hour
+
+      const link = `${process.env.HOSTED_WEB_URL}/change-password/${token}`;
+
+      await sendEmail(email, link, 'reset');
       return true;
+    } catch (error) {
+      throw Error('Error ocurred while sending password resetting email');
     }
-
-    const token = v4();
-    await redis.set(
-      FORGET_PASSWORD_PREFIX + token,
-      user.id,
-      'ex',
-      1000 * 60 * 60
-    ); // 1 hour
-
-    const link = `<a href="http://localhost:4200/change-password/${token}">Reset password</a>`;
-
-    await sendEmail(email, link);
-    return true;
   }
 
   @Query(() => [User])

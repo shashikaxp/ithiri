@@ -30,7 +30,7 @@ const ForgotPassword = () => {
         }}
       >
         {complete ? (
-          <div className="my-6">
+          <div className="py-12 px-8 text-center">
             If we found an account associated with that username, we have sent
             password reset instructions to the primary email address on the
             account.
