@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SideNav } from '../SideNav';
 import { CgMenu } from 'react-icons/cg';
 import Router from 'next/router';
+import { useMeQuery } from './../../../../webapp/generated/graphql';
+import { useStore } from './../../../../webapp/store';
 
 export const Screen: React.FC = ({ children }) => {
   const [showSideBar, setShowSideBar] = useState(false);
+  const store = useStore();
 
   Router.router?.events.on('routeChangeStart', (_) => {
     setShowSideBar(false);
   });
+
+  const { data: meData, loading } = useMeQuery();
+
+  useEffect(() => {
+    const userName = meData?.me?.name ? meData.me.name : 'Guest';
+    const isAuthenticated = userName !== 'Guest';
+    if (!loading) {
+      store.setUserName(userName);
+      store.setIsAuthenticated(isAuthenticated);
+    }
+  }, [loading]);
 
   const getSideBarClass = () => {
     if (!showSideBar) {

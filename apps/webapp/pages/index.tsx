@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
-import Image from "next/image"
+import Image from 'next/image';
 
 import { debounce } from 'lodash';
 
@@ -9,28 +9,19 @@ import { ItemsGridContainer } from '../components/Shared/ItemsGridContainer';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { Screen } from '../components/Shared/layouts/Screen';
 import { ITEM_PER_PAGE } from '../constants';
-import { useStore } from '../store';
-import Loader from "./../assets/img/loader.svg"
+import Loader from './../assets/img/loader.svg';
 
 export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const store = useStore();
-  const { data: meData, loading } = useMeQuery();
-  
-  useEffect(() => {    
-    const userName = meData?.me?.name ? meData.me.name : "Guest";
-    const isAuthenticated = userName !== "Guest";
-    if (!loading) {
-      store.setUserName(userName);
-      store.setIsAuthenticated(isAuthenticated);
-    }
-  }, [loading])
-    
+  const { data: meData } = useMeQuery();
   const isUserLoggedIn = meData?.me?.name ? true : false;
-
   const debouncedFn = debounce(setSearchQuery, 250);
 
-  const { data, fetchMore, loading: itemLoading } = useGetStoreItemsQuery({
+  const {
+    data,
+    fetchMore,
+    loading: itemLoading,
+  } = useGetStoreItemsQuery({
     variables: { limit: ITEM_PER_PAGE, offset: 0 },
   });
 
@@ -47,13 +38,11 @@ export const Index = () => {
 
       <WeekSelector />
 
-      {
-        itemLoading && (
-          <div className="flex justify-center mt-8">
-            <Image src={Loader} alt="loading.."/>
-          </div>
-          )
-      }
+      {itemLoading && (
+        <div className="flex justify-center mt-8">
+          <Image src={Loader} alt="loading.." />
+        </div>
+      )}
 
       {searchQuery !== '' ? (
         <SearchContent
@@ -80,8 +69,7 @@ export const Index = () => {
               </button>
             </div>
           </>
-        ) 
-
+        )
       )}
     </div>
   );
