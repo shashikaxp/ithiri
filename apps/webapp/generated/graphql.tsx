@@ -28,12 +28,18 @@ export type FieldError = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  emailShoppingList: Scalars['Boolean'];
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   favourite: StorePriceResponse;
+};
+
+
+export type MutationEmailShoppingListArgs = {
+  weeklyItemInput: WeeklyItemInput;
 };
 
 
@@ -180,6 +186,13 @@ export type ChangePasswordMutationVariables = Exact<{
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, name: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
+export type EmailShoppingListMutationVariables = Exact<{
+  weeklyItemInput: WeeklyItemInput;
+}>;
+
+
+export type EmailShoppingListMutation = { __typename?: 'Mutation', emailShoppingList: boolean };
+
 export type FavouriteMutationVariables = Exact<{
   itemId: Scalars['Float'];
 }>;
@@ -319,6 +332,37 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const EmailShoppingListDocument = gql`
+    mutation EmailShoppingList($weeklyItemInput: WeeklyItemInput!) {
+  emailShoppingList(weeklyItemInput: $weeklyItemInput)
+}
+    `;
+export type EmailShoppingListMutationFn = Apollo.MutationFunction<EmailShoppingListMutation, EmailShoppingListMutationVariables>;
+
+/**
+ * __useEmailShoppingListMutation__
+ *
+ * To run a mutation, you first call `useEmailShoppingListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEmailShoppingListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [emailShoppingListMutation, { data, loading, error }] = useEmailShoppingListMutation({
+ *   variables: {
+ *      weeklyItemInput: // value for 'weeklyItemInput'
+ *   },
+ * });
+ */
+export function useEmailShoppingListMutation(baseOptions?: Apollo.MutationHookOptions<EmailShoppingListMutation, EmailShoppingListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EmailShoppingListMutation, EmailShoppingListMutationVariables>(EmailShoppingListDocument, options);
+      }
+export type EmailShoppingListMutationHookResult = ReturnType<typeof useEmailShoppingListMutation>;
+export type EmailShoppingListMutationResult = Apollo.MutationResult<EmailShoppingListMutation>;
+export type EmailShoppingListMutationOptions = Apollo.BaseMutationOptions<EmailShoppingListMutation, EmailShoppingListMutationVariables>;
 export const FavouriteDocument = gql`
     mutation Favourite($itemId: Float!) {
   favourite(itemId: $itemId) {
@@ -759,6 +803,7 @@ export const namedOperations = {
   },
   Mutation: {
     ChangePassword: 'ChangePassword',
+    EmailShoppingList: 'EmailShoppingList',
     Favourite: 'Favourite',
     ForgotPassword: 'ForgotPassword',
     Login: 'Login',

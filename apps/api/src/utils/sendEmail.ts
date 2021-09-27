@@ -1,10 +1,17 @@
+import { resetLinkTemplate } from './emailTemplates/index';
 import * as nodemailer from 'nodemailer';
 
 import { template } from 'lodash';
+import { ShoppingListResponse } from '../resolvers/types/shoppingList';
+import { getShoppingListHTML } from './emailTemplates/getShoppingListHTML';
 
 type EmailType = 'reset' | 'shoppingList';
 
-export async function sendEmail(to: string, data: string, type: EmailType) {
+export async function sendEmail(
+  to: string,
+  data: string | ShoppingListResponse,
+  type: EmailType
+) {
   let subject = '';
 
   const transporter = nodemailer.createTransport({
@@ -34,27 +41,13 @@ export async function sendEmail(to: string, data: string, type: EmailType) {
   });
 }
 
-function getTemplate(type: EmailType, data: string) {
+function getTemplate(type: EmailType, data: string | ShoppingListResponse) {
   if (type == 'reset') {
     const compiled = template(resetLinkTemplate);
     return compiled({ resetLink: data });
+  } else if (typeof data !== 'string' && data.shoppingLists) {
+    return getShoppingListHTML(data.shoppingLists);
   } else {
     return '';
   }
 }
-
-const resetLinkTemplate = `
-<div>
-  <div style="display: flex; align-items: center; justify-content: center; margin-top: 2rem; margin-bottom: 2rem;">
-    <img
-      src="https://ithiri.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fassets%2Fimg%2Flogo.acfbb1243f6badb0c8277c9771bd0e34.png&w=128&q=75"
-      alt="logo" />
-  </div>
-  </div>
-  <div style="font-size: 1rem; margin-bottom: 1rem; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"">
-     Please use this URL to reset your password
-  </div>
-  <div style="font-size: 1rem; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"">
-      <a href="<%= resetLink %>">Reset url</a>
-  </div>
-`;

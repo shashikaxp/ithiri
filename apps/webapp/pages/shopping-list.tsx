@@ -1,5 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { AiOutlineMail } from 'react-icons/ai';
+import { BsCheck } from 'react-icons/bs';
 
 import { find } from 'lodash';
 
@@ -7,6 +9,7 @@ import { Screen } from '../components/Shared/layouts/Screen';
 import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import {
   ShoppingList as ShoppingListType,
+  useEmailShoppingListMutation,
   useGenerateShoppingListQuery,
 } from '../generated/graphql';
 import { useWeekItems } from '../hooks/useWeekItems';
@@ -31,6 +34,18 @@ const MyCollection = () => {
     },
   });
 
+  const [emailComplete, setEmailComplete] = useState(false);
+
+  const [emailShoppingList, { loading: emailShoppingListLoading }] =
+    useEmailShoppingListMutation({
+      variables: {
+        weeklyItemInput: { week: selectedWeek, weeklyItems: items },
+      },
+      onCompleted: () => {
+        setEmailComplete(true);
+      },
+    });
+
   useEffect(() => {
     if (data?.generateShoppingList.shoppingLists) {
       const shoppingLists = data.generateShoppingList.shoppingLists;
@@ -50,6 +65,29 @@ const MyCollection = () => {
   return (
     <div className="flex flex-col bg-background min-h-screen">
       <WeekSelector />
+
+      <div
+        className={`p-4 bg-primary flex items-center justify-center cursor-pointer text-white text-lg`}
+        onClick={() => {
+          if (emailShoppingListLoading || emailComplete) return;
+          emailShoppingList();
+        }}
+      >
+        {emailShoppingListLoading && <div>Please wait...</div>}
+
+        {emailComplete && !emailShoppingListLoading && (
+          <>
+            Email sent
+            <BsCheck className="h-8 w-8 ml-3" />
+          </>
+        )}
+        {!emailComplete && !emailShoppingListLoading && (
+          <>
+            Email me
+            <AiOutlineMail className="h-8 w-8 ml-3" />
+          </>
+        )}
+      </div>
 
       {loading && (
         <div className="flex justify-center mt-8">

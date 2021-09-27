@@ -1,5 +1,13 @@
+import { MyContext } from './../types';
 import { ShoppingListType, Week, WeeklyItem } from '@ithiri/shared-types';
-import { Resolver, Arg, Query, UseMiddleware } from 'type-graphql';
+import {
+  Resolver,
+  Arg,
+  Query,
+  UseMiddleware,
+  Mutation,
+  Ctx,
+} from 'type-graphql';
 
 import { mapToStorePrices } from './util/mapToStorePrices';
 import { min, find } from 'lodash';
@@ -13,6 +21,8 @@ import {
 import { isAuth } from './../middleware/isAuth';
 import { StorePriceResponse } from './types/listItem';
 import { COLES_ID, WOOLWORTHS_ID } from '../constants';
+import { sendEmail } from '../utils/sendEmail';
+import { User } from '../entity/User';
 
 @Resolver()
 export class ListItemResolver {
@@ -55,6 +65,23 @@ export class ListItemResolver {
         colesShoppingList,
       ],
     };
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async emailShoppingList(
+    @Arg('weeklyItemInput') weeklyItemInput: WeeklyItemInput,
+    @Ctx() { req, em }: MyContext
+  ) {
+    const userId = req.session.userId;
+    const user = await em.findOne(User, { id: userId });
+    const shoppingList = await this.generateShoppingList(weeklyItemInput);
+    if (user) {
+      await sendEmail(user.email, shoppingList, 'shoppingList');
+      return true;
+    } else {
+      throw Error('Email is not found');
+    }
   }
 }
 

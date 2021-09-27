@@ -1,0 +1,3 @@
+mutation EmailShoppingList($weeklyItemInput: WeeklyItemInput!) {
+  emailShoppingList(weeklyItemInput: $weeklyItemInput)
+}
