@@ -1,5 +1,5 @@
 import { ShoppingListType, Week, WeeklyItem } from '@ithiri/shared-types';
-import { Resolver, Arg, Query } from 'type-graphql';
+import { Resolver, Arg, Query, UseMiddleware } from 'type-graphql';
 
 import { mapToStorePrices } from './util/mapToStorePrices';
 import { min, find } from 'lodash';
@@ -10,12 +10,14 @@ import {
   ShoppingListResponse,
   WeeklyItemInput,
 } from './types/shoppingList';
+import { isAuth } from './../middleware/isAuth';
 import { StorePriceResponse } from './types/listItem';
 import { COLES_ID, WOOLWORTHS_ID } from '../constants';
 
 @Resolver()
 export class ListItemResolver {
   @Query(() => ShoppingListResponse)
+  @UseMiddleware(isAuth)
   async generateShoppingList(
     @Arg('weeklyItemInput') { weeklyItems, week }: WeeklyItemInput
   ): Promise<ShoppingListResponse> {

@@ -1,4 +1,11 @@
-import { Resolver, Arg, Ctx, Mutation, Query } from 'type-graphql';
+import {
+  Resolver,
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  UseMiddleware,
+} from 'type-graphql';
 
 import { User } from './../entity/User';
 import { Item } from './../entity/Item';
@@ -8,10 +15,12 @@ import { mapToStorePrices } from './util/mapToStorePrices';
 import { getUserFavouriteItemIds } from './util/getUserFavouriteItemIds';
 import { getStorePriceByItem } from './util/storePrices';
 import { StorePriceResponse } from './types/listItem';
+import { isAuth } from '../middleware/isAuth';
 
 @Resolver()
 export class FavouriteResolver {
   @Query(() => [StorePriceResponse])
+  @UseMiddleware(isAuth)
   async getFavourites(@Ctx() { req }: MyContext) {
     const userId = req.session.userId;
     const favouriteItemIds = await getUserFavouriteItemIds(userId);
@@ -24,6 +33,7 @@ export class FavouriteResolver {
   }
 
   @Mutation(() => StorePriceResponse)
+  @UseMiddleware(isAuth)
   async favourite(
     @Arg('itemId') itemId: number,
     @Ctx() { em, req }: MyContext
