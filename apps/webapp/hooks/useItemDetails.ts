@@ -21,15 +21,15 @@ export const useItemDetails = (priceDetails: Parameter): Details => {
   useEffect(() => {
     if (selectedWeek === 'thisWeek') {
       setItemDetails({
-        price: priceDetails.cwPrice,
-        saving: priceDetails.cwSavings,
-        discount: priceDetails.cwDiscount,
+        price: priceDetails.cwPrice || 0,
+        saving: priceDetails.cwSavings || 0,
+        discount: priceDetails.cwDiscount || 0,
       });
     } else {
       setItemDetails({
-        price: priceDetails.nwPrice,
-        saving: priceDetails.nwSavings,
-        discount: priceDetails.nwDiscount,
+        price: priceDetails.nwPrice || 0,
+        saving: priceDetails.nwSavings || 0,
+        discount: priceDetails.nwDiscount || 0,
       });
     }
   }, [selectedWeek, priceDetails]);
