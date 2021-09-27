@@ -32,6 +32,7 @@ export const woolworthsScraper = () => {
 
     // only add single products
     if (
+      optionSuffix &&
       optionSuffix == 'each' &&
       discountedPrice &&
       !name.includes('Woolworths') &&
@@ -52,7 +53,7 @@ export const woolworthsScraper = () => {
         currentPrice: currentPrice,
         savings: saving,
         discount: discount,
-        storeId: 2
+        storeId: 2,
       };
 
       pageProducts.push(productData);
