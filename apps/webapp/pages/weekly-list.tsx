@@ -42,7 +42,7 @@ const WeeklyList = () => {
           isUserLoggedIn={store.isAuthenticated}
         />
       )}
-      {!weeklyItems && (
+      {!weeklyItems && !loading && (
         <div>
           <NoResults />
         </div>
