@@ -85,12 +85,14 @@ export type Query = {
 
 
 export type QueryGetStoreItemsArgs = {
+  weekType: Scalars['WeekType'];
   limit: Scalars['Float'];
   offset: Scalars['Float'];
 };
 
 
 export type QuerySearchItemsArgs = {
+  weekType: Scalars['WeekType'];
   limit: Scalars['Float'];
   searchQuery: Scalars['String'];
 };
@@ -245,6 +247,7 @@ export type GetFavouritesQuery = { __typename?: 'Query', getFavourites: Array<{ 
 export type GetSearchItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
   searchQuery: Scalars['String'];
+  weekType: Scalars['WeekType'];
 }>;
 
 
@@ -253,6 +256,7 @@ export type GetSearchItemsQuery = { __typename?: 'Query', searchItems: Array<{ _
 export type GetStoreItemsQueryVariables = Exact<{
   limit: Scalars['Float'];
   offset: Scalars['Float'];
+  weekType: Scalars['WeekType'];
 }>;
 
 
@@ -639,8 +643,8 @@ export type GetFavouritesQueryHookResult = ReturnType<typeof useGetFavouritesQue
 export type GetFavouritesLazyQueryHookResult = ReturnType<typeof useGetFavouritesLazyQuery>;
 export type GetFavouritesQueryResult = Apollo.QueryResult<GetFavouritesQuery, GetFavouritesQueryVariables>;
 export const GetSearchItemsDocument = gql`
-    query GetSearchItems($limit: Float!, $searchQuery: String!) {
-  searchItems(limit: $limit, searchQuery: $searchQuery) {
+    query GetSearchItems($limit: Float!, $searchQuery: String!, $weekType: WeekType!) {
+  searchItems(limit: $limit, searchQuery: $searchQuery, weekType: $weekType) {
     ...StoreItemProperties
     storePrices {
       ...StorePriceProperties
@@ -664,6 +668,7 @@ ${StorePricePropertiesFragmentDoc}`;
  *   variables: {
  *      limit: // value for 'limit'
  *      searchQuery: // value for 'searchQuery'
+ *      weekType: // value for 'weekType'
  *   },
  * });
  */
@@ -679,8 +684,8 @@ export type GetSearchItemsQueryHookResult = ReturnType<typeof useGetSearchItemsQ
 export type GetSearchItemsLazyQueryHookResult = ReturnType<typeof useGetSearchItemsLazyQuery>;
 export type GetSearchItemsQueryResult = Apollo.QueryResult<GetSearchItemsQuery, GetSearchItemsQueryVariables>;
 export const GetStoreItemsDocument = gql`
-    query GetStoreItems($limit: Float!, $offset: Float!) {
-  getStoreItems(limit: $limit, offset: $offset) {
+    query GetStoreItems($limit: Float!, $offset: Float!, $weekType: WeekType!) {
+  getStoreItems(limit: $limit, offset: $offset, weekType: $weekType) {
     ...StoreItemProperties
     storePrices {
       ...StorePriceProperties
@@ -704,6 +709,7 @@ ${StorePricePropertiesFragmentDoc}`;
  *   variables: {
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
+ *      weekType: // value for 'weekType'
  *   },
  * });
  */

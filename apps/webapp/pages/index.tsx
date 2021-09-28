@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { debounce } from 'lodash';
@@ -10,20 +10,31 @@ import { WeekSelector } from '../components/Shared/WeekSelectorProps';
 import { Screen } from '../components/Shared/layouts/Screen';
 import { ITEM_PER_PAGE } from '../constants';
 import Loader from './../assets/img/loader.svg';
+import { useStore } from '../store';
 
 export const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { data: meData } = useMeQuery();
   const isUserLoggedIn = meData?.me?.name ? true : false;
   const debouncedFn = debounce(setSearchQuery, 250);
+  const store = useStore();
 
   const {
     data,
     fetchMore,
     loading: itemLoading,
+    refetch,
   } = useGetStoreItemsQuery({
-    variables: { limit: ITEM_PER_PAGE, offset: 0 },
+    variables: {
+      limit: ITEM_PER_PAGE,
+      offset: 0,
+      weekType: store.selectedWeek,
+    },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [store.selectedWeek, refetch]);
 
   return (
     <div className="flex flex-col bg-background min-h-screen">

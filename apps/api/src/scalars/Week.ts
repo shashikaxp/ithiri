@@ -1,4 +1,4 @@
-import { Week } from './../../../../libs/shared-types/src/index';
+import { Week } from '@ithiri/shared-types';
 import { GraphQLScalarType } from 'graphql';
 
 export const WeekScalar = new GraphQLScalarType({

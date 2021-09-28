@@ -1,5 +1,5 @@
-query GetStoreItems($limit: Float!, $offset: Float!) {
-  getStoreItems(limit: $limit, offset: $offset) {
+query GetStoreItems($limit: Float!, $offset: Float!, $weekType: WeekType!) {
+  getStoreItems(limit: $limit, offset: $offset, weekType: $weekType) {
     ...StoreItemProperties
     storePrices {
       ...StorePriceProperties

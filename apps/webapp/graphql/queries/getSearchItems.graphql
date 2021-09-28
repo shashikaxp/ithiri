@@ -1,5 +1,9 @@
-query GetSearchItems($limit: Float!, $searchQuery: String!) {
-  searchItems(limit: $limit, searchQuery: $searchQuery) {
+query GetSearchItems(
+  $limit: Float!
+  $searchQuery: String!
+  $weekType: WeekType!
+) {
+  searchItems(limit: $limit, searchQuery: $searchQuery, weekType: $weekType) {
     ...StoreItemProperties
     storePrices {
       ...StorePriceProperties

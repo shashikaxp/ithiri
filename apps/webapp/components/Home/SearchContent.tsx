@@ -1,4 +1,5 @@
-import React from 'react';
+import { useStore } from 'apps/webapp/store';
+import React, { useEffect } from 'react';
 
 import { useGetSearchItemsQuery } from '../../generated/graphql';
 import { ItemsGridContainer } from '../Shared/ItemsGridContainer';
@@ -13,9 +14,15 @@ export const SearchContent: React.FC<SearchContentProps> = ({
   searchQuery,
   isUserLoggedIn,
 }) => {
-  const { data } = useGetSearchItemsQuery({
-    variables: { limit: 5, searchQuery },
+  const store = useStore();
+
+  const { data, refetch } = useGetSearchItemsQuery({
+    variables: { limit: 5, searchQuery, weekType: store.selectedWeek },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [store.selectedWeek, refetch]);
 
   return (
     <>

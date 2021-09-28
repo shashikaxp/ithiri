@@ -1,13 +1,23 @@
+import { Week } from '@ithiri/shared-types';
 import { getConnection } from 'typeorm';
 import { StorePrice } from './../../entity/StorePrice';
 
-const getStoreItemQuery = async () => {
+const getStoreItemQuery = async (week?: Week) => {
   const query = await getConnection()
     .getRepository(StorePrice)
     .createQueryBuilder('storePrice')
     .orderBy('storePrice.id', 'ASC')
     .leftJoinAndSelect('storePrice.store', 'store')
     .leftJoinAndSelect('storePrice.item', 'item');
+
+  if (week) {
+    if (week === 'thisWeek') {
+      query.where('storePrice.cwPrice is not null');
+    } else {
+      query.where('storePrice.nwPrice is not null');
+    }
+  }
+
   return query;
 };
 
@@ -39,18 +49,22 @@ async function getStorePriceByItem(
   }
 }
 
-async function getStorePriceByItemName(name: string, limit: number) {
-  const query = await getStoreItemQuery();
+async function getStorePriceByItemName(
+  name: string,
+  limit: number,
+  week: Week
+) {
+  const query = await getStoreItemQuery(week);
   const storePrices = query
-    .where('item.name ILIKE :searchQuery', { searchQuery: `%${name}%` })
+    .andWhere('item.name ILIKE :searchQuery', { searchQuery: `%${name}%` })
     .limit(limit)
     .getMany();
 
   return storePrices;
 }
 
-async function getStorePrices(offset: number, limit: number) {
-  const query = await getStoreItemQuery();
+async function getStorePrices(offset: number, limit: number, week: Week) {
+  const query = await getStoreItemQuery(week);
   const storePrices = query.skip(offset).take(limit).getMany();
 
   return storePrices;

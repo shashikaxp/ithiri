@@ -6,7 +6,9 @@ import { getSearchResults } from './util/getSearchResults';
 import { StorePriceResponse } from './types/listItem';
 import { getStorePriceByItem } from './util/storePrices';
 import { mapToStorePrices } from './util/mapToStorePrices';
+import { Week } from '@ithiri/shared-types';
 import { getUserFavouriteItemIds } from './util/getUserFavouriteItemIds';
+import { WeekScalar } from '../scalars/Week';
 
 @Resolver()
 export class StorePriceResolver {
@@ -14,10 +16,11 @@ export class StorePriceResolver {
   async getStoreItems(
     @Arg('offset') offset: number,
     @Arg('limit') limit: number,
+    @Arg('weekType', () => WeekScalar) weekType: Week,
     @Ctx() { req }: MyContext
   ) {
     const userId = req.session.userId;
-    const data = await getStoreItemDetails(offset, limit, userId);
+    const data = await getStoreItemDetails(offset, limit, userId, weekType);
     return data;
   }
 
@@ -25,10 +28,11 @@ export class StorePriceResolver {
   async searchItems(
     @Arg('searchQuery') searchQuery: string,
     @Arg('limit') limit: number,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: MyContext,
+    @Arg('weekType', () => WeekScalar) weekType: Week
   ) {
     const userId = req.session.userId;
-    const data = await getSearchResults(searchQuery, limit, userId);
+    const data = await getSearchResults(searchQuery, limit, userId, weekType);
     return data;
   }
 
