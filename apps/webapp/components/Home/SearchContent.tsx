@@ -1,8 +1,8 @@
-import { useStore } from 'apps/webapp/store';
 import React, { useEffect } from 'react';
 
 import { useGetSearchItemsQuery } from '../../generated/graphql';
 import { ItemsGridContainer } from '../Shared/ItemsGridContainer';
+import { useStore } from './../../../webapp/store';
 import { NoResults } from '../Shared/NoResults';
 
 interface SearchContentProps {
