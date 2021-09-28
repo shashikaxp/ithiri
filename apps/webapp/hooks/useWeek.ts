@@ -1,5 +1,6 @@
 import {
   isWednesday,
+  isTuesday,
   nextTuesday,
   previousWednesday,
   format,
@@ -50,16 +51,17 @@ const formatWeeklyLabel = (date: Date) => {
   } else {
     const now = new Date();
     const prevWed = previousWednesday(date);
-    const nextTue = nextTuesday(date);
+    const nextTue = isTuesday(now) ? now : nextTuesday(date);
 
     // catalogue is release in every monday so it will be available in ithiri on tuesday
     const oneDayDifferentForWeek = differenceInDays(prevWed, now) <= 1;
 
     isAvailable =
+      oneDayDifferentForWeek ||
       isWithinInterval(now, {
         start: prevWed,
         end: nextTue,
-      }) || oneDayDifferentForWeek;
+      });
     label = `${format(prevWed, dateFormat)} - ${format(nextTue, dateFormat)}`;
   }
 
