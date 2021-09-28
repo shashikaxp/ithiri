@@ -53,10 +53,10 @@ const formatWeeklyLabel = (date: Date) => {
     const nextTue = nextTuesday(date);
 
     // catalogue is release in every monday so it will be available in ithiri on tuesday
-    const oneDayDifferentForWeek = differenceInDays(prevWed, now) === 1;
+    const oneDayDifferentForWeek = differenceInDays(prevWed, now) <= 1;
 
     isAvailable =
-      isWithinInterval(new Date(), {
+      isWithinInterval(now, {
         start: prevWed,
         end: nextTue,
       }) || oneDayDifferentForWeek;

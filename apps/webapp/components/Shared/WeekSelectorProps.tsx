@@ -34,7 +34,7 @@ export const WeekSelector: React.FC = () => {
           setSelectedWeek('nextWeek');
         }}
       >
-        {nextWeekMeta.label}{' '}
+        {nextWeekMeta.label}
         {!nextWeekMeta.isAvailable && (
           <span>
             <br />
