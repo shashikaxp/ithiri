@@ -17,6 +17,7 @@ export const Index = () => {
   const { data: meData } = useMeQuery();
   const isUserLoggedIn = meData?.me?.name ? true : false;
   const debouncedFn = debounce(setSearchQuery, 250);
+  const [isColdBoot, setIsColdBoot] = useState(false);
   const store = useStore();
 
   const {
@@ -31,6 +32,18 @@ export const Index = () => {
       weekType: store.selectedWeek,
     },
   });
+
+  useEffect(() => {
+    if (!itemLoading) {
+      setIsColdBoot(false);
+    }
+  }, [itemLoading]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsColdBoot(true);
+    }, 4000);
+  }, []);
 
   useEffect(() => {
     refetch();
@@ -50,8 +63,15 @@ export const Index = () => {
       <WeekSelector />
 
       {itemLoading && (
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 flex-col">
           <Image src={Loader} alt="loading.." />
+          {isColdBoot && (
+            <div className="p-4 text-center">
+              If the backend server is sleep. first response can take around 10
+              seconds to complete. Please be patient. after initial response all
+              the following responses will be fast, i'll promise ☺️
+            </div>
+          )}
         </div>
       )}
 
