@@ -1,4 +1,4 @@
-![ithiri-frontend](https://therealsujitk-vercel-badge.vercel.app/?app=ithiri) ![ithiri-api](https://pyheroku-badge.herokuapp.com/?app=ithiri-api&path=https://ithiri-api.herokuapp.com)
+![ithiri-frontend](https://therealsujitk-vercel-badge.vercel.app/?app=ithiri) ![ithiri-api](https://pyheroku-badge.herokuapp.com/?app=ithiri-api)
 
 # ithiri
 
