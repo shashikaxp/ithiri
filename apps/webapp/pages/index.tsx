@@ -69,7 +69,7 @@ export const Index = () => {
             <div className="p-4 text-center">
               If the backend server is sleep. first response can take around 10
               seconds to complete. Please be patient. after initial response all
-              the following responses will be fast, i'll promise ☺️
+              the following responses will be fast, i&apos;ll promise ☺️
             </div>
           )}
         </div>
