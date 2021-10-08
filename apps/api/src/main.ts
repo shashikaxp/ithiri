@@ -24,6 +24,7 @@ import { MyContext } from './types';
 import { FavouriteResolver } from './resolvers/FavouriteResolver';
 import { scrapeNextWeekItems } from './scraper/scrapeNextWeekItems';
 import { setThisWeekItems } from './scraper/setThisWeekItems';
+import { purgeItems } from './scraper/purgeUnlistedtems';
 
 import axios from 'axios';
 
@@ -176,7 +177,30 @@ const main = async () => {
     }
   });
 
+  app.delete('/purge', async (_, res) => {
+    try {
+      const items = await purgeItems();
+      res.status(200).json({
+        status: true,
+        data: items,
+        message: 'Successfully delete 15 items',
+      });
+    } catch (error) {
+      if (error instanceof Error)
+        res.status(500).json({
+          status: false,
+          message: error.message,
+        });
+    }
+  });
+
   const port = process.env.PORT || 3333;
+
+  app.get('/', (_, res) => {
+    res.status(200).json({
+      message: 'Welcome to ithiri API',
+    });
+  });
 
   app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/api`);
