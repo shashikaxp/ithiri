@@ -6,6 +6,7 @@ import { NextPage } from 'next';
 import { ReactElement, ReactNode } from 'react';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 import { getApollo } from '../util/configApollo';
+import Head from 'next/head';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -22,6 +23,9 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     <>
       <CookiesProvider>
         <ApolloProvider client={getApollo()}>
+          <Head>
+            <title>ithiri</title>
+          </Head>
           {getLayout(<Component {...pageProps} />)}
         </ApolloProvider>
       </CookiesProvider>
