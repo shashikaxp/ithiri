@@ -102,6 +102,9 @@ const main = async () => {
 
   // REST ENDPOINTS
 
+  //  These are temporary endpoints used for perform various actions dues to some
+  // limitations
+
   //TODO scarping is done in local environment and send scraped data to the prod
   // this saves spaces in heroku because puppeteer need debian environment to run
   // once other libraries are installed, it will exceed the heroku free plan ;)
