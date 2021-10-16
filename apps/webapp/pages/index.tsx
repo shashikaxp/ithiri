@@ -67,10 +67,11 @@ export const Index = () => {
           <Image src={Loader} alt="loading.." />
           {isColdBoot && (
             <div className="p-4 text-center">
-              If the backend server is sleep. first response can take around 10
-              seconds to complete. Please be patient
-              <br />. after initial response all the following responses will be
-              fast, i&apos;ll promise ☺️
+              If the backend server is sleep. first response can take around
+              10-20 seconds to complete. Please be patient.
+              <br />
+              After initial response all the following responses will be fast,
+              i&apos;ll promise ☺️
             </div>
           )}
         </div>
