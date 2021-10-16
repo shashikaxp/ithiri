@@ -179,11 +179,10 @@ const main = async () => {
 
   app.delete('/purge', async (_, res) => {
     try {
-      const items = await purgeItems();
+      const purgedItemsCount = await purgeItems();
       res.status(200).json({
         status: true,
-        data: items,
-        message: 'Successfully delete 15 items',
+        message: `Successfully delete ${purgedItemsCount} items`,
       });
     } catch (error) {
       if (error instanceof Error)

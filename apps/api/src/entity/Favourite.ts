@@ -24,7 +24,7 @@ export class Favourite extends BaseEntity {
   @Field()
   userId!: number;
 
-  @ManyToOne(() => Item, (item) => item.favourites)
+  @ManyToOne(() => Item, (item) => item.favourites, { onDelete: 'CASCADE' })
   public item!: Item;
 
   @ManyToOne(() => User, (user) => user.favourites)

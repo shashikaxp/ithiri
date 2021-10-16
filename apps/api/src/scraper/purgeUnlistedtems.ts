@@ -2,6 +2,7 @@ import { StorePrice } from './../entity/StorePrice';
 import { getConnection } from 'typeorm';
 
 import { forIn, groupBy } from 'lodash';
+import { Item } from '../entity/Item';
 
 export interface ItemDetails {
   storePrice_id: number;
@@ -40,8 +41,11 @@ export const purgeItems = async () => {
     .execute();
 
   const groupedData = groupBy(data, 'item_id');
-  getUnlistedItemIds(groupedData);
-  return groupedData;
+  const itemIds = getUnlistedItemIds(groupedData);
+  if (itemIds.length > 0) {
+    await deleteItems(itemIds);
+  }
+  return itemIds.length;
 };
 
 const getUnlistedItemIds = (data: Record<string, ItemDetails[]>) => {
@@ -58,5 +62,14 @@ const getUnlistedItemIds = (data: Record<string, ItemDetails[]>) => {
       ids.push(i);
     }
   });
-  console.log(ids);
+  return ids;
+};
+
+const deleteItems = async (itemIds: string[]) => {
+  await getConnection()
+    .getRepository(Item)
+    .createQueryBuilder('item')
+    .delete()
+    .where('item.id IN (:...ids)', { ids: itemIds })
+    .execute();
 };

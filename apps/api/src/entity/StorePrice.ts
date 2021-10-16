@@ -48,7 +48,7 @@ export class StorePrice extends BaseEntity {
   @Column({ type: 'decimal', nullable: true })
   nwDiscount!: number | null;
 
-  @ManyToOne(() => Item, (item) => item.storePrices)
+  @ManyToOne(() => Item, (item) => item.storePrices, { onDelete: 'CASCADE' })
   public item!: Item;
 
   @ManyToOne(() => Store, (store) => store.storePrices)
