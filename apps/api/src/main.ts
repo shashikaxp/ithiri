@@ -177,6 +177,7 @@ const main = async () => {
     }
   });
 
+  // Purge items that are not used
   app.delete('/purge', async (_, res) => {
     try {
       const purgedItemsCount = await purgeItems();
