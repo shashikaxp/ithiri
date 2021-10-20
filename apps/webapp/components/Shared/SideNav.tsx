@@ -2,26 +2,21 @@ import { useApolloClient } from '@apollo/client';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Image from "next/image"
+import Image from 'next/image';
 
-import Loading from './../../assets/img/loader.svg'
+import Loading from './../../assets/img/loader.svg';
 import { useWeekItems } from './../../hooks/useWeekItems';
 
-import {
-  namedOperations,
-  useLogoutMutation,  
-} from '../../generated/graphql';
+import { namedOperations, useLogoutMutation } from '../../generated/graphql';
 import { useStore } from './../../store';
 
 export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
 }) => {
-
   const router = useRouter();
-  const store = useStore()
+  const store = useStore();
   const apolloClient = useApolloClient();
   const { removeCookies } = useWeekItems();
-
 
   const [logout] = useLogoutMutation({
     onCompleted: async () => {
@@ -46,13 +41,14 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 
   let body = null;
 
-  
   if (!store.userName) {
-    body = <div className="p-4 text-lg bg-primary-light flex justify-center">
-      <Image src={Loading} alt="Please wait white fetching user data"/>
-    </div>  ;
+    body = (
+      <div className="p-4 text-lg bg-primary-light flex justify-center">
+        <Image src={Loading} alt="Please wait white fetching user data" />
+      </div>
+    );
   } else {
-    const greeting = 'Hey ' + store.userName
+    const greeting = 'Hey ' + store.userName;
     body = (
       <>
         <div className="flex flex-col justify-center align-middle bg-primary-dark p-4">
@@ -67,7 +63,7 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
           </div>
           <div className="text-center text-xl mt-2 text-white">{greeting}</div>
         </div>
-        <div className="mt-8 flex  flex-col">
+        <div className="mt-8 flex flex-col">
           {store.isAuthenticated ? (
             <>
               <NextLink href="/">
@@ -102,14 +98,34 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
               </div>
             </>
           ) : (
-            <>
-              <NextLink href="/register">
-                <div className={getActiveRouteClass('')}>Register</div>
-              </NextLink>
-              <NextLink href="/login">
-                <div className={getActiveRouteClass('')}>Login</div>
-              </NextLink>
-            </>
+            <div className="flex justify-between w-full flex-col h-full min-h-full">
+              <div>
+                <NextLink href="/register">
+                  <div className={getActiveRouteClass('')}>Register</div>
+                </NextLink>
+                <NextLink href="/login">
+                  <div className={getActiveRouteClass('')}>Login</div>
+                </NextLink>
+              </div>
+
+              <div className="flex bg-white mt-10 m-4 rounded-md justify-center flex-col gap-4 p-4 text-center">
+                <div className="text-text-light text-sm">
+                  Too lazy to create a account.
+                  <br /> Use these credentials
+                </div>
+
+                <div>
+                  <div className="flex justify-between">
+                    <div className="font-bold">Email:</div>
+                    <div className="select-text"> test@ithiri.com</div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="font-bold">Password:</div>
+                    <div className="select-text">test123</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </>
