@@ -48,7 +48,7 @@ const MyCollection = () => {
 
   useEffect(() => {
     if (data?.generateShoppingList.shoppingLists) {
-      const shoppingLists = data.generateShoppingList.shoppingLists;
+      const shoppingLists = data.generateShoppingList.shoppingLists ?? [];
 
       const bestValueShoppingList = find(shoppingLists, {
         type: 'best-value',
@@ -83,10 +83,10 @@ const MyCollection = () => {
             </>
           )}
           {!emailComplete && !emailShoppingListLoading && (
-            <>
+            <div>
               Email me
               <AiOutlineMail className="h-8 w-8 ml-3" />
-            </>
+            </div>
           )}
         </div>
       )}

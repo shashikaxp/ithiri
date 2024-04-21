@@ -93,18 +93,19 @@ const generateBestValueShoppingList = (
 ): ShoppingList => {
   const shoppingItems: ShoppingItem[] = [];
   let totalSavings = 0;
+  let totalCost = 0;
 
   storePrices.map((sp) => {
     const quantity = find(itemDetails, { itemId: sp.itemId })?.quantity || 1;
     const itemPrices = sp.storePrices.map((sp) => getItemPrices(sp, week));
 
-    let minPrice: number = sp.originalPrice;
+    let minPrice = sp.originalPrice;
 
-    // TODO use dynamic it instead hard code values
     switch (type) {
-      case 'best-value':
+      case 'best-value': {
         minPrice = min(itemPrices.map((ip) => ip.price)) || sp.originalPrice;
         break;
+      }
       case 'coles':
         minPrice =
           find(itemPrices, { storeId: COLES_ID })?.price || sp.originalPrice;
@@ -117,6 +118,8 @@ const generateBestValueShoppingList = (
       default:
         break;
     }
+    
+    totalCost += minPrice * quantity;
 
     const totalSavingsForItem = getTotalSavingsForItem(
       sp.originalPrice,
@@ -124,7 +127,7 @@ const generateBestValueShoppingList = (
       quantity
     );
 
-    totalSavings += totalSavingsForItem;
+    totalSavings += totalSavingsForItem
 
     const itemDetailsForMinPrice = find(itemPrices, { price: minPrice });
     shoppingItems.push({
@@ -145,7 +148,8 @@ const generateBestValueShoppingList = (
   return {
     type,
     storeItems: shoppingItems,
-    totalSavings: totalSavings,
+    totalSavings: Math.max(totalSavings, 0),
+    totalCost: totalCost
   };
 };
 
@@ -156,14 +160,14 @@ const getItemPrices = (
   if (week === 'thisWeek') {
     return {
       storeId: storePrices.storeId,
-      price: storePrices.cwPrice,
+      price: Number(storePrices.cwPrice),
       saving: storePrices.cwSavings,
       discount: storePrices.cwDiscount,
     };
   } else {
     return {
       storeId: storePrices.storeId,
-      price: storePrices.nwPrice,
+      price: Number(storePrices.nwPrice),
       saving: storePrices.nwSavings,
       discount: storePrices.nwDiscount,
     };

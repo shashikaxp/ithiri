@@ -13,7 +13,7 @@ export async function getStoreItemDetails(
   const realLimit = Math.min(15, limit);
 
   const storePrices = await getStorePrices(offset, realLimit, weekType);
-
+  
   const favouriteItemIds = await getUserFavouriteItemIds(userId);
   return mapToStorePrices(storePrices, favouriteItemIds);
 }

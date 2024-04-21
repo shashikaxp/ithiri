@@ -6,7 +6,7 @@ const getStoreItemQuery = async (week?: Week) => {
   const query = await getConnection()
     .getRepository(StorePrice)
     .createQueryBuilder('storePrice')
-    .orderBy('storePrice.id', 'ASC')
+    .orderBy('item.name', 'ASC')
     .leftJoinAndSelect('storePrice.store', 'store')
     .leftJoinAndSelect('storePrice.item', 'item');
 

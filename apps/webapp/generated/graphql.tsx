@@ -124,6 +124,7 @@ export type ShoppingList = {
   __typename?: 'ShoppingList';
   type: Scalars['String'];
   totalSavings: Scalars['Float'];
+  totalCost: Scalars['Float'];
   storeItems: Array<ShoppingItem>;
 };
 
@@ -214,7 +215,7 @@ export type GenerateShoppingListQueryVariables = Exact<{
 }>;
 
 
-export type GenerateShoppingListQuery = { __typename?: 'Query', generateShoppingList: { __typename?: 'ShoppingListResponse', shoppingLists: Array<{ __typename?: 'ShoppingList', type: string, totalSavings: number, storeItems: Array<{ __typename?: 'ShoppingItem', image: string, storeId?: Maybe<number>, name: string, originalPrice?: Maybe<number>, quantity?: Maybe<number>, price?: Maybe<number>, saving?: Maybe<number>, discount?: Maybe<number>, total?: Maybe<number> }> }> } };
+export type GenerateShoppingListQuery = { __typename?: 'Query', generateShoppingList: { __typename?: 'ShoppingListResponse', shoppingLists: Array<{ __typename?: 'ShoppingList', type: string, totalSavings: number, totalCost: number, storeItems: Array<{ __typename?: 'ShoppingItem', image: string, storeId?: Maybe<number>, name: string, originalPrice?: Maybe<number>, quantity?: Maybe<number>, price?: Maybe<number>, saving?: Maybe<number>, discount?: Maybe<number>, total?: Maybe<number> }> }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -440,7 +441,8 @@ export const GenerateShoppingListDocument = gql`
   generateShoppingList(weeklyItemInput: $weeklyItemInput) {
     shoppingLists {
       type
-      totalSavings
+      totalSavings,
+      totalCost
       storeItems {
         image
         storeId

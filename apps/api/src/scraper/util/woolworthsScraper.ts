@@ -27,7 +27,7 @@ export const woolworthsScraper = () => {
     )?.innerText;
 
     const name = (
-      element.querySelector('a.shelfProductTile-descriptionLink') as HTMLElement
+      element.querySelector('span.sf-item-heading') as HTMLElement
     ).innerText;
 
     // only add single products

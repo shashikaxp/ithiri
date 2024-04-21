@@ -46,7 +46,7 @@ export const ShoppingListContainer: React.FC<ShoppingListContainerProps> = ({
         <div className="p-4 bg-white m-4">
           <div className="flex justify-between px-4 text-xl font-bold">
             <div>{title}</div>
-            <div>Save {shoppingListDetails?.totalSavings}</div>
+            <div>Total : {shoppingListDetails?.totalCost} ( Save {shoppingListDetails?.totalSavings} )</div>
           </div>
 
           {shoppingListDetails?.type === 'best-value'

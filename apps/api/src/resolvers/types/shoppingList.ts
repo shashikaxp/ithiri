@@ -26,6 +26,9 @@ class ShoppingList {
   @Field()
   totalSavings!: number;
 
+  @Field()
+  totalCost!: number;
+
   @Field(() => [ShoppingItem])
   storeItems!: ShoppingItem[];
 }

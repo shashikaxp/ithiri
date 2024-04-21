@@ -7,12 +7,12 @@ const formatCurrency = (amount: number) => {
     currency: 'USD',
   });
 
-  if (!amount) return '-';
+  if (!amount) return 'N/A';
   return formatter.format(amount);
 };
 
 const formatDiscount = (discount: number) => {
-  if (!discount) return '-';
+  if (!discount) return 'N/A';
   if (discount % 1 === 0.0) {
     return `${Math.floor(discount).toString()}%`;
   } else {
@@ -67,6 +67,14 @@ export const getApollo = () => {
         ShoppingList: {
           fields: {
             totalSavings: {
+              read(price) {
+                if (price == 0) {
+                  return price;
+                } 
+                return formatCurrency(price);
+              },
+            },
+            totalCost: {
               read(price) {
                 return formatCurrency(price);
               },

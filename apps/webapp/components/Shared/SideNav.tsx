@@ -56,7 +56,7 @@ export const SideNav: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
             <div className="bg-primary-light rounded-full w-24 h-24 flex align-middle justify-center">
               <img
                 className="h-24 p-4 w-auto rounded-full"
-                src={`https://avatars.dicebear.com/api/gridy/${greeting}.svg`}
+                src={`https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${greeting}`}
                 alt="profile picture"
               />
             </div>

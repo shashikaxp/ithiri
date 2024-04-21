@@ -26,7 +26,7 @@ export const colesScraper = () => {
       element.querySelector('span.sf-regoptiondesc') as HTMLElement
     )?.innerText;
 
-    const name = (element.querySelector('a.sf-item-heading') as HTMLElement)
+    const name = (element.querySelector('h4.sf-item-heading') as HTMLElement)
       .innerText;
 
     // only add single products
