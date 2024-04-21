@@ -10,7 +10,7 @@
     "gen": "graphql-codegen --config codegen.yml"
   },
   "engines": {
-    "node": "14.x"
+    "node": "18.x"
   },
   "private": true,
   "dependencies": {
